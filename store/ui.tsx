@@ -1,13 +1,13 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from 'mobx'
 
 export class UIStore {
-  title = "sup";
+  title = 'sup'
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this)
   }
 
   changeTitle(newTitle: string) {
-    this.title = newTitle;
+    this.title = newTitle
   }
 }
