@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.1.0",
@@ -34,6 +35,7 @@
     "@typescript-eslint/parser": "^8.38.0",
     "autoprefixer": "^10.4.14",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
     "postcss": "^8.4.25",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
