@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------ SEARCH INPUT ------------------------------ */
 .search-input {
   @apply rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
 
@@ -18,6 +19,7 @@
   }
 }
 
+/* ---------------------------- DATE RANGE PICKER --------------------------- */
 .custom-date-range-picker.ant-picker-range {
   @apply rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
 
@@ -43,5 +45,46 @@
 
   & .ant-picker-clear {
     inset-inline-end: 16px !important;
+  }
+}
+
+/* ------------------------------- DATA TABLE ------------------------------- */
+.data-table .ant-table-container .ant-table-content {
+  & table .ant-table-thead {
+    & tr th {
+      @apply border-slate-200 bg-transparent p-0 px-2 pb-3.5 leading-5 text-slate-900 !important;
+
+      &::before {
+        @apply top-0.5 h-4 translate-y-0 bg-slate-200 !important;
+      }
+    }
+  }
+
+  & table .ant-table-tbody {
+    & tr td {
+      @apply border-slate-200 px-2 font-semibold text-slate-500 !important;
+    }
+  }
+}
+
+.data-table .ant-table-footer {
+  @apply bg-transparent px-0 py-6 !important;
+}
+
+/* ---------------------------- PAGE LIMIT SELECT --------------------------- */
+.page-limit-select {
+  &.ant-select {
+    @apply h-fit !important;
+    & .ant-select-selector {
+      @apply rounded-full border-slate-200 px-5 py-[3px] text-slate-400 !important;
+    }
+
+    & .ant-select-selection-item {
+      @apply font-semibold !important;
+    }
+  }
+
+  &.ant-select-focused .ant-select-selector {
+    @apply shadow-[0_0_4px_rgba(255,166,0)] !important;
   }
 }
