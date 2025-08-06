@@ -1,7 +1,13 @@
 'use client'
 
+import { DatePicker } from 'antd'
+
 const Page = () => {
-  return <></>
+  return (
+    <>
+      <DatePicker />
+    </>
+  )
 }
 
 export default Page
