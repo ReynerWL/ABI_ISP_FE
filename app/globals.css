@@ -1,3 +1,47 @@
-/*@tailwind base;*/
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.search-input {
+  @apply rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
+
+  & .ant-input {
+    @apply font-medium text-slate-600 !important;
+  }
+
+  & .ant-input::placeholder {
+    @apply text-slate-400 !important;
+  }
+
+  &.ant-input-outlined:focus-within {
+    @apply shadow-none !important;
+  }
+}
+
+.custom-date-range-picker.ant-picker-range {
+  @apply rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
+
+  & .ant-picker-input input {
+    @apply w-fit font-semibold text-slate-600 !important;
+  }
+
+  & .ant-picker-input input::placeholder {
+    @apply font-normal tracking-wide text-slate-300 !important;
+  }
+
+  & .ant-picker-range-separator {
+    @apply pl-0 !important;
+
+    & .ant-picker-separator {
+      @apply pr-2 font-bold text-slate-400 !important;
+    }
+  }
+
+  & .ant-picker-active-bar {
+    @apply w-[100px] bg-[#FFA600] !important;
+  }
+
+  & .ant-picker-clear {
+    inset-inline-end: 16px !important;
+  }
+}
