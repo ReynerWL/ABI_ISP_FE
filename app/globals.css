@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
+.dashboard-sider.ant-layout-sider {
+  @apply sticky bottom-0 top-0 h-screen overflow-auto bg-white p-6 !important;
+}
+
+/* ----------------------------- DASHBOARD MENU ----------------------------- */
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+  border-inline-end: 0 !important;
+}
+
+.dashboard-menu.ant-menu {
+  & .ant-menu-item {
+    @apply m-0 mb-3 h-fit w-full px-4 py-1 font-semibold text-slate-400 !important;
+
+    &.ant-menu-item-selected {
+      @apply bg-blue-50 text-[#0049AC] !important;
+    }
+  }
+}
+
+.dashboard-header.ant-layout-header {
+  @apply sticky top-0 z-10 flex h-fit cursor-pointer items-center justify-end !bg-white !px-10 !py-4 !important;
+}
+
 /* ------------------------------ SEARCH INPUT ------------------------------ */
 .search-input {
   @apply rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;

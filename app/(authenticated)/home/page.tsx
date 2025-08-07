@@ -1,7 +1,9 @@
 'use client'
 
+import Chip from '#/components/reusable/Chip'
 import DataTable from '#/components/reusable/DataTable'
 import { TableProps } from 'antd'
+import dayjs from 'dayjs'
 
 const Page = () => {
   const dataSource = [
@@ -26,9 +28,15 @@ const Page = () => {
     {
       title: 'Tanggal Berlangganan',
       dataIndex: 'tanggal_berlangganan',
-      key: 'tanggal_berlangganan'
+      key: 'tanggal_berlangganan',
+      render: (text) => dayjs(text).format('DD/MM/YYYY')
     },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (text) => <Chip text={text} color='orange' />
+    },
     { title: 'Aksi', dataIndex: 'aksi', key: 'aksi' }
   ]
 
