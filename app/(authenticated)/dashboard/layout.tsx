@@ -44,8 +44,19 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
 
   return (
-    <Layout hasSider>
-      <Sider className='dashboard-sider' width={288}>
+    <Layout style={{ height: '100vh' }}>
+      <Sider
+        width={288}
+        style={{
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          height: '100vh',
+          overflow: 'auto'
+        }}
+        className='dashboard-sider'
+      >
         <Link href={'/'}>
           <Image
             src={'/logo.png'}
@@ -62,8 +73,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           className='dashboard-menu !mt-6'
         />
       </Sider>
-      <Layout className='!bg-slate-50'>
-        <Header className='dashboard-header'>
+
+      <Layout className='ml-[288px] !bg-slate-50'>
+        <Header
+          style={{ position: 'fixed', top: 0, right: 0, left: 288, height: 64 }}
+          className='dashboard-header'
+        >
           <div className='flex items-center gap-4'>
             <Avatar size={48} className='!bg-secondary !text-xl font-semibold'>
               CS
@@ -80,8 +95,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
         </Header>
-        <Content style={{ margin: '40px 32px', overflow: 'initial' }}>
-          {children}
+
+        <Content className='mt-[88px] min-h-[calc(100vh-88px)]'>
+          <div className='p-6'>{children}</div>
         </Content>
       </Layout>
     </Layout>
