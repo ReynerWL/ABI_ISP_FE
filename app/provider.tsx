@@ -14,7 +14,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
           fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
         },
         components: {
-          Segmented: { itemSelectedBg: '#FFA600', itemSelectedColor: '#fff' }
+          Segmented: { itemSelectedBg: '#0049AC', itemSelectedColor: '#fff' }
         }
       }}
     >

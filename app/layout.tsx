@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en' className={`${plusJakartaSans.variable}`}>
       <Head />
       <body className='font-sans'>
-        <NextTopLoader showSpinner={false} />
+        <NextTopLoader showSpinner={false} color='#0049AC' height={4} />
         <Script src='/api/env' strategy={'beforeInteractive'}></Script>
         <Provider>{children}</Provider>
       </body>
