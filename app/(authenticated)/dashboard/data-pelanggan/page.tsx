@@ -1,3 +1,5 @@
+'use client'
+
 import Title from '#/components/reusable/Title'
 import { Segmented } from 'antd'
 

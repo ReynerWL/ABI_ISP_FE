@@ -126,11 +126,15 @@
     @apply rounded-full px-5 py-2 font-medium text-slate-500 shadow-none !important;
 
     &.ant-segmented-item-selected {
-      @apply bg-secondary text-white !important;
+      @apply bg-primary text-white !important;
 
       &.ant-segmented-item-focused {
         outline: 3px solid #fde047;
       }
     }
   }
+}
+
+.ant-modal-content {
+  @apply rounded-2xl p-6 shadow-none !important;
 }
