@@ -41,7 +41,7 @@ const items: MenuProps['items'] = [
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
-  const selectedKeys = pathname?.split('/').filter(Boolean)
+  const selectedKey = pathname?.split('/')[2] || 'dashboard'
 
   return (
     <Layout hasSider>
@@ -57,7 +57,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </Link>
         <Menu
           mode='inline'
-          selectedKeys={selectedKeys}
+          selectedKeys={[selectedKey]}
           items={items}
           className='dashboard-menu !mt-6'
         />
@@ -65,11 +65,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <Layout className='!bg-slate-50'>
         <Header className='dashboard-header'>
           <div className='flex items-center gap-4'>
-            <Avatar size={48} className='!bg-[#FFA600] !text-xl font-semibold'>
+            <Avatar size={48} className='!bg-secondary !text-xl font-semibold'>
               CS
             </Avatar>
             <div>
-              <h1 className='text-lg font-bold text-[#0049AC]'>
+              <h1 className='text-lg font-bold text-primary'>
                 Cecilia Siregar
               </h1>
               <p className='text-sm font-medium text-slate-400'>Admin</p>
@@ -80,7 +80,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
         </Header>
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+        <Content style={{ margin: '40px 32px', overflow: 'initial' }}>
           {children}
         </Content>
       </Layout>

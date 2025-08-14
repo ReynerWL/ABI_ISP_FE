@@ -10,8 +10,11 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#00b96b',
+          colorPrimary: '#0049AC',
           fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
+        },
+        components: {
+          Segmented: { itemSelectedBg: '#FFA600', itemSelectedColor: '#fff' }
         }
       }}
     >
