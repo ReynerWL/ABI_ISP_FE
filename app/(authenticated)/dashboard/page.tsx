@@ -1,5 +1,11 @@
+import Title from '#/components/reusable/Title'
+
 const Dashboard = () => {
-  return <div>Dashboard</div>
+  return (
+    <div>
+      <Title>Dashboard</Title>
+    </div>
+  )
 }
 
 export default Dashboard

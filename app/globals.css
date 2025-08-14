@@ -14,14 +14,19 @@
 
 .dashboard-menu.ant-menu {
   & .ant-menu-item {
-    @apply m-0 mb-3 h-fit w-full px-4 py-1 font-semibold text-slate-400 !important;
+    @apply m-0 mb-3 h-fit w-full px-4 py-1.5 font-semibold text-slate-400 !important;
 
     &.ant-menu-item-selected {
-      @apply bg-blue-50 text-[#0049AC] !important;
+      @apply bg-blue-50 text-primary !important;
+    }
+
+    &.ant-menu-item-active {
+      @apply bg-blue-50 text-primary !important;
     }
   }
 }
 
+/* ---------------------------- DASHBOARD HEADER ---------------------------- */
 .dashboard-header.ant-layout-header {
   @apply sticky top-0 z-10 flex h-fit cursor-pointer items-center justify-end !bg-white !px-10 !py-4 !important;
 }
@@ -64,7 +69,7 @@
   }
 
   & .ant-picker-active-bar {
-    @apply w-[100px] bg-[#FFA600] !important;
+    @apply w-[100px] bg-secondary !important;
   }
 
   & .ant-picker-clear {
@@ -110,5 +115,22 @@
 
   &.ant-select-focused .ant-select-selector {
     @apply shadow-[0_0_4px_rgba(255,166,0)] !important;
+  }
+}
+
+/* ----------------------------- SEGMENTED / TAB ---------------------------- */
+.ant-segmented {
+  @apply rounded-full bg-white p-0 !important;
+
+  & .ant-segmented-group .ant-segmented-item {
+    @apply rounded-full px-5 py-2 font-medium text-slate-500 shadow-none !important;
+
+    &.ant-segmented-item-selected {
+      @apply bg-secondary text-white !important;
+
+      &.ant-segmented-item-focused {
+        outline: 3px solid #fde047;
+      }
+    }
   }
 }

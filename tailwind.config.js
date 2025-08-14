@@ -7,7 +7,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      fontFamily: { sans: ['var(--font-plus-jakarta-sans)', 'sans-serif'] }
+      fontFamily: { sans: ['var(--font-plus-jakarta-sans)', 'sans-serif'] },
+      colors: { primary: '#0049AC', secondary: '#FFA600' }
     }
   },
   plugins: []
