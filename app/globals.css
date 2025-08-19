@@ -2,9 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------ SHADCN STYLE ------------------------------ */
+@layer base {
+  :root {
+    --chart-1: #0049ac;
+    --chart-2: #1976d2;
+    --chart-3: #63a4ff;
+    --chart-4: #90caf9;
+    --chart-5: #bbdefb;
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------------------------------- SCROLLBAR ------------------------------- */
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-2.5 rounded-full bg-slate-100 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-primary !important;
+}
+
 /* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
 .dashboard-sider.ant-layout-sider {
-  @apply z-20 bg-white p-6 !important;
+  @apply z-20 hidden bg-white p-6 lg:block !important;
 }
 
 /* ----------------------------- DASHBOARD MENU ----------------------------- */

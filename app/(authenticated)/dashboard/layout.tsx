@@ -44,7 +44,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider
         width={288}
         style={{
@@ -74,7 +74,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </Sider>
 
-      <Layout className='ml-[288px] !bg-slate-50'>
+      <Layout className='h-full lg:ml-[288px]'>
         <Header
           style={{ position: 'fixed', top: 0, right: 0, left: 288, height: 64 }}
           className='dashboard-header'
@@ -96,8 +96,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </Header>
 
-        <Content className='mt-[88px] min-h-[calc(100vh-88px)]'>
-          <div className='p-6'>{children}</div>
+        <Content className='mt-[88px] h-full !min-h-[calc(100vh-88px)] !bg-slate-50'>
+          <div className='h-full p-6'>{children}</div>
         </Content>
       </Layout>
     </Layout>
