@@ -70,7 +70,7 @@
 
 /* ------------------------------ SEARCH INPUT ------------------------------ */
 .search-input {
-  @apply rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
+  @apply w-full rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
 
   & .ant-input {
     @apply font-medium text-slate-600 !important;
@@ -116,6 +116,7 @@
 
 /* ------------------------------- DATA TABLE ------------------------------- */
 .data-table .ant-table-container .ant-table-content {
+  scrollbar-width: none;
   & table .ant-table-thead {
     & tr th {
       @apply border-slate-200 bg-transparent p-0 px-2 pb-3.5 leading-5 text-slate-900 !important;
@@ -151,7 +152,7 @@
   }
 
   &.ant-select-focused .ant-select-selector {
-    @apply shadow-[0_0_4px_rgba(255,166,0)] !important;
+    @apply shadow-[0_0_4px_#0049AC] !important;
   }
 }
 

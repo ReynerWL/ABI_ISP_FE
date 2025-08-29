@@ -26,8 +26,10 @@ const DataTable = ({
     <Table
       dataSource={dataSource}
       columns={columns}
-      className='data-table'
+      className='data-table custom-scrollbar'
       pagination={false}
+      rowHoverable={false}
+      scroll={{ x: 'max-content' }}
       footer={() => (
         <div className='flex w-full justify-between'>
           <div className='flex items-center gap-2 font-semibold text-slate-400'>
@@ -60,9 +62,8 @@ const DataTable = ({
               <span className='hidden sm:block'>Kembali</span>
             </Button>
             <Button
-              color='orange'
               variant='filled'
-              className='!h-fit !w-fit !rounded-full !border-none !bg-[#FFF7ED] !py-[7px] !font-semibold !text-[#F59E0B] hover:!bg-orange-100 disabled:!bg-orange-50 disabled:!text-orange-300 sm:!px-4'
+              className='!h-fit !w-fit !rounded-full !border-none !bg-blue-50 !py-[7px] !font-semibold !text-primary hover:!bg-blue-100 disabled:!bg-blue-50 disabled:!text-blue-300 sm:!px-4'
               iconPosition='end'
               icon={
                 <HiOutlineChevronRight strokeWidth={3} className='text-base' />
