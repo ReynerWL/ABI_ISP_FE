@@ -38,7 +38,6 @@ const AlertDialog = ({
       width={340}
       centered
       styles={{
-        mask: { backgroundColor: '#2F2F2F33' },
         body: {
           display: 'flex',
           flexDirection: 'column',

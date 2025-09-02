@@ -169,6 +169,45 @@
   }
 }
 
+/* ------------------------------- ANTD MODAL ------------------------------- */
 .ant-modal-content {
   @apply rounded-2xl p-6 shadow-none !important;
+}
+
+.ant-modal-root .ant-modal-mask {
+  @apply bg-[#2F2F2F33] !important;
+}
+
+/* -------------------------- TAMBAH PENGGUNA STEPS ------------------------- */
+.tambah-pengguna-steps {
+  &.ant-steps {
+    & .ant-steps-item-title {
+      @apply text-sm font-semibold md:text-xs !important;
+    }
+    & .ant-steps-item-process .ant-steps-item-title {
+      @apply text-primary !important;
+    }
+
+    &.ant-steps-vertical > .ant-steps-item .ant-steps-item-content {
+      @apply min-h-[28px] !important;
+    }
+
+    & .ant-steps-item-icon {
+      @apply size-5 md:h-[17px] md:w-[17px] !important;
+    }
+
+    & .ant-steps-icon {
+      @apply top-[-4px] text-[10px] font-semibold !important;
+    }
+
+    & .ant-steps-item-wait {
+      & .ant-steps-item-icon {
+        @apply bg-slate-400 !important;
+
+        & .ant-steps-icon {
+          @apply text-white !important;
+        }
+      }
+    }
+  }
 }
