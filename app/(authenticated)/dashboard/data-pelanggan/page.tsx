@@ -1,5 +1,6 @@
 'use client'
 
+import ModalPelanggan from '#/components/data-pelanggan/ModalPelanggan'
 import Chip from '#/components/reusable/Chip'
 import CustomDateRangePicker from '#/components/reusable/CustomDateRangePicker'
 import DataTable from '#/components/reusable/DataTable'
@@ -8,6 +9,7 @@ import Title from '#/components/reusable/Title'
 import { Button, Segmented, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { HiOutlineDownload, HiPlus } from 'react-icons/hi'
 import { HiEye, HiMiniPencilSquare } from 'react-icons/hi2'
 
@@ -15,6 +17,8 @@ const DataPelanggan = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const status = searchParams?.get('status') || 'Semua'
+
+  const [openModal, setOpenModal] = useState(false)
 
   const dataSource = [
     {
@@ -76,29 +80,32 @@ const DataPelanggan = () => {
     <div className='flex flex-col gap-8'>
       <div className='flex items-center justify-between'>
         <Title>Data Pelanggan</Title>
-        <Segmented
-          options={['Semua', 'Baru', 'Aktif', 'Pending', 'Nonaktif']}
-          shape='round'
-          defaultValue='Semua'
-          value={status}
-          onChange={handleStatusChange}
-        />
+        <div className='hidden md:block'>
+          <Segmented
+            options={['Semua', 'Baru', 'Aktif', 'Pending', 'Nonaktif']}
+            shape='round'
+            defaultValue='Semua'
+            value={status}
+            onChange={handleStatusChange}
+          />
+        </div>
       </div>
-      <div className='flex flex-col gap-6 rounded-2xl bg-white p-6'>
-        <div className='flex gap-6'>
+      <div className='flex flex-col gap-6 rounded-2xl bg-white p-4 md:p-6'>
+        <div className='flex flex-col gap-3 md:flex-row md:gap-6'>
           <InputSearch />
           <CustomDateRangePicker />
-          <div className='flex gap-6'>
+          <div className='flex w-full gap-6 md:w-fit'>
             <Button
-              className='!h-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100'
+              className='!h-full !w-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 md:!w-fit'
               type='primary'
             >
               <HiOutlineDownload className='text-[23px]' strokeWidth={1.9} />
               Ekspor
             </Button>
             <Button
-              className='!h-full !rounded-lg !px-4 !py-2 !text-base !font-medium !shadow-none'
+              className='!h-full !w-full !rounded-lg !px-4 !py-2 !text-base !font-medium !shadow-none md:!w-fit'
               type='primary'
+              onClick={() => setOpenModal(true)}
             >
               <HiPlus className='text-xl' />
               Tambah
@@ -106,6 +113,7 @@ const DataPelanggan = () => {
           </div>
         </div>
         <DataTable dataSource={dataSource} columns={columns} limit={10} />
+        <ModalPelanggan open={openModal} onClose={() => setOpenModal(false)} />
       </div>
     </div>
   )
