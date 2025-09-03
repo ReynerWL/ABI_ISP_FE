@@ -2,7 +2,7 @@
 
 import { TokenUtil } from '#/utils/token'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
-import { ConfigProvider } from 'antd'
+import { App, ConfigProvider } from 'antd'
 
 TokenUtil.loadToken()
 export const Provider = ({ children }: { children: React.ReactNode }) => {
@@ -18,7 +18,9 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
         }
       }}
     >
-      <AntdRegistry>{children}</AntdRegistry>
+      <AntdRegistry>
+        <App>{children}</App>
+      </AntdRegistry>
     </ConfigProvider>
   )
 }
