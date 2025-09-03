@@ -181,8 +181,13 @@
 /* -------------------------- TAMBAH PENGGUNA STEPS ------------------------- */
 .tambah-pengguna-steps {
   &.ant-steps {
+    @apply border-b border-slate-200 pb-2 md:pb-4 !important;
     & .ant-steps-item-title {
       @apply text-sm font-semibold md:text-xs !important;
+
+      &::after {
+        @apply top-2 !important;
+      }
     }
     & .ant-steps-item-process .ant-steps-item-title {
       @apply text-primary !important;
@@ -197,7 +202,7 @@
     }
 
     & .ant-steps-icon {
-      @apply top-[-4px] text-[10px] font-semibold !important;
+      @apply top-[-3px] text-[10px] font-semibold md:top-[-5px] !important;
     }
 
     & .ant-steps-item-wait {
@@ -209,5 +214,113 @@
         }
       }
     }
+
+    & .ant-steps-item.ant-steps-item-finish {
+      & .ant-steps-item-icon {
+        @apply size-[22px] bg-green-700 md:size-5 !important;
+        & .ant-steps-icon {
+          @apply top-[-2px] font-bold text-white md:top-[-3px] !important;
+        }
+      }
+
+      & .ant-steps-item-title {
+        @apply text-green-700 !important;
+
+        &::after {
+          @apply bg-green-700 !important;
+        }
+      }
+    }
   }
+}
+
+/* -------------------------------- ANTD FORM ------------------------------- */
+.ant-form {
+  & .ant-form-item {
+    @apply mb-4 !important;
+
+    & .ant-form-item-label {
+      @apply pb-1.5 !important;
+    }
+    & .ant-form-item-label > label {
+      @apply font-semibold text-slate-500 !important;
+    }
+
+    & .ant-form-item-control-input {
+      & .ant-form-item-control-input-content {
+        @apply min-h-9 !important;
+      }
+    }
+
+    & .ant-form-item-explain-error {
+      @apply mb-1 mt-0.5 text-xs font-medium text-red-400 !important;
+    }
+
+    /* ---------------------------------- INPUT --------------------------------- */
+    & .ant-input {
+      @apply h-fit rounded-lg border-slate-200 px-2.5 py-1.5 font-semibold tracking-wide text-slate-500 !important;
+      &::placeholder {
+        @apply font-normal text-slate-300 !important;
+      }
+      &.ant-input-disabled {
+        @apply bg-slate-50 text-slate-500 !important;
+      }
+    }
+
+    /* ------------------------------- DATEPICKER ------------------------------- */
+    & .ant-picker {
+      @apply h-full min-h-9 w-full rounded-lg border-slate-200 !important;
+
+      & .ant-picker-input input {
+        @apply font-semibold text-slate-500 !important;
+      }
+
+      & .ant-picker-input input::placeholder {
+        @apply font-normal tracking-wide text-slate-300 !important;
+      }
+    }
+
+    /* ---------------------------- PAKET RADIO GROUP --------------------------- */
+    & .paket-radio-group.ant-radio-group {
+      @apply flex flex-col gap-4 !important;
+
+      & .ant-radio-wrapper {
+        margin-inline-end: 0px !important;
+        @apply rounded-lg bg-slate-50 p-4 hover:bg-slate-100 !important;
+
+        & .ant-radio-label {
+          @apply font-bold text-slate-500 !important;
+        }
+
+        & .ant-radio-inner {
+          @apply size-[18px] bg-slate-50 !important;
+        }
+
+        &.ant-radio-wrapper-checked {
+          & .ant-radio-inner {
+            @apply bg-primary !important;
+
+            &::after {
+              content: '\2713' !important;
+              margin-inline-start: -9px !important;
+              @apply top-1 bg-transparent text-3xl font-medium text-white !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* --------------------------- KTP UPLOAD DRAGGER --------------------------- */
+.ktp-upload .ant-upload-drag {
+  @apply rounded-lg border-dashed border-slate-200 bg-transparent px-6 py-10 hover:border-primary hover:bg-slate-50 !important;
+
+  & .ant-upload-drag-container {
+    @apply flex flex-col items-center justify-center gap-2 !important;
+  }
+}
+
+.ant-image-mask {
+  @apply rounded-lg !important;
 }
