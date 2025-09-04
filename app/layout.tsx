@@ -3,6 +3,7 @@ import 'antd/dist/reset.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import NextTopLoader from 'nextjs-toploader'
+import { Toaster } from 'sonner'
 import './globals.css'
 import Head from './head'
 import { Provider } from './provider'
@@ -24,6 +25,7 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} color='#0049AC' height={4} />
         <Script src='/api/env' strategy={'beforeInteractive'}></Script>
         <Provider>{children}</Provider>
+        <Toaster position='top-right' className='font-sans' richColors />
       </body>
     </html>
   )
