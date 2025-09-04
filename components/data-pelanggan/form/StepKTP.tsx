@@ -3,7 +3,6 @@ import {
   Form,
   FormInstance,
   Image,
-  message,
   Upload,
   UploadFile,
   UploadProps
@@ -13,6 +12,7 @@ import Dragger from 'antd/es/upload/Dragger'
 import { useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
 import { PiTrash } from 'react-icons/pi'
+import { toast } from 'sonner'
 
 interface StepKTPProps {
   form: FormInstance
@@ -29,7 +29,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
     setFileList(newFileList)
 
   const draggerProps: UploadProps = {
-    name: 'ktp',
+    name: 'photo_ktp',
     multiple: false,
     maxCount: 1,
     accept: 'image/*',
@@ -37,7 +37,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
     showUploadList: false,
     beforeUpload: (file) => {
       if (file.size > 15 * 1024 * 1024) {
-        message.error('File tidak boleh lebih dari 15MB!')
+        toast.error('Ukuran file maksimal 15MB')
         return Upload.LIST_IGNORE
       }
       return false
@@ -46,8 +46,8 @@ const StepKTP = ({ form }: StepKTPProps) => {
       const { file } = info
       handleChange(info)
       handleUpload(file)
-      if (file.status !== 'removed') {
-        message.success(`Foto berhasil diunggah!`)
+      if (file.status !== 'done') {
+        toast.success('Foto KTP berhasil diunggah!')
       }
     }
   }

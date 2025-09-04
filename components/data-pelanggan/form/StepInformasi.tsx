@@ -36,7 +36,7 @@ const StepInformasi = () => {
         />
       </Form.Item>
       <Form.Item
-        name={'nama'}
+        name={'name'}
         label='Nama Pelanggan'
         validateDebounce={500}
         preserve={true}
@@ -56,7 +56,7 @@ const StepInformasi = () => {
         <Input placeholder='Masukkan email' type='email' />
       </Form.Item>
       <Form.Item
-        name={'no_telp'}
+        name={'phone_number'}
         label='No. Telp'
         validateDebounce={500}
         preserve={true}
