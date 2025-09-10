@@ -1,7 +1,7 @@
 'use client'
 
 import type { MenuProps } from 'antd'
-import { Avatar, Layout, Menu } from 'antd'
+import { Avatar, Button, Layout, Menu } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import {
+  HiBars3BottomLeft,
   HiChevronDown,
   HiDocumentMagnifyingGlass,
   HiInboxArrowDown,
@@ -79,25 +80,37 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           style={{ position: 'fixed', top: 0, right: 0, left: 288, height: 64 }}
           className='dashboard-header'
         >
-          <div className='flex items-center gap-4'>
-            <Avatar size={48} className='!bg-secondary !text-xl font-semibold'>
-              CS
-            </Avatar>
-            <div>
-              <h1 className='text-lg font-bold text-primary'>
-                Cecilia Siregar
-              </h1>
-              <p className='text-sm font-medium text-slate-400'>Admin</p>
+          <div className='flex w-full items-center justify-between gap-4 lg:justify-end'>
+            <Button type='text' className='!h-fit !p-1 lg:!hidden'>
+              <HiBars3BottomLeft className='!text-3xl' />
+            </Button>
+            <div className='group flex items-center gap-4'>
+              <Avatar
+                size={48}
+                className='!bg-secondary !text-xl font-semibold'
+              >
+                CS
+              </Avatar>
+              <div className='hidden items-center gap-4 sm:flex'>
+                <div>
+                  <h1 className='text-base font-bold text-primary md:text-lg'>
+                    Cecilia Siregar
+                  </h1>
+                  <p className='text-xs font-medium text-slate-400 md:text-sm'>
+                    Admin
+                  </p>
+                </div>
+                <HiChevronDown
+                  className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                  strokeWidth={0.8}
+                />
+              </div>
             </div>
-            <HiChevronDown
-              className='ml-2 rounded-full border border-slate-200 p-1 text-2xl text-slate-500'
-              strokeWidth={0.8}
-            />
           </div>
         </Header>
 
         <Content className='mt-[88px] h-full !min-h-[calc(100vh-88px)] !bg-slate-50'>
-          <div className='h-full p-6'>{children}</div>
+          <div className='h-full p-4 md:p-6'>{children}</div>
         </Content>
       </Layout>
     </Layout>

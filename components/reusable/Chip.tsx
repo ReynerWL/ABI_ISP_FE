@@ -17,9 +17,9 @@ const Chip = ({ text, color }: ChipProps) => {
   const { bg, text: textColor } = chipVariants[color || 'gray']
   return (
     <div
-      className={`flex w-fit items-center gap-2 rounded-full px-2.5 py-1 font-semibold ${bg} ${textColor}`}
+      className={`flex w-fit items-center gap-2 rounded-full px-2.5 py-1 text-xs font-semibold md:text-sm ${bg} ${textColor}`}
     >
-      <GiPlainCircle className='text-[8px]' />
+      <GiPlainCircle className='text-[6px] md:text-[8px]' />
       {text}
     </div>
   )

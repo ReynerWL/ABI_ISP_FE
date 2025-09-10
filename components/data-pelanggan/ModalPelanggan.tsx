@@ -30,8 +30,8 @@ const ModalPelanggan = ({
   ]
 
   const stepFields: string[][] = [
-    ['tanggal_berlangganan', 'nama', 'email', 'no_telp', 'alamat'],
-    ['ktp'],
+    ['tanggal_berlangganan', 'name', 'email', 'phone_number', 'alamat'],
+    ['photo_ktp'],
     ['paket']
   ]
 
