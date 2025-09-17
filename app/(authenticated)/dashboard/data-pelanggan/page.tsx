@@ -8,6 +8,7 @@ import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import { Button, Segmented, TableProps } from 'antd'
 import dayjs from 'dayjs'
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { HiOutlineDownload, HiPlus } from 'react-icons/hi'
@@ -61,10 +62,13 @@ const DataPelanggan = () => {
             <HiMiniPencilSquare className='text-lg' />
             Edit
           </Button>
-          <Button className='!rounded-lg !border-slate-100 !p-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'>
+          <Link
+            href={`/dashboard/data-pelanggan/${'1234567890'}`}
+            className='flex items-center gap-2 !rounded-lg border !border-slate-100 px-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
+          >
             <HiEye className='text-lg' />
             Detail
-          </Button>
+          </Link>
         </div>
       )
     }
