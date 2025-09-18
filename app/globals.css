@@ -86,7 +86,8 @@
 }
 
 /* ---------------------------- DATE RANGE PICKER --------------------------- */
-.custom-date-range-picker.ant-picker-range {
+.custom-date-range-picker.ant-picker-range,
+.custom-date-range-picker.ant-picker {
   @apply rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
 
   & .ant-picker-input input {
