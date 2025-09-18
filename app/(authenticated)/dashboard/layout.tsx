@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <Link href={'/'}>
           <Image
-            src={'/logo.png'}
+            src={'/logo.svg'}
             alt={'logo'}
             width={187}
             height={56}

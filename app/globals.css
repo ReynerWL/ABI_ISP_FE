@@ -324,3 +324,29 @@
 .ant-image-mask {
   @apply rounded-lg !important;
 }
+
+/* -------------------------------- AUHT FORM ------------------------------- */
+.auth-form.ant-form {
+  & .ant-form-item {
+    @apply mb-4 !important;
+
+    & .ant-form-item-label {
+      @apply pb-2 !important;
+    }
+
+    & .ant-form-item-explain-error {
+      @apply mb-1 mt-0.5 text-xs font-semibold text-red-400 !important;
+    }
+
+    & .ant-input {
+      @apply h-fit rounded-lg border-slate-200 px-3 py-2 font-semibold text-slate-500 !important;
+      &::placeholder {
+        @apply font-normal text-slate-400 !important;
+      }
+    }
+
+    & .ant-input-password {
+      @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
+    }
+  }
+}
