@@ -30,7 +30,7 @@ const ConfirmListItem = ({
       href={'/'}
       className='flex cursor-pointer items-center justify-between rounded-[14px] p-3 hover:bg-slate-50 2xl:p-4'
     >
-      <div className='flex gap-4'>
+      <div className='flex items-center gap-4'>
         <div className='rounded-full bg-slate-100 p-3'>
           <HiInboxArrowDown className='text-2xl text-slate-500' />
         </div>

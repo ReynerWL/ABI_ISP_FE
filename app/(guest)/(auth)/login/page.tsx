@@ -84,13 +84,14 @@ const Login = () => {
       >
         <div className='flex flex-col gap-6 md:w-full md:px-20'>
           <div className='space-y-4 md:space-y-8'>
-            <Image
-              src={'/logo-small.svg'}
-              alt={'logo'}
-              width={144}
-              height={44}
-              className={'cursor-pointer'}
-            />
+            <Link href={'/'}>
+              <Image
+                src={'/logo-small.svg'}
+                alt={'logo'}
+                width={144}
+                height={44}
+              />
+            </Link>
             <div className='space-y-2'>
               <h1 className='text-3xl font-bold sm:text-4xl'>Selamat Datang</h1>
               <p className='text-sm font-medium text-slate-400 md:text-base'>
@@ -151,7 +152,7 @@ const Login = () => {
               />
             </Form.Item>
             <Button
-              className='!mt-2 !h-fit !w-full !rounded-full !bg-secondary !px-4 !py-2.5 !text-base !font-semibold !shadow-none hover:!bg-secondary/85 md:!text-lg'
+              className='!mt-2 !h-fit !w-full !rounded-full !bg-secondary !px-4 !py-2.5 !text-base !font-semibold !shadow-none hover:!bg-secondary/85 md:!text-base'
               type='primary'
               htmlType='submit'
               loading={loading}
@@ -159,15 +160,6 @@ const Login = () => {
               Masuk
             </Button>
           </Form>
-          <p className='text-center font-light'>
-            Tidak punya akun?{' '}
-            <Link
-              className='font-semibold italic text-secondary hover:!text-secondary/60'
-              href={'/register'}
-            >
-              Isi Data Diri
-            </Link>
-          </p>
         </div>
       </motion.div>
     </div>

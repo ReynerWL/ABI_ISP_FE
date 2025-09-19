@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+h1,
+p {
+  @apply m-0 p-0 !important;
+}
+
 /* ------------------------------ SHADCN STYLE ------------------------------ */
 @layer base {
   :root {
@@ -330,7 +335,7 @@
   @apply rounded-lg !important;
 }
 
-/* -------------------------------- AUHT FORM ------------------------------- */
+/* -------------------------------- AUTH FORM ------------------------------- */
 .auth-form.ant-form {
   & .ant-form-item {
     @apply mb-4 !important;
@@ -348,10 +353,49 @@
       &::placeholder {
         @apply font-normal text-slate-400 !important;
       }
+
+      &.ant-input-disabled {
+        @apply bg-slate-50 font-medium text-slate-400 !important;
+      }
     }
 
     & .ant-input-password {
       @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
+    }
+
+    /* -------------------------- AUTH FORM DATEPICKER -------------------------- */
+    & .ant-picker {
+      @apply h-fit py-2 !important;
+
+      & .ant-picker-input input {
+        @apply font-semibold text-slate-500 !important;
+      }
+
+      & .ant-picker-input input::placeholder {
+        @apply font-normal tracking-wide text-slate-400 !important;
+      }
+    }
+  }
+}
+
+/* ---------------------------- REGISTER STEPS ----------------------------- */
+.steps-register.ant-steps {
+  & .ant-steps-item-title {
+    @apply text-sm font-semibold !important;
+  }
+  & .ant-steps-item-process .ant-steps-item-title {
+    @apply text-primary !important;
+  }
+
+  & .ant-steps-item.ant-steps-item-finish {
+    & .ant-steps-item-title {
+      @apply text-primary !important;
+    }
+  }
+
+  & .ant-steps-item-wait {
+    & .ant-steps-item-title {
+      @apply text-slate-400 !important;
     }
   }
 }

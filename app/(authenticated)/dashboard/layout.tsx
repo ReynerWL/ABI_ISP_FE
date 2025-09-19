@@ -1,5 +1,6 @@
 'use client'
 
+import usePageTitle from '#/hooks/usePageTitle'
 import type { MenuProps } from 'antd'
 import { Avatar, Button, Layout, Menu } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
@@ -41,6 +42,7 @@ const items: MenuProps['items'] = [
 ]
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  usePageTitle('Dashboard')
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
 

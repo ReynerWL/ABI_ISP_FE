@@ -31,7 +31,7 @@ const PaketChart = () => {
       <h1 className='text-lg font-bold text-slate-600'>Informasi Paket</h1>
       <ChartContainer
         config={chartConfig}
-        className='h-[350px] w-full xl:max-w-[420px]'
+        className='flex h-[350px] w-full items-center xl:max-w-[420px]'
       >
         <PieChart width={400} height={350}>
           <Pie data={data} dataKey='value' nameKey='name' />
