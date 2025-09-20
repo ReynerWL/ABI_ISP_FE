@@ -1,15 +1,15 @@
 'use client'
 
-import Title from '#/components/reusable/Title'
+import BaseModal from '#/components/reusable/BaseModal'
+import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
-import { Button, TableProps, Image } from 'antd'
+import Title from '#/components/reusable/Title'
+import CustomMonthPicker from '#/components/transaksi/CustomDateMonth'
+import { Button, Image, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { HiOutlineDownload } from 'react-icons/hi'
 import { HiPhoto } from 'react-icons/hi2'
-import CustomMonthPicker from '#/components/transaksi/CustomDateMonth'
-import DataTable from '#/components/reusable/DataTable'
-import BaseModal from '#/components/reusable/BaseModal'
 
 const Transaksi = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -26,7 +26,7 @@ const Transaksi = () => {
       tanggal_transaksi: '2025-01-01',
       jatuh_tempo: '2025-01-01',
       tanggal_bayar: '2025-01-01',
-      bukti_pembayaran: '/bukti_pembayaran.png'
+      bukti_pembayaran: '/dummy/bukti_pembayaran.png'
     }
   ]
 

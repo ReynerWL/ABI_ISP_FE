@@ -42,7 +42,7 @@ const InstalasiPreview = ({ imageUrl }: InstalasiPreviewProps) => {
     <>
       {imageUrl ? (
         <Image
-          src='/router.jpg'
+          src='/dummy/router.jpg'
           alt={'ktp'}
           className='h-auto max-h-[200px] w-full max-w-full rounded-xl object-cover'
         />

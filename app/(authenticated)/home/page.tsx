@@ -53,11 +53,11 @@ const listBenefit = [
 ]
 
 const listPaket = [
-  { nama: 'Basic Plan', image: '/10_MBPS.png', harga: '150,000' },
-  { nama: 'Standart Plan', image: '/15_MBPS.png', harga: '160,000' },
-  { nama: 'Smart Plan', image: '/20_MBPS.png', harga: '166,500' },
-  { nama: 'Premium Plan', image: '/30_MBPS.png', harga: '220,000' },
-  { nama: 'Ultimate Plan', image: '/40_MBPS.png', harga: '310,000' }
+  { nama: 'Basic Plan', image: '/paket/10_MBPS.png', harga: '150,000' },
+  { nama: 'Standart Plan', image: '/paket/15_MBPS.png', harga: '160,000' },
+  { nama: 'Smart Plan', image: '/paket/20_MBPS.png', harga: '166,500' },
+  { nama: 'Premium Plan', image: '/paket/30_MBPS.png', harga: '220,000' },
+  { nama: 'Ultimate Plan', image: '/paket/40_MBPS.png', harga: '310,000' }
 ]
 
 const Home = () => {
@@ -242,7 +242,7 @@ const Home = () => {
         <div className={'flex flex-row gap-x-72 p-24'}>
           <div className={'flex w-full flex-col gap-y-6'}>
             <Image
-              src={'/logo_footer.png'}
+              src={'/logo_light.png'}
               alt={'logo'}
               width={280}
               height={85}

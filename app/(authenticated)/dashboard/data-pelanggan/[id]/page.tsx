@@ -25,7 +25,7 @@ const DetailPelanggan = () => {
           <div className='grid w-full gap-6 rounded-2xl bg-white p-6 xl:grid-cols-2'>
             <div className='flex flex-col gap-4'>
               <h1 className='text-xl font-semibold text-slate-700'>Foto KTP</h1>
-              <KTPPreview imageUrl='/ktp.png' />
+              <KTPPreview imageUrl='/dummy/ktp.png' />
             </div>
             <div className='flex flex-col gap-4'>
               <div className='flex items-center justify-between font-semibold'>

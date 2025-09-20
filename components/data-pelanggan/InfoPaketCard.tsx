@@ -7,12 +7,12 @@ const InfoPaketCard = () => {
       <h1 className='text-xl font-semibold text-slate-700'>Informasi Paket</h1>
       <div className='flex items-center justify-center'>
         <Image
-          src={'/paket/30mbps.svg'}
+          src={'/paket/10_MBPS.png'}
           alt='Paket 10 Mbps'
-          width={0}
-          height={0}
-          className='w-full max-w-[250px] xl:max-w-[270px]'
+          width={296}
+          height={298}
           draggable={false}
+          priority
         />
       </div>
       <div className='space-y-[18px]'>
@@ -33,7 +33,7 @@ const InfoPaketCard = () => {
           <p className='font-semibold text-slate-700'>30-07-2025</p>
         </div>
       </div>
-      <BuktiPembayaran imageUrl='/bukti-pembayaran.png' />
+      <BuktiPembayaran imageUrl='/dummy/bukti_pembayaran.png' />
     </div>
   )
 }

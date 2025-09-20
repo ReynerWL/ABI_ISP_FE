@@ -7,6 +7,26 @@ interface GuestLayoutProps {
 }
 
 const GuestLayout: React.FC<GuestLayoutProps> = ({ children }) => {
+  // const router = useRouter()
+  // const [isChecking, setIsChecking] = useState(true)
+
+  // TokenUtil.loadToken()
+  // useEffect(() => {
+  //   if (TokenUtil.accessToken) {
+  //     router.push('/dashboard')
+  //   } else {
+  //     setIsChecking(false)
+  //   }
+  // }, [router])
+
+  // if (isChecking) {
+  //   return (
+  //     <div className='flex h-dvh w-full items-center justify-center'>
+  //       <Spin size='large' />
+  //     </div>
+  //   )
+  // }
+
   return <>{children}</>
 }
 

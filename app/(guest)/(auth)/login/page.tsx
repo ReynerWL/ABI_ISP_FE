@@ -3,12 +3,12 @@
 import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, LoginPayload } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
-import { Button, Form, Input, Spin } from 'antd'
+import { Button, Form, Input } from 'antd'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { HiOutlineEyeOff } from 'react-icons/hi'
 import { HiOutlineEye } from 'react-icons/hi2'
 import { toast } from 'sonner'
@@ -17,7 +17,6 @@ const Login = () => {
   usePageTitle('Login')
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [isChecking, setIsChecking] = useState(true)
 
   const handleFinish = async (values: LoginPayload) => {
     try {
@@ -56,24 +55,6 @@ const Login = () => {
     }
   }
 
-  useEffect(() => {
-    TokenUtil.loadToken()
-
-    if (TokenUtil.accessToken) {
-      router.push('/dashboard')
-    } else {
-      setIsChecking(false)
-    }
-  }, [router])
-
-  if (isChecking) {
-    return (
-      <div className='flex h-dvh w-full items-center justify-center'>
-        <Spin size='large' />
-      </div>
-    )
-  }
-
   return (
     <div className='flex h-dvh w-full items-center justify-center px-4'>
       <motion.div
@@ -85,12 +66,7 @@ const Login = () => {
         <div className='flex flex-col gap-6 md:w-full md:px-20'>
           <div className='space-y-4 md:space-y-8'>
             <Link href={'/'}>
-              <Image
-                src={'/logo-small.svg'}
-                alt={'logo'}
-                width={144}
-                height={44}
-              />
+              <Image src={'/logo.png'} alt={'logo'} width={144} height={44} />
             </Link>
             <div className='space-y-2'>
               <h1 className='text-3xl font-bold sm:text-4xl'>Selamat Datang</h1>
