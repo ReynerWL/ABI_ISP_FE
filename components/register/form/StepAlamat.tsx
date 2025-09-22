@@ -3,32 +3,17 @@ import { Form, Input } from 'antd'
 const StepAlamat = () => {
   return (
     <>
-      <Form.Item
-        label='Provinsi'
-        name='province'
-        validateDebounce={500}
-        rules={[{ required: true, message: 'Provinsi wajib diisi' }]}
-      >
+      <Form.Item label='Provinsi' name='province'>
         <Input placeholder='Jawa Barat' disabled value={'Jawa Barat'} />
       </Form.Item>
-      <Form.Item
-        label='Kota/Kabupaten'
-        name='city'
-        validateDebounce={500}
-        rules={[{ required: true, message: 'Kota/Kabupaten wajib diisi' }]}
-      >
+      <Form.Item label='Kota/Kabupaten' name='city'>
         <Input
           placeholder='Kabupaten Bekasi'
           disabled
           value={'Kabupaten Bekasi'}
         />
       </Form.Item>
-      <Form.Item
-        label='Kecamatan'
-        name='label'
-        validateDebounce={500}
-        rules={[{ required: true, message: 'Kecamatan wajib diisi' }]}
-      >
+      <Form.Item label='Kecamatan' name='district'>
         <Input placeholder='Kabupaten Bekasi' disabled value={'Babelan'} />
       </Form.Item>
       <Form.Item
@@ -38,10 +23,16 @@ const StepAlamat = () => {
         preserve={true}
         rules={[{ required: true, message: 'Alamat wajib diisi' }]}
       >
-        <Input.TextArea
-          placeholder='Masukkan alamatmu'
-          autoSize={{ minRows: 3, maxRows: 5 }}
-        />
+        <div className='flex flex-col gap-2'>
+          <Input.TextArea
+            placeholder='Masukkan alamatmu'
+            autoSize={{ minRows: 3, maxRows: 5 }}
+          />
+          <p className='m-0 text-xs font-medium italic text-slate-400'>
+            * Mohon pastikan alamat Anda berada di Kecamatan Babelan dan
+            sertakan informasi kelurahannya.
+          </p>
+        </div>
       </Form.Item>
     </>
   )

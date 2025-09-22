@@ -56,12 +56,12 @@ const Login = () => {
   }
 
   return (
-    <div className='flex h-dvh w-full items-center justify-center px-4'>
+    <div className='flex h-dvh w-full items-center justify-center bg-slate-50 px-4'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex w-full flex-col rounded-3xl sm:w-[640px] md:min-h-[770px] md:items-center md:justify-center md:p-7 md:shadow-[4px_4px_48px_0px_#0068FF0D]'
+        className='flex w-full flex-col rounded-3xl bg-white sm:w-[640px] md:min-h-[770px] md:items-center md:justify-center md:p-7 md:shadow-[4px_4px_48px_0px_#0068FF0D]'
       >
         <div className='flex flex-col gap-6 md:w-full md:px-20'>
           <div className='space-y-4 md:space-y-8'>
@@ -136,6 +136,15 @@ const Login = () => {
               Masuk
             </Button>
           </Form>
+          <p className='text-center text-xs font-medium italic text-slate-400 md:text-sm'>
+            Belum punya akun?{' '}
+            <Link
+              href={'/register'}
+              className='font-semibold text-secondary hover:text-secondary/80 hover:underline'
+            >
+              Daftar di sini
+            </Link>
+          </p>
         </div>
       </motion.div>
     </div>

@@ -327,11 +327,56 @@ p {
 }
 
 /* --------------------------- KTP UPLOAD DRAGGER --------------------------- */
-.ktp-upload .ant-upload-drag {
-  @apply rounded-lg border-dashed border-slate-200 bg-transparent px-6 py-10 hover:border-primary hover:bg-slate-50 !important;
+.ant-upload-wrapper {
+  &.ktp-upload {
+    & .ant-upload-drag {
+      @apply rounded-lg border-none bg-transparent px-6 py-10 hover:border-primary hover:bg-slate-50 !important;
 
-  & .ant-upload-drag-container {
-    @apply flex flex-col items-center justify-center gap-2 !important;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ) !important;
+      background-position:
+        left top,
+        right top,
+        left bottom,
+        left top !important;
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y !important;
+      background-size:
+        100% 1.5px,
+        1.6px 100%,
+        100% 1.5px,
+        1.5px 100% !important;
+
+      & .ant-upload-drag-container {
+        @apply flex flex-col items-center justify-center gap-2 !important;
+      }
+    }
   }
 }
 
@@ -377,6 +422,29 @@ p {
 
       & .ant-picker-input input::placeholder {
         @apply font-normal tracking-wide text-slate-400 !important;
+      }
+    }
+
+    & .paket-register-radio.ant-radio-group {
+      @apply flex flex-col gap-4 !important;
+      & .ant-radio-wrapper {
+        margin-inline-end: 0px !important;
+        @apply rounded-xl border border-slate-200 px-6 py-3 hover:bg-slate-100 !important;
+
+        & .ant-radio-label {
+          @apply font-bold text-slate-500 !important;
+        }
+
+        & .ant-radio-inner {
+          @apply hidden !important;
+        }
+
+        &.ant-radio-wrapper-checked {
+          @apply border-blue-50 bg-blue-50 !important;
+          & .ant-radio-inner {
+            @apply bg-primary !important;
+          }
+        }
       }
     }
   }

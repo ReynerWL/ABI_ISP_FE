@@ -54,7 +54,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
 
   return (
     <Form.Item
-      name={'ktp'}
+      name={'photo_ktp'}
       preserve={true}
       validateDebounce={500}
       rules={[{ required: true, message: 'KTP wajib diisi' }]}
@@ -65,10 +65,12 @@ const StepKTP = ({ form }: StepKTPProps) => {
           className={'ktp-upload group'}
           style={{ display: fileList.length ? 'none' : 'block' }}
         >
-          <AiFillCamera className='size-16 text-blue-200' />
-          <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
-            Klik untuk ambil foto
-          </h1>
+          <div className='flex flex-col items-center py-[26px]'>
+            <AiFillCamera className='size-16 text-blue-200' />
+            <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
+              Klik untuk ambil foto
+            </h1>
+          </div>
         </Dragger>
         {fileList.length > 0 && (
           <div className='flex flex-col gap-4'>
@@ -81,7 +83,10 @@ const StepKTP = ({ form }: StepKTPProps) => {
               className='h-auto max-h-[300px] w-full max-w-full rounded-lg object-contain'
             />
             <Button
-              onClick={() => setFileList([])}
+              onClick={() => {
+                setFileList([])
+                form.setFieldsValue({ photo_ktp: null })
+              }}
               className='!h-full !rounded-lg !border-slate-200 !py-2 !font-semibold !text-red-500 !shadow-none hover:!border-red-500 hover:!bg-red-100 hover:!text-red-500'
             >
               <PiTrash className='size-5' strokeWidth={3} />

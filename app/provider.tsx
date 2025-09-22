@@ -2,7 +2,8 @@
 
 import { TokenUtil } from '#/utils/token'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
-import { App, ConfigProvider } from 'antd'
+import { App, ConfigProvider, Spin } from 'antd'
+import { Suspense } from 'react'
 
 TokenUtil.loadToken()
 export const Provider = ({ children }: { children: React.ReactNode }) => {
@@ -19,7 +20,9 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       <AntdRegistry>
-        <App>{children}</App>
+        <App>
+          <Suspense fallback={<Spin size='large' />}>{children}</Suspense>
+        </App>
       </AntdRegistry>
     </ConfigProvider>
   )
