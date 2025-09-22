@@ -37,7 +37,7 @@ const StepNavigation = ({
   }
 
   return (
-    <div className='flex w-full justify-end gap-6'>
+    <div className='flex w-full justify-between gap-6'>
       <Button
         className='!mt-9 !h-fit !w-full !rounded-full !bg-slate-50 !py-3 !text-sm !font-semibold !text-slate-500 !shadow-none hover:!bg-slate-100 sm:!w-fit sm:!px-16'
         type='primary'

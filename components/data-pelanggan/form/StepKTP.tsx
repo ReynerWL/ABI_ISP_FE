@@ -54,7 +54,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
 
   return (
     <Form.Item
-      name={'ktp'}
+      name={'photo_ktp'}
       preserve={true}
       validateDebounce={500}
       rules={[{ required: true, message: 'KTP wajib diisi' }]}

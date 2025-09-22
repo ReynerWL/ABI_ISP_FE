@@ -6,6 +6,7 @@ import CustomDateRangePicker from '#/components/reusable/CustomDateRangePicker'
 import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
+import WAButton from '#/components/reusable/WAButton'
 import { Button, Segmented, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
@@ -25,9 +26,9 @@ const DataPelanggan = () => {
     {
       key: '1',
       id: '1234567890',
-      nama: 'John Doe',
+      name: 'John Doe',
       email: 'john.doe@me.com',
-      no_telp: '08123456789',
+      phone_number: '08123456789',
       paket: '10 mbps',
       tanggal_berlangganan: '2025-01-01',
       status: 'Baru'
@@ -36,9 +37,15 @@ const DataPelanggan = () => {
 
   const columns: TableProps['columns'] = [
     { title: 'ID Pelanggan', dataIndex: 'id', key: 'id' },
-    { title: 'Nama', dataIndex: 'nama', key: 'nama' },
+    { title: 'Nama', dataIndex: 'name', key: 'name' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'No. Telp', dataIndex: 'no_telp', key: 'no_telp' },
+    {
+      title: 'No. Telp',
+      dataIndex: 'phone_number',
+      key: 'phone_number',
+      width: 190,
+      render: (text) => <WAButton phoneNumber={text} />
+    },
     { title: 'Paket', dataIndex: 'paket', key: 'paket' },
     {
       title: 'Tanggal Berlangganan',

@@ -1,5 +1,6 @@
 import { DatePicker, Form, Input } from 'antd'
-import { HiOutlineCalendar, HiXMark } from 'react-icons/hi2'
+import { HiOutlineEyeOff } from 'react-icons/hi'
+import { HiOutlineCalendar, HiOutlineEye, HiXMark } from 'react-icons/hi2'
 
 const StepInformasi = () => {
   return (
@@ -74,9 +75,46 @@ const StepInformasi = () => {
         preserve={true}
         rules={[{ required: true, message: 'Alamat wajib diisi' }]}
       >
-        <Input.TextArea
-          placeholder='Masukkan alamat'
-          autoSize={{ minRows: 3, maxRows: 5 }}
+        <div className='flex flex-col gap-2'>
+          <Input.TextArea
+            placeholder='Masukkan alamat'
+            autoSize={{ minRows: 3, maxRows: 5 }}
+          />
+          <p className='m-0 text-[10px] italic text-slate-400'>
+            * Mohon pastikan alamat Anda berada di Kecamatan Babelan dan
+            sertakan informasi kelurahannya.
+          </p>
+        </div>
+      </Form.Item>
+      <Form.Item
+        label='Password'
+        name='password'
+        rules={[{ required: true, message: 'Password wajib diisi' }]}
+      >
+        <Input.Password
+          placeholder='Masukkan password'
+          type='password'
+          iconRender={(visible) =>
+            visible ? (
+              <HiOutlineEye
+                style={{
+                  fontSize: '18px',
+                  color: '#94A3B8',
+                  strokeWidth: 2.2,
+                  cursor: 'pointer'
+                }}
+              />
+            ) : (
+              <HiOutlineEyeOff
+                style={{
+                  fontSize: '18px',
+                  color: '#94A3B8',
+                  strokeWidth: 2.2,
+                  cursor: 'pointer'
+                }}
+              />
+            )
+          }
         />
       </Form.Item>
     </>

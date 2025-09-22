@@ -56,7 +56,7 @@ const Login = () => {
   }
 
   return (
-    <div className='flex h-dvh w-full items-center justify-center bg-slate-50 px-4'>
+    <div className='flex h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -127,22 +127,28 @@ const Login = () => {
                 }
               />
             </Form.Item>
-            <Button
-              className='!mt-2 !h-fit !w-full !rounded-full !bg-secondary !px-4 !py-2.5 !text-base !font-semibold !shadow-none hover:!bg-secondary/85 md:!text-base'
-              type='primary'
-              htmlType='submit'
-              loading={loading}
+            <Link
+              href={'/forgot-password'}
+              className='flex w-full justify-end font-medium text-slate-500'
             >
-              Masuk
-            </Button>
+              Lupa password?
+            </Link>
           </Form>
-          <p className='text-center text-xs font-medium italic text-slate-400 md:text-sm'>
-            Belum punya akun?{' '}
+          <Button
+            className='!h-fit !w-full !rounded-full !bg-secondary !px-4 !py-2.5 !text-base !font-semibold !shadow-none hover:!bg-secondary/85 md:!text-base'
+            type='primary'
+            htmlType='submit'
+            loading={loading}
+          >
+            Masuk
+          </Button>
+          <p className='text-center text-xs font-medium text-slate-400 md:text-sm'>
+            Belum berlangganan?{' '}
             <Link
               href={'/register'}
-              className='font-semibold text-secondary hover:text-secondary/80 hover:underline'
+              className='font-semibold italic text-primary hover:text-primary/80 hover:underline'
             >
-              Daftar di sini
+              Daftar sekarang
             </Link>
           </p>
         </div>

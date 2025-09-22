@@ -1,6 +1,7 @@
 import { DatePicker, Form, Input } from 'antd'
 import dayjs from 'dayjs'
-import { HiOutlineCalendar, HiXMark } from 'react-icons/hi2'
+import { HiOutlineEyeOff } from 'react-icons/hi'
+import { HiOutlineCalendar, HiOutlineEye, HiXMark } from 'react-icons/hi2'
 
 const StepInformasi = () => {
   return (
@@ -69,6 +70,37 @@ const StepInformasi = () => {
               />
             )
           }}
+        />
+      </Form.Item>
+      <Form.Item
+        label='Password'
+        name='password'
+        rules={[{ required: true, message: 'Password wajib diisi' }]}
+      >
+        <Input.Password
+          placeholder='Masukkan password'
+          type='password'
+          iconRender={(visible) =>
+            visible ? (
+              <HiOutlineEye
+                style={{
+                  fontSize: '18px',
+                  color: '#94A3B8',
+                  strokeWidth: 2.2,
+                  cursor: 'pointer'
+                }}
+              />
+            ) : (
+              <HiOutlineEyeOff
+                style={{
+                  fontSize: '18px',
+                  color: '#94A3B8',
+                  strokeWidth: 2.2,
+                  cursor: 'pointer'
+                }}
+              />
+            )
+          }
         />
       </Form.Item>
     </>
