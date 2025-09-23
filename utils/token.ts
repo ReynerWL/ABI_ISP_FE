@@ -1,13 +1,18 @@
 export class TokenUtil {
   static accessToken?: string
   static refreshToken?: string
-  static loadToken() {
-    if (typeof window === 'undefined') {
-      return
-    }
+  static rememberMe: boolean = true
 
-    const accessToken = localStorage.getItem('access_token')
-    const refreshToken = localStorage.getItem('refresh_token')
+  static loadToken() {
+    if (typeof window === 'undefined') return
+
+    const accessToken =
+      localStorage.getItem('access_token') ||
+      sessionStorage.getItem('access_token')
+
+    const refreshToken =
+      localStorage.getItem('refresh_token') ||
+      sessionStorage.getItem('refresh_token')
 
     if (accessToken) {
       TokenUtil.setAccessToken(accessToken)
@@ -16,19 +21,30 @@ export class TokenUtil {
     if (refreshToken) {
       TokenUtil.setRefreshToken(refreshToken)
     }
+
+    TokenUtil.rememberMe = !!localStorage.getItem('access_token')
   }
 
   static persistToken() {
-    if (TokenUtil.accessToken != null) {
-      localStorage.setItem('access_token', TokenUtil.accessToken)
-    } else {
-      localStorage.removeItem('access_token')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    sessionStorage.removeItem('access_token')
+    sessionStorage.removeItem('refresh_token')
+
+    if (TokenUtil.accessToken) {
+      if (TokenUtil.rememberMe) {
+        localStorage.setItem('access_token', TokenUtil.accessToken)
+      } else {
+        sessionStorage.setItem('access_token', TokenUtil.accessToken)
+      }
     }
 
-    if (TokenUtil.refreshToken != null) {
-      localStorage.setItem('refresh_token', TokenUtil.refreshToken)
-    } else {
-      localStorage.removeItem('refresh_token')
+    if (TokenUtil.refreshToken) {
+      if (TokenUtil.rememberMe) {
+        localStorage.setItem('refresh_token', TokenUtil.refreshToken)
+      } else {
+        sessionStorage.setItem('refresh_token', TokenUtil.refreshToken)
+      }
     }
   }
 
@@ -40,11 +56,16 @@ export class TokenUtil {
     TokenUtil.refreshToken = refreshToken
   }
 
-  static clearAccessToken() {
+  static clearTokens() {
     TokenUtil.accessToken = undefined
+    TokenUtil.refreshToken = undefined
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    sessionStorage.removeItem('access_token')
+    sessionStorage.removeItem('refresh_token')
   }
 
-  static clearRefreshToken() {
-    TokenUtil.accessToken = undefined
+  static setRememberMe(remember: boolean) {
+    TokenUtil.rememberMe = remember
   }
 }

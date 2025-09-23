@@ -1,4 +1,5 @@
 import { http } from '#/utils/http'
+import useSWR from 'swr'
 
 export interface LoginPayload {
   email: string
@@ -19,8 +20,16 @@ export interface RegisterPayload {
   paket: string
 }
 
-const url = { login: () => '/auth/login' }
+const url = {
+  login: () => '/auth/login',
+  validateToken: () => '/auth/validate-token'
+}
+
+const hooks = {
+  useValidateToken: () =>
+    useSWR(url.validateToken(), http.fetcher, { revalidateOnFocus: false })
+}
 
 const api = { login: (data: LoginPayload) => http.post(url.login()).send(data) }
 
-export const authRepository = { url, api }
+export const authRepository = { url, hooks, api }

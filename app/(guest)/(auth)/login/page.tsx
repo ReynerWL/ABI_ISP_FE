@@ -4,6 +4,7 @@ import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, LoginPayload } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import { Button, Form, Input } from 'antd'
+import Checkbox from 'antd/es/checkbox/Checkbox'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,6 +18,7 @@ const Login = () => {
   usePageTitle('Login')
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
 
   const handleFinish = async (values: LoginPayload) => {
     try {
@@ -25,8 +27,13 @@ const Login = () => {
       const { body } = await authRepository.api.login(values)
       const accessToken = body?.data?.accessToken
 
-      TokenUtil.setAccessToken(accessToken)
-      TokenUtil.persistToken()
+      if (rememberMe) {
+        TokenUtil.setRememberMe(rememberMe)
+        TokenUtil.setAccessToken(accessToken)
+        TokenUtil.persistToken()
+      } else {
+        sessionStorage.setItem('access_token', accessToken || '')
+      }
 
       toast.success('Berhasil masuk! Mengarahkan ke beranda...')
 
@@ -80,6 +87,7 @@ const Login = () => {
             layout='vertical'
             className='auth-form'
             onFinish={handleFinish}
+            name='login-form'
           >
             <Form.Item
               label='Email'
@@ -127,18 +135,27 @@ const Login = () => {
                 }
               />
             </Form.Item>
-            <Link
-              href={'/forgot-password'}
-              className='flex w-full justify-end font-medium text-slate-500'
-            >
-              Lupa password?
-            </Link>
+            <div className='flex items-center justify-between gap-4'>
+              <Checkbox
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className='text-sm font-medium !text-slate-500 md:text-base'
+              >
+                Ingat akun saya
+              </Checkbox>
+              <Link
+                href={'/forgot-password'}
+                className='font-medium text-slate-500'
+              >
+                Lupa password?
+              </Link>
+            </div>
           </Form>
           <Button
             className='!h-fit !w-full !rounded-full !bg-secondary !px-4 !py-2.5 !text-base !font-semibold !shadow-none hover:!bg-secondary/85 md:!text-base'
             type='primary'
             htmlType='submit'
             loading={loading}
+            form='login-form'
           >
             Masuk
           </Button>

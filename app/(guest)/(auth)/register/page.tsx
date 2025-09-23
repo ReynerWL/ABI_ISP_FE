@@ -97,7 +97,7 @@ const Register = () => {
   }, [form, paketParam])
 
   return (
-    <div className='flex h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
+    <div className='mt-[64px] flex min-h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
