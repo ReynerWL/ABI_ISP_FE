@@ -1,6 +1,6 @@
 const CustomLegend = ({ payload }: any) => {
   return (
-    <div className='flex w-full flex-wrap justify-center gap-1.5'>
+    <div className='flex w-full flex-wrap justify-center gap-4 lg:gap-1.5'>
       {payload?.map(
         (entry: { value: string; color: string }, index: number) => (
           <div key={index} className='flex items-center gap-1.5'>

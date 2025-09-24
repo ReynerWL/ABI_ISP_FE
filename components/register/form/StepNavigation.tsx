@@ -7,6 +7,7 @@ interface StepNavigationProps {
   stepCurrent: number
   formContent: React.ReactNode[]
   stepFields: (string | number)[][]
+  loading?: boolean
   setStepCurrent: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -15,11 +16,13 @@ const StepNavigation = ({
   stepCurrent,
   formContent,
   stepFields,
+  loading,
   setStepCurrent
 }: StepNavigationProps) => {
   const handleNext = async () => {
     try {
       await form.validateFields(stepFields[stepCurrent])
+
       if (stepCurrent === formContent.length - 1) {
         form.submit()
       } else {
@@ -49,6 +52,7 @@ const StepNavigation = ({
         className='!mt-9 !h-fit !w-full !rounded-full !bg-secondary !py-3 !text-sm !font-semibold !shadow-none hover:!bg-secondary/85 sm:!w-fit sm:!px-16'
         type='primary'
         onClick={handleNext}
+        loading={loading}
       >
         {stepCurrent === formContent.length - 1 ? 'Submit' : 'Lanjut'}
       </Button>

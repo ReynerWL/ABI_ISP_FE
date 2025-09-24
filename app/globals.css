@@ -440,10 +440,7 @@ p {
         }
 
         &.ant-radio-wrapper-checked {
-          @apply border-blue-50 bg-blue-50 !important;
-          & .ant-radio-inner {
-            @apply bg-primary !important;
-          }
+          @apply border-primary bg-blue-50 !important;
         }
       }
     }

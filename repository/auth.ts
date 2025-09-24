@@ -22,7 +22,8 @@ export interface RegisterPayload {
 
 const url = {
   login: () => '/auth/login',
-  validateToken: () => '/auth/validate-token'
+  validateToken: () => '/auth/validate-token',
+  register: () => '/user/register'
 }
 
 const hooks = {
@@ -30,6 +31,9 @@ const hooks = {
     useSWR(url.validateToken(), http.fetcher, { revalidateOnFocus: false })
 }
 
-const api = { login: (data: LoginPayload) => http.post(url.login()).send(data) }
+const api = {
+  login: (data: LoginPayload) => http.post(url.login()).send(data),
+  register: (data: RegisterPayload) => http.post(url.register()).send(data)
+}
 
 export const authRepository = { url, hooks, api }

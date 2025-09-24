@@ -1,13 +1,14 @@
 'use client'
 
+import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import { Spin } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  usePageTitle('Dashboard')
   TokenUtil.loadToken()
   const router = useRouter()
   const [validating, setValidating] = useState(true)
@@ -24,16 +25,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         return
       }
 
-      try {
-        setValidating(false)
-      } catch (error) {
-        console.log(error)
-
-        TokenUtil.clearTokens()
-        sessionStorage.removeItem('access_token')
-        toast.error('Sesi telah habis, silakan masuk kembali.')
-        router.push('/login')
-      }
+      setValidating(false)
     }
 
     validateToken()

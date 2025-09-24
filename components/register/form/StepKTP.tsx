@@ -22,7 +22,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleUpload = (file: UploadFile) => {
-    form.setFieldsValue({ ktp: file })
+    form.setFieldsValue({ photo_ktp: file })
   }
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>

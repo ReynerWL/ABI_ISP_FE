@@ -6,7 +6,7 @@ const StepPaket = () => {
     <Form.Item
       name={'paket'}
       validateDebounce={500}
-      preserve={true}
+      preserve={false}
       rules={[{ required: true, message: 'Pilih salah satu jenis paket' }]}
     >
       <Radio.Group

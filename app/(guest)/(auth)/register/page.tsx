@@ -7,19 +7,22 @@ import StepKTP from '#/components/register/form/StepKTP'
 import StepNavigation from '#/components/register/form/StepNavigation'
 import StepPaket from '#/components/register/form/StepPaket'
 import usePageTitle from '#/hooks/usePageTitle'
-import { RegisterPayload } from '#/repository/auth'
+import { authRepository, RegisterPayload } from '#/repository/auth'
 import { Form, StepProps, Steps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { motion } from 'framer-motion'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 const Register = () => {
   usePageTitle('Register')
+  const router = useRouter()
   const [form] = useForm()
   const searchParams = useSearchParams()
   const paketParam = searchParams?.get('paket') || ''
   const [stepCurrent, setStepCurrent] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   const formContent = [
     <StepInformasi key={0} />,
@@ -79,15 +82,40 @@ const Register = () => {
     }
   ]
 
-  const handleFinish = (values: RegisterPayload) => {
-    const data = {
-      ...values,
-      province: 'Jawa Barat',
-      city: 'Kabupaten Bekasi',
-      district: 'Babelan'
-    }
+  const handleFinish = async (values: RegisterPayload) => {
+    if (loading) return
 
-    console.log('Received values of form: ', data)
+    try {
+      setLoading(true)
+
+      const data = {
+        ...values,
+        province: 'Jawa Barat',
+        city: 'Kabupaten Bekasi',
+        district: 'Babelan'
+      }
+
+      const { body } = await authRepository.api.register(data)
+
+      console.log(body)
+
+      toast.success('Register berhasil! Silakan login...')
+      setTimeout(() => {
+        toast.dismiss()
+        router.push('/dashboard')
+      }, 1000)
+    } catch (error: any) {
+      const message = error?.response?.body?.error
+
+      console.log(message)
+
+      if (message) {
+        toast.error(message)
+        return
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -145,6 +173,7 @@ const Register = () => {
               stepCurrent={stepCurrent}
               formContent={formContent}
               stepFields={stepFields}
+              loading={loading}
               setStepCurrent={setStepCurrent}
             />
           </Form>

@@ -1,5 +1,6 @@
 'use client'
 
+import { PackageInformation } from '#/repository/dashboard'
 import { Pie, PieChart } from 'recharts'
 import CustomLegend from '../reusable/CustomLegend'
 import {
@@ -9,23 +10,66 @@ import {
   ChartTooltipContent
 } from '../ui/chart'
 
-const data = [
-  { name: '10 Mbps', value: 400, fill: 'var(--chart-1)' },
-  { name: '15 Mbps', value: 45, fill: 'var(--chart-2)' },
-  { name: '20 Mbps', value: 35, fill: 'var(--chart-3)' },
-  { name: '30 Mbps', value: 120, fill: 'var(--chart-4)' },
-  { name: '40 Mbps', value: 200, fill: 'var(--chart-5)' }
-]
-
-const chartConfig = {
-  '10 Mbps': { label: '10 Mbps', color: 'var(--chart-1)' },
-  '15 Mbps': { label: '15 Mbps', color: 'var(--chart-2)' },
-  '20 Mbps': { label: '20 Mbps', color: 'var(--chart-3)' },
-  '30 Mbps': { label: '30 Mbps', color: 'var(--chart-4)' },
-  '40 Mbps': { label: '40 Mbps', color: 'var(--chart-5)' }
+interface PaketChartProps {
+  data?: PackageInformation[]
+  isLoading?: boolean
 }
 
-const PaketChart = () => {
+const colorPalette = [
+  'var(--chart-1)',
+  'var(--chart-2)',
+  'var(--chart-3)',
+  'var(--chart-4)',
+  'var(--chart-5)'
+]
+
+function formatSpeed(speed: string) {
+  const match = speed.match(/(\d+)([a-zA-Z]+)/) // contoh "10mbps"
+  if (!match) return speed.toUpperCase()
+  const [, num, unit] = match
+  return `${num} ${unit.toUpperCase()}`
+}
+
+const PaketChart = ({
+  data: packageInformations,
+  isLoading
+}: PaketChartProps) => {
+  if (isLoading) {
+    return (
+      <div className='flex w-full flex-col rounded-2xl bg-white px-6 py-[26px] xl:max-w-[420px]'>
+        <h1 className='text-lg font-bold text-slate-600'>Informasi Paket</h1>
+        <div className='flex h-[350px] w-full items-center justify-center'>
+          <p className='italic text-slate-400'>Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!packageInformations || packageInformations.length === 0) {
+    return (
+      <div className='flex w-full flex-col rounded-2xl bg-white px-6 py-[26px] xl:max-w-[420px]'>
+        <h1 className='text-lg font-bold text-slate-600'>Informasi Paket</h1>
+        <div className='flex h-[350px] w-full items-center justify-center'>
+          <p className='italic text-slate-400'>Belum ada data paket</p>
+        </div>
+      </div>
+    )
+  }
+
+  const data = packageInformations.map((item, idx) => ({
+    name: formatSpeed(item.paketSpeed),
+    value: Number(item.total),
+    fill: colorPalette[idx % colorPalette.length]
+  }))
+
+  const chartConfig = data.reduce(
+    (acc, cur) => {
+      acc[cur.name] = { label: cur.name, color: cur.fill }
+      return acc
+    },
+    {} as Record<string, { label: string; color: string }>
+  )
+
   return (
     <div className='flex w-full flex-col rounded-2xl bg-white px-6 py-[26px] xl:max-w-[420px]'>
       <h1 className='text-lg font-bold text-slate-600'>Informasi Paket</h1>
