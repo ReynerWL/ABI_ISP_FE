@@ -1,27 +1,36 @@
 'use client'
 
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Layout, Menu } from 'antd'
+import { Avatar, Button, Drawer, Layout, Menu } from 'antd'
 import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   HiBars3BottomLeft,
+  HiBars3BottomRight,
   HiChevronDown,
   HiDocumentMagnifyingGlass,
   HiInboxArrowDown,
+  HiUserCircle,
   HiUsers
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
+import { useUIState } from '../provider'
 
-const listMenu = [
-  { name: 'Beranda', isActive: true },
-  { name: 'Tentang Kami', isActive: false },
-  { name: 'Benefit', isActive: false },
-  { name: 'Produk', isActive: false }
+interface MenuItem {
+  id: string
+  name: string
+  isActive: boolean
+}
+
+const listMenu: MenuItem[] = [
+  { name: 'Beranda', isActive: true, id: '1' },
+  { name: 'Tentang Kami', isActive: false, id: '2' },
+  { name: 'Benefit', isActive: false, id: '3' },
+  { name: 'Produk', isActive: false, id: '4' }
 ]
 
 const items: MenuProps['items'] = [
@@ -53,6 +62,55 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   const home = pathname === '/home'
 
+  const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
+  const [open, setOpen] = useState(false)
+  const { isSM, isMobile } = useUIState()
+
+  const showDrawer = () => {
+    setOpen(!open)
+  }
+
+  const onClose = () => {
+    setOpen(!open)
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+
+      setActiveSection((prev) =>
+        prev.map((item) => {
+          const el = document.getElementById(item.id)
+          if (el) {
+            const offsetTop = el.offsetTop
+            const offsetHeight = el.offsetHeight
+
+            if (
+              scrollY >= offsetTop - 100 &&
+              scrollY < offsetTop + offsetHeight - 100
+            ) {
+              return { ...item, isActive: true }
+            }
+          }
+          return { ...item, isActive: false }
+        })
+      )
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const titleStyle = (
+    <div
+      className={
+        'items-center text-base font-semibold text-slate-500 md:text-sm'
+      }
+    >
+      Menu
+    </div>
+  )
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       {!home && (
@@ -66,13 +124,13 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             height: '100vh',
             overflow: 'auto'
           }}
-          className='dashboard-sider'
+          className='dashboard-sider}'
         >
           <Link href={'/'}>
             <Image
               src={'/logo.png'}
               alt={'logo'}
-              width={187}
+              width={110}
               height={56}
               className={'cursor-pointer'}
             />
@@ -137,41 +195,86 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             }}
             className='header-home'
           >
-            <div className='flex w-full flex-row items-center justify-between gap-4 px-4 md:px-16'>
+            <div className='flex w-full flex-row items-center justify-between'>
               <Link href={'/'}>
                 <Image
                   src={'/logo.png'}
                   alt={'logo'}
-                  width={162}
+                  width={isSM || isMobile ? 90 : 110}
                   height={43}
                   className={'cursor-pointer'}
                 />
               </Link>
 
-              <div className={'flex flex-row items-center gap-x-12'}>
-                {listMenu.map((value, index) => (
-                  <div
-                    key={index}
-                    className={`text-sm font-semibold ${value.isActive === true ? 'text-secondary' : 'text-slate-500'}`}
-                  >
-                    <p>{value.name}</p>
-                  </div>
-                ))}
-                <Button
-                  className={
-                    '!rounded-full !border-none !bg-blue-50 !px-8 !py-5 !font-semibold !text-primary'
-                  }
-                >
-                  Login
-                </Button>
+              <div
+                className={
+                  'flex flex-row-reverse items-center gap-x-6 sm:flex-row md:gap-x-8 lg:gap-x-12'
+                }
+              >
+                {isMobile ? (
+                  <>
+                    <HiBars3BottomRight
+                      className={'text-3xl text-slate-800'}
+                      onClick={showDrawer}
+                    />
+                    <HiUserCircle className={'text-4xl text-primary'} />
+
+                    <Drawer
+                      title={titleStyle}
+                      closable={{ 'aria-label': 'Close Button' }}
+                      onClose={onClose}
+                      open={open}
+                      width={200}
+                      mask={false}
+                    >
+                      {activeSection.map((value, index) => (
+                        <div
+                          key={index}
+                          className={`items-center p-4 text-base font-semibold md:text-sm`}
+                        >
+                          <Link
+                            href={`#${value.id}`}
+                            className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+                            onClick={() => setOpen(!open)}
+                          >
+                            {value.name}
+                          </Link>
+                        </div>
+                      ))}
+                    </Drawer>
+                  </>
+                ) : (
+                  <>
+                    {activeSection.map((value, index) => (
+                      <div
+                        key={index}
+                        className={`text-xs font-semibold md:text-sm`}
+                      >
+                        <Link
+                          href={`#${value.id}`}
+                          className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+                        >
+                          {value.name}
+                        </Link>
+                      </div>
+                    ))}
+                    <Button
+                      className={
+                        '!rounded-full !border-none !bg-blue-50 !px-6 !py-3 !text-xs !font-semibold !text-primary md:!px-8 md:!py-5 md:!text-sm'
+                      }
+                    >
+                      Masuk
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </Header>
         )}
         <Content
-          className={`h-full !min-h-[calc(100vh-88px)] ${home ? 'mt-[84px] bg-white md:px-0' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
+          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${home ? 'mt-16 bg-white md:mt-[84px]' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
         >
-          <div className={`h-full`}>{children}</div>
+          <div className={'h-full overflow-auto'}>{children}</div>
         </Content>
       </Layout>
     </Layout>
