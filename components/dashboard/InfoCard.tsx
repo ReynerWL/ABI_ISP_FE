@@ -1,5 +1,6 @@
 'use client'
 
+import { Skeleton } from 'antd'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { IconType } from 'react-icons'
@@ -9,9 +10,16 @@ interface InfoCardProps {
   title: string
   description: string
   href: string
+  isLoading?: boolean
 }
 
-const InfoCard = ({ icon, title, description, href }: InfoCardProps) => {
+const InfoCard = ({
+  icon,
+  title,
+  description,
+  href,
+  isLoading: loading
+}: InfoCardProps) => {
   const IconComponent: IconType = icon
 
   return (
@@ -27,9 +35,14 @@ const InfoCard = ({ icon, title, description, href }: InfoCardProps) => {
             <h1 className='text-sm font-bold text-slate-700 group-hover:text-white md:text-base'>
               {title}
             </h1>
-            <p className='font-semibold text-slate-500 group-hover:text-white'>
-              {description}
-            </p>
+
+            {loading ? (
+              <Skeleton.Button style={{ height: 18 }} active />
+            ) : (
+              <p className='font-semibold text-slate-500 group-hover:text-white'>
+                {description}
+              </p>
+            )}
           </div>
         </div>
       </motion.div>

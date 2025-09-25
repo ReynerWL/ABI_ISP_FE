@@ -124,7 +124,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             height: '100vh',
             overflow: 'auto'
           }}
-          className='dashboard-sider}'
+          className='dashboard-sider'
         >
           <Link href={'/'}>
             <Image

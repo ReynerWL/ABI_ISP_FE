@@ -8,7 +8,7 @@ import { TokenUtil } from './token'
 let AuthIntercept = superagentIntercept((err: any, res: any) => {
   if (res && res.status === 401) {
     console.log('AuthIntercept 401')
-    TokenUtil.clearAccessToken()
+    TokenUtil.clearTokens()
     TokenUtil.persistToken()
     window.location.href = '/login'
   }

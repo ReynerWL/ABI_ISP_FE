@@ -1,9 +1,13 @@
+'use client'
+
 interface TotalPelangganCardProps {
   totalPelanggan?: number
+  isLoading?: boolean
 }
 
 const TotalPelangganCard = ({
-  totalPelanggan = 0
+  totalPelanggan = 0,
+  isLoading: loading = false
 }: TotalPelangganCardProps) => {
   return (
     <div className='relative w-full overflow-hidden rounded-2xl sm:max-w-[220px]'>
@@ -13,7 +17,14 @@ const TotalPelangganCard = ({
         </h1>
         <div className='z-10'>
           <h1 className='z-10 text-xl font-semibold text-white'>
-            {totalPelanggan} <br /> pelanggan
+            {loading ? (
+              <span className='animate-pulse'>Loading...</span>
+            ) : (
+              <>
+                {totalPelanggan}
+                <br /> pelanggan
+              </>
+            )}
           </h1>
         </div>
       </div>
