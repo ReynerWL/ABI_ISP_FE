@@ -50,7 +50,7 @@ p {
 
 /* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
 .dashboard-sider.ant-layout-sider {
-  @apply z-20 hidden bg-white p-6 lg:block !important;
+  @apply z-20 hidden bg-white p-6 pt-4 lg:block !important;
 }
 
 /* ----------------------------- DASHBOARD MENU ----------------------------- */
@@ -152,6 +152,15 @@ p {
   @apply bg-transparent px-0 py-6 !important;
 }
 
+.data-table.ant-table-wrapper {
+  & .ant-spin-nested-loading {
+    @apply relative !important;
+    & .ant-spin {
+      @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform !important;
+    }
+  }
+}
+
 /* ---------------------------- PAGE LIMIT SELECT --------------------------- */
 .page-limit-select {
   &.ant-select {
@@ -196,6 +205,7 @@ p {
 .tambah-pengguna-steps {
   &.ant-steps {
     @apply border-b border-slate-200 pb-2 md:pb-4 !important;
+
     & .ant-steps-item-title {
       @apply text-sm font-semibold md:text-xs !important;
 
@@ -245,6 +255,9 @@ p {
         }
       }
     }
+    & .ant-steps-item-content {
+      vertical-align: middle !important;
+    }
   }
 }
 
@@ -278,6 +291,14 @@ p {
       }
       &.ant-input-disabled {
         @apply bg-slate-50 text-slate-500 !important;
+      }
+    }
+
+    & .ant-input-password {
+      @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
+
+      & input {
+        @apply py-[7px] !important;
       }
     }
 

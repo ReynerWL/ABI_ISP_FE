@@ -1,26 +1,27 @@
 'use client'
+import chipColor from '#/constant/chipColor'
 import { GiPlainCircle } from 'react-icons/gi'
 
 interface ChipProps {
-  text: React.ReactNode
-  color?: 'gray' | 'green' | 'red' | 'orange'
+  text: string
 }
 
-const chipVariants = {
-  gray: { bg: 'bg-slate-50', text: 'text-slate-500' },
-  green: { bg: 'bg-green-50', text: 'text-green-600' },
-  red: { bg: 'bg-red-50', text: 'text-red-500' },
-  orange: { bg: 'bg-orange-50', text: 'text-orange-500' }
-}
+const Chip = ({ text }: ChipProps) => {
+  const lowerText = text.toLowerCase()
+  const displayText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
 
-const Chip = ({ text, color }: ChipProps) => {
-  const { bg, text: textColor } = chipVariants[color || 'gray']
+  const { bgColor, textColor } = chipColor[lowerText] || {
+    bgColor: '#6B728033',
+    textColor: '#6b7280'
+  }
+
   return (
     <div
-      className={`flex w-fit items-center gap-2 rounded-full px-2.5 py-1 text-xs font-semibold md:text-sm ${bg} ${textColor}`}
+      className={`flex w-fit items-center gap-2 rounded-full px-2.5 py-1 text-xs font-semibold md:text-sm`}
+      style={{ backgroundColor: bgColor, color: textColor }}
     >
       <GiPlainCircle className='text-[6px] md:text-[8px]' />
-      {text}
+      {displayText}
     </div>
   )
 }

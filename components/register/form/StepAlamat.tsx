@@ -29,8 +29,8 @@ const StepAlamat = () => {
             autoSize={{ minRows: 3, maxRows: 5 }}
           />
           <p className='m-0 text-xs font-medium italic text-slate-400'>
-            * Mohon pastikan alamat Anda berada di Kecamatan Babelan dan
-            sertakan informasi kelurahannya.
+            * Mohon pastikan alamat yang Anda masukkan berada di wilayah
+            Babelan.
           </p>
         </div>
       </Form.Item>

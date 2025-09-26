@@ -40,7 +40,7 @@ const Login = () => {
       setTimeout(() => {
         toast.dismiss()
         router.push('/dashboard')
-      }, 500)
+      }, 800)
     } catch (error: any) {
       const statusCode = error?.response?.status
 
@@ -71,7 +71,7 @@ const Login = () => {
         className='flex w-full flex-col rounded-3xl bg-white sm:w-[640px] md:min-h-[770px] md:items-center md:justify-center md:p-7 md:shadow-[4px_4px_48px_0px_#0068FF0D]'
       >
         <div className='flex flex-col gap-6 md:w-full md:px-20'>
-          <div className='space-y-4 md:space-y-8'>
+          <div className='space-y-3'>
             <Link href={'/'}>
               <Image src={'/logo.png'} alt={'logo'} width={144} height={44} />
             </Link>

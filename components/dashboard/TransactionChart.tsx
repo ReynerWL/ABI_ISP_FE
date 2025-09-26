@@ -1,7 +1,7 @@
 'use client'
 
 import { TransactionSummary } from '#/repository/dashboard'
-import { formatRupiah } from '#/utils/rupiahFormatter'
+import { formatRupiah } from '#/utils/formatter'
 import { Bar, BarChart, XAxis, YAxis } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../ui/chart'
 

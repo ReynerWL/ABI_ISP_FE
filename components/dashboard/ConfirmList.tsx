@@ -79,7 +79,7 @@ const ConfirmListItem = ({
           active
         />
       ) : (
-        <Chip text={status} color='orange' />
+        <Chip text={status} />
       )}
     </Link>
   )
