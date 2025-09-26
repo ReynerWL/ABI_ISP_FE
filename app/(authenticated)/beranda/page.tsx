@@ -1,6 +1,10 @@
 'use client'
 
 import { useUIState } from '#/app/provider'
+import usePageTitle from '#/hooks/usePageTitle'
+import { berandaRepository, GetAllPaket } from '#/repository/beranda'
+import { formatRupiah } from '#/utils/rupiahFormatter'
+import { TokenUtil } from '#/utils/token'
 import { Button } from 'antd'
 import Image from 'next/image'
 import {
@@ -73,16 +77,12 @@ const listBenefit = [
   }
 ]
 
-const listPaket = [
-  { nama: 'Basic Plan', image: '/paket/10_MBPS.png', harga: '150,000' },
-  { nama: 'Standart Plan', image: '/paket/15_MBPS.png', harga: '160,000' },
-  { nama: 'Smart Plan', image: '/paket/20_MBPS.png', harga: '166,500' },
-  { nama: 'Premium Plan', image: '/paket/30_MBPS.png', harga: '220,000' },
-  { nama: 'Ultimate Plan', image: '/paket/40_MBPS.png', harga: '310,000' }
-]
-
 const Home = () => {
   const { isXL, isMD, isLG, isSM, isMobile } = useUIState()
+  usePageTitle('Beranda')
+  TokenUtil.loadToken()
+  const { data } = berandaRepository.hooks.useGetAllPaket()
+
   return (
     <div className={'flex flex-col justify-center gap-y-16 overflow-auto'}>
       {/* Section Beranda */}
@@ -280,8 +280,12 @@ const Home = () => {
             stabil, dan sesuai kebutuhan Anda
           </p>
         </div>
-        <div className={'flex w-full flex-row gap-x-6 overflow-y-auto p-3'}>
-          {listPaket.map((value, index) => (
+        <div
+          className={
+            'no-scrollbar flex w-full flex-row gap-x-6 overflow-y-auto p-3'
+          }
+        >
+          {data?.data.map((value: GetAllPaket, index: string) => (
             <div
               key={index}
               className={
@@ -292,27 +296,23 @@ const Home = () => {
                   '4px 4px 20px 0px rgba(0, 104, 255, 0.03), -4px -4px 20px 0px rgba(0, 104, 255, 0.03) '
               }}
             >
-              <p
-                className={
-                  'text-lg font-semibold text-slate-700 xl:text-xl 2xl:text-2xl'
-                }
-              >
-                {value.nama}
+              <p className={'text-lg font-semibold text-slate-700 xl:text-xl'}>
+                {value.name}
               </p>
               <Image
-                src={value.image}
+                src={value.photo ?? ''}
                 alt={'logo'}
                 width={isMD ? 160 : 296}
                 height={298}
                 className={'w-full'}
               />
               <div className={'grid grid-flow-row justify-center gap-y-3'}>
-                <p className={'text-lg font-bold text-primary 2xl:text-2xl'}>
-                  Rp. {value.harga}/Bulan
+                <p className={'text-lg font-bold text-primary 2xl:text-xl'}>
+                  {formatRupiah(value.price ?? '', { withPrefix: true })}/Bulan
                 </p>
                 <p
                   className={
-                    'flex justify-center text-xs font-medium italic text-slate-500 lg:text-sm'
+                    'flex justify-center text-xs font-medium italic text-slate-500'
                   }
                 >
                   Harga Sudah Termasuk PPN
@@ -341,7 +341,7 @@ const Home = () => {
           }
         >
           {/* <Image
-            src={'/icons/spiral.svg'}
+            src={'/spiral.png'}
             alt={'logo'}
             width={2590}
             height={2000}

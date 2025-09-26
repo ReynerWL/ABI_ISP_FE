@@ -3,9 +3,8 @@
 import { TokenUtil } from '#/utils/token'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App, ConfigProvider } from 'antd'
+import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
-
-TokenUtil.loadToken()
 
 interface UIState {
   is2XL: boolean
@@ -14,16 +13,12 @@ interface UIState {
   isMD: boolean
   isSM: boolean
   isMobile: boolean
+  token: string | null
+  validating: boolean
+  // user: ValidateToken | null
 }
 
-const UIStateContext = createContext<UIState>({
-  is2XL: false,
-  isXL: false,
-  isLG: false,
-  isMD: false,
-  isSM: false,
-  isMobile: false
-})
+const UIStateContext = createContext<UIState | undefined>(undefined)
 
 export const useUIState = () => {
   const context = useContext(UIStateContext)
@@ -40,8 +35,44 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   const [isMD, setIsMD] = useState(false)
   const [isSM, setIsSM] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [validating, setValidating] = useState(true)
+  const [token, setToken] = useState<string | null>(null)
+  // const [user, setUser] = useState<ValidateToken | null>(null)
+
+  console.log('TOKEN:', token)
+
+  const router = useRouter()
+  const pathname = usePathname()
+  // const { data } = authRepository.hooks.useValidateToken()
+
+  useEffect(() => {
+    TokenUtil.loadToken()
+    const validateToken = async () => {
+      const localAccessToken = TokenUtil.accessToken
+      const sessionAccessToken = sessionStorage?.getItem('access_token')
+      const token = localAccessToken || sessionAccessToken
+
+      if (!token && pathname !== '/login' && pathname !== '/beranda') {
+        router.push('/login')
+        return
+      }
+
+      setToken(token)
+      setValidating(false)
+    }
+
+    validateToken()
+  }, [router, pathname])
+
+  // useEffect(() => {
+  //   if(data){
+  //     setUser(data)
+  //   }
+  // }, [data])
 
   console.log(
+    '2XL:',
+    is2XL,
     'xl:',
     isXL,
     'LG:',
@@ -71,7 +102,17 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const value = { is2XL, isXL, isLG, isMD, isSM, isMobile }
+  const value = {
+    is2XL,
+    isXL,
+    isLG,
+    isMD,
+    isSM,
+    isMobile,
+    token,
+    validating
+    // user
+  }
   return (
     <UIStateContext.Provider value={value}>
       <ConfigProvider

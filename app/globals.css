@@ -82,7 +82,7 @@ html {
   @apply fixed left-0 top-0 z-10 flex h-fit w-full items-center !bg-white !p-4 md:!px-10 md:!py-5 !important;
 }
 
-.header-home.ant-layout-header {
+.header-beranda.ant-layout-header {
   @apply fixed left-0 top-0 z-50 flex h-fit w-full cursor-pointer items-center !bg-white !p-4 md:!px-10 md:!py-5 xl:!px-14 2xl:!px-20 !important;
 }
 

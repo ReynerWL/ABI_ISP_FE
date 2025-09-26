@@ -6,7 +6,7 @@ import { Content, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import {
   HiBars3BottomLeft,
@@ -57,10 +57,11 @@ const items: MenuProps['items'] = [
 ]
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter()
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
 
-  const home = pathname === '/home'
+  const beranda = pathname === '/beranda'
 
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
   const [open, setOpen] = useState(false)
@@ -113,7 +114,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {!home && (
+      {!beranda && (
         <Sider
           width={288}
           style={{
@@ -144,8 +145,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         </Sider>
       )}
 
-      <Layout className={`h-full ${home ? '' : 'lg:ml-[288px]'}`}>
-        {!home ? (
+      <Layout className={`h-full ${beranda ? '' : 'lg:ml-[288px]'}`}>
+        {!beranda ? (
           <Header
             style={{
               position: 'fixed',
@@ -193,7 +194,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               left: 288,
               height: 64
             }}
-            className='header-home'
+            className='header-beranda'
           >
             <div className='flex w-full flex-row items-center justify-between'>
               <Link href={'/'}>
@@ -213,11 +214,19 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               >
                 {isMobile ? (
                   <>
-                    <HiBars3BottomRight
-                      className={'text-3xl text-slate-800'}
-                      onClick={showDrawer}
-                    />
-                    <HiUserCircle className={'text-4xl text-primary'} />
+                    <Button type='text' className='!h-fit !p-1'>
+                      <HiBars3BottomRight
+                        className={'text-3xl text-slate-800'}
+                        onClick={showDrawer}
+                      />
+                    </Button>
+                    <Button
+                      type='text'
+                      className='!h-fit !p-1 hover:!bg-white'
+                      onClick={() => router.push('/login')}
+                    >
+                      <HiUserCircle className={'text-4xl text-primary'} />
+                    </Button>
 
                     <Drawer
                       title={titleStyle}
@@ -272,7 +281,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           </Header>
         )}
         <Content
-          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${home ? 'mt-16 bg-white md:mt-[84px]' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
+          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white md:mt-[84px]' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
         >
           <div className={'h-full overflow-auto'}>{children}</div>
         </Content>
