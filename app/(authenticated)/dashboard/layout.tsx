@@ -1,35 +1,12 @@
 'use client'
 
+import { useUIState } from '#/app/provider'
 import usePageTitle from '#/hooks/usePageTitle'
-import { authRepository } from '#/repository/auth'
-import { TokenUtil } from '#/utils/token'
 import { Spin } from 'antd'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   usePageTitle('Dashboard')
-  TokenUtil.loadToken()
-  const router = useRouter()
-  const [validating, setValidating] = useState(true)
-  const { data } = authRepository.hooks.useValidateToken()
-
-  useEffect(() => {
-    const validateToken = async () => {
-      const localAccessToken = TokenUtil.accessToken
-      const sessionAccessToken = sessionStorage?.getItem('access_token')
-      const token = localAccessToken || sessionAccessToken
-
-      if (!token) {
-        router.push('/login')
-        return
-      }
-
-      setValidating(false)
-    }
-
-    validateToken()
-  }, [router, data])
+  const { validating } = useUIState()
 
   if (validating) {
     return (

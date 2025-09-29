@@ -39,6 +39,11 @@ p {
   @apply bg-secondary !important;
 }
 
+/* -------------------------------- SCROOL NAVIGATION ID ------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
 /* -------------------------------- SCROLLBAR ------------------------------- */
 .custom-scrollbar::-webkit-scrollbar {
   @apply w-2.5 rounded-full bg-slate-100 !important;
@@ -77,8 +82,8 @@ p {
   @apply fixed left-0 top-0 z-10 flex h-fit w-full items-center !bg-white !p-4 md:!px-10 md:!py-5 !important;
 }
 
-.header-home.ant-layout-header {
-  @apply fixed left-0 top-0 z-50 flex h-fit w-full items-center !bg-white !p-4 md:!py-5 !important;
+.header-beranda.ant-layout-header {
+  @apply fixed left-0 top-0 z-50 flex h-fit w-full cursor-pointer items-center !bg-white !p-4 md:!px-10 md:!py-5 xl:!px-14 2xl:!px-20 !important;
 }
 
 /* ------------------------------ SEARCH INPUT ------------------------------ */

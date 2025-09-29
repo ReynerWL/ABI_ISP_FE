@@ -20,6 +20,11 @@ export interface RegisterPayload {
   paket: string
 }
 
+export interface ValidateToken {
+  name: string
+  role: string
+}
+
 const url = {
   login: () => '/auth/login',
   validateToken: () => '/auth/validate-token',
@@ -28,7 +33,9 @@ const url = {
 
 const hooks = {
   useValidateToken: () =>
-    useSWR(url.validateToken(), http.fetcher, { revalidateOnFocus: false })
+    useSWR<ValidateToken>(url.validateToken(), http.fetcher, {
+      revalidateOnFocus: false
+    })
 }
 
 const api = {
