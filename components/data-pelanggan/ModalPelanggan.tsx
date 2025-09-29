@@ -10,6 +10,7 @@ import StepInformasi from './form/StepInformasi'
 import StepKTP from './form/StepKTP'
 import StepNavigation from './form/StepNavigation'
 import StepPaket from './form/StepPaket'
+import StepPayment from './form/StepPayment'
 
 interface ModalPelangganProps {
   open: boolean
@@ -53,7 +54,8 @@ const ModalPelanggan = ({
       alamat={initialValues?.alamat}
     />,
     <StepKTP key={1} form={form} />,
-    <StepPaket key={2} />
+    <StepPaket key={2} />,
+    <StepPayment key={3} />
   ]
 
   const handleClose = () => {

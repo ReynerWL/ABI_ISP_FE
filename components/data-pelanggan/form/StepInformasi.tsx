@@ -1,6 +1,14 @@
+'use client'
+
+import { alamatRepository, Kelurahan } from '#/repository/alamat'
 import { DatePicker, Form, Input, Select } from 'antd'
 import { HiOutlineEyeOff } from 'react-icons/hi'
-import { HiOutlineCalendar, HiOutlineEye, HiXMark } from 'react-icons/hi2'
+import {
+  HiChevronDown,
+  HiOutlineCalendar,
+  HiOutlineEye,
+  HiXMark
+} from 'react-icons/hi2'
 
 const StepInformasi = ({
   isEditMode,
@@ -9,6 +17,12 @@ const StepInformasi = ({
   isEditMode: boolean
   alamat?: string
 }) => {
+  const { data, isLoading } = alamatRepository.hooks.useGetKelurahanBabelan()
+  const kelurahanOptions = data?.map((kelurahan: Kelurahan) => ({
+    value: kelurahan.name,
+    label: <p className='font-semibold text-slate-500'>{kelurahan.name}</p>
+  }))
+
   return (
     <>
       {isEditMode && (
@@ -120,8 +134,25 @@ const StepInformasi = ({
         rules={[{ required: true, message: 'Kelurahan wajib diisi' }]}
       >
         <Select
-          options={[{ value: 'Babelan', label: 'Babelan' }]}
+          loading={isLoading}
+          options={kelurahanOptions}
           placeholder='Pilih Kelurahan'
+          showSearch
+          allowClear={{
+            clearIcon: (
+              <HiXMark
+                className='size-5 bg-white text-slate-400 transition duration-200 hover:text-slate-500'
+                strokeWidth={0.5}
+              />
+            )
+          }}
+          suffixIcon={
+            <HiChevronDown
+              className='text-slate-300'
+              size={20}
+              strokeWidth={1}
+            />
+          }
         />
       </Form.Item>
       <Form.Item

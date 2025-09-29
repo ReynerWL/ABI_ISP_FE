@@ -186,7 +186,29 @@ html {
 
 /* ----------------------------- SEGMENTED / TAB ---------------------------- */
 .ant-segmented {
+  @apply w-full rounded-lg bg-slate-50 p-1 !important;
+
+  & .ant-segmented-thumb {
+    @apply rounded-lg bg-white !important;
+  }
+  & .ant-segmented-group {
+    @apply gap-3 !important;
+    & .ant-segmented-item {
+      @apply w-full rounded-lg px-4 py-1 font-semibold text-slate-500 !important;
+
+      &.ant-segmented-item-selected {
+        @apply bg-white text-primary !important;
+      }
+    }
+  }
+}
+
+.tab-filter.ant-segmented {
   @apply rounded-full bg-white p-0 !important;
+
+  & .ant-segmented-thumb {
+    @apply rounded-full bg-primary text-white !important;
+  }
 
   & .ant-segmented-group .ant-segmented-item {
     @apply rounded-full px-5 py-2 font-medium text-slate-500 shadow-none !important;
@@ -347,6 +369,28 @@ html {
             }
           }
         }
+      }
+    }
+
+    & .ant-select {
+      & .ant-select-selector {
+        @apply h-fit rounded-lg border-slate-200 py-0.5 !important;
+
+        & .ant-select-selection-item {
+          @apply font-semibold text-slate-500 !important;
+        }
+
+        & .ant-select-selection-placeholder {
+          @apply font-normal text-slate-300 !important;
+        }
+      }
+
+      & .ant-select-arrow {
+        @apply -mt-1 !important;
+      }
+
+      & .ant-select-clear {
+        @apply right-5 -mt-2 !important;
       }
     }
   }

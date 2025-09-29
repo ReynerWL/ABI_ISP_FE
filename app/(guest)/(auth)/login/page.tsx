@@ -75,7 +75,7 @@ const Login = () => {
             <Link href={'/'}>
               <Image src={'/logo.png'} alt={'logo'} width={144} height={44} />
             </Link>
-            <div className='space-y-2'>
+            <div className='flex flex-col gap-2'>
               <h1 className='text-3xl font-bold sm:text-4xl'>Selamat Datang</h1>
               <p className='text-sm font-medium text-slate-400 md:text-base'>
                 Akses akun Anda dan nikmati fitur lengkapnya

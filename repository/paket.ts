@@ -13,6 +13,9 @@ export interface Paket {
 
 const url = { getPaket: () => '/paket' }
 
-const hooks = { useGetPaket: () => useSWR(url.getPaket(), http.fetcher) }
+const hooks = {
+  useGetPaket: () =>
+    useSWR(url.getPaket(), http.fetcher, { revalidateOnFocus: false })
+}
 
 export const paketRepository = { url, hooks }

@@ -3,7 +3,7 @@
 import { useUIState } from '#/app/provider'
 import usePageTitle from '#/hooks/usePageTitle'
 import { berandaRepository, GetAllPaket } from '#/repository/beranda'
-import { formatRupiah } from '#/utils/rupiahFormatter'
+import { formatRupiah } from '#/utils/formatter'
 import { TokenUtil } from '#/utils/token'
 import { Button } from 'antd'
 import Image from 'next/image'

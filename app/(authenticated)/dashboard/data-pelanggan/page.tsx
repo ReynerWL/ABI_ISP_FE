@@ -111,6 +111,7 @@ const DataPelanggan = () => {
             shape='round'
             defaultValue='Semua'
             value={status}
+            className='tab-filter'
             onChange={handleStatusChange}
           />
         </div>
