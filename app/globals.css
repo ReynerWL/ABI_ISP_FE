@@ -55,7 +55,7 @@ html {
 
 /* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
 .dashboard-sider.ant-layout-sider {
-  @apply z-20 hidden bg-white p-6 lg:block !important;
+  @apply z-20 hidden bg-white p-6 pt-4 lg:block !important;
 }
 
 /* ----------------------------- DASHBOARD MENU ----------------------------- */
@@ -157,6 +157,15 @@ html {
   @apply bg-transparent px-0 py-6 !important;
 }
 
+.data-table.ant-table-wrapper {
+  & .ant-spin-nested-loading {
+    @apply relative !important;
+    & .ant-spin {
+      @apply left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform !important;
+    }
+  }
+}
+
 /* ---------------------------- PAGE LIMIT SELECT --------------------------- */
 .page-limit-select {
   &.ant-select {
@@ -177,7 +186,29 @@ html {
 
 /* ----------------------------- SEGMENTED / TAB ---------------------------- */
 .ant-segmented {
+  @apply w-full rounded-lg bg-slate-50 p-1 !important;
+
+  & .ant-segmented-thumb {
+    @apply rounded-lg bg-white !important;
+  }
+  & .ant-segmented-group {
+    @apply gap-3 !important;
+    & .ant-segmented-item {
+      @apply w-full rounded-lg px-4 py-1 font-semibold text-slate-500 !important;
+
+      &.ant-segmented-item-selected {
+        @apply bg-white text-primary !important;
+      }
+    }
+  }
+}
+
+.tab-filter.ant-segmented {
   @apply rounded-full bg-white p-0 !important;
+
+  & .ant-segmented-thumb {
+    @apply rounded-full bg-primary text-white !important;
+  }
 
   & .ant-segmented-group .ant-segmented-item {
     @apply rounded-full px-5 py-2 font-medium text-slate-500 shadow-none !important;
@@ -201,6 +232,7 @@ html {
 .tambah-pengguna-steps {
   &.ant-steps {
     @apply border-b border-slate-200 pb-2 md:pb-4 !important;
+
     & .ant-steps-item-title {
       @apply text-sm font-semibold md:text-xs !important;
 
@@ -250,6 +282,9 @@ html {
         }
       }
     }
+    & .ant-steps-item-content {
+      vertical-align: middle !important;
+    }
   }
 }
 
@@ -283,6 +318,14 @@ html {
       }
       &.ant-input-disabled {
         @apply bg-slate-50 text-slate-500 !important;
+      }
+    }
+
+    & .ant-input-password {
+      @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
+
+      & input {
+        @apply py-[7px] !important;
       }
     }
 
@@ -326,6 +369,28 @@ html {
             }
           }
         }
+      }
+    }
+
+    & .ant-select {
+      & .ant-select-selector {
+        @apply h-fit rounded-lg border-slate-200 py-0.5 !important;
+
+        & .ant-select-selection-item {
+          @apply font-semibold text-slate-500 !important;
+        }
+
+        & .ant-select-selection-placeholder {
+          @apply font-normal text-slate-300 !important;
+        }
+      }
+
+      & .ant-select-arrow {
+        @apply -mt-1 !important;
+      }
+
+      & .ant-select-clear {
+        @apply right-5 -mt-2 !important;
       }
     }
   }

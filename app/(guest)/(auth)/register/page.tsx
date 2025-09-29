@@ -95,15 +95,15 @@ const Register = () => {
         district: 'Babelan'
       }
 
-      const { body } = await authRepository.api.register(data)
+      const { error } = await authRepository.api.register(data)
 
-      console.log(body)
-
-      toast.success('Register berhasil! Silakan login...')
-      setTimeout(() => {
-        toast.dismiss()
-        router.push('/dashboard')
-      }, 1000)
+      if (!error) {
+        toast.success('Register berhasil! Silakan login...')
+        setTimeout(() => {
+          toast.dismiss()
+          router.push('/dashboard')
+        }, 1000)
+      }
     } catch (error: any) {
       const message = error?.response?.body?.error
 

@@ -7,6 +7,8 @@ import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import WAButton from '#/components/reusable/WAButton'
+import usePageTitle from '#/hooks/usePageTitle'
+import { User, userRepository } from '#/repository/user'
 import { Button, Segmented, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
@@ -16,27 +18,33 @@ import { HiOutlineDownload, HiPlus } from 'react-icons/hi'
 import { HiEye, HiMiniPencilSquare } from 'react-icons/hi2'
 
 const DataPelanggan = () => {
+  usePageTitle('Data Pelanggan')
   const router = useRouter()
   const searchParams = useSearchParams()
   const status = searchParams?.get('status') || 'Semua'
+  const page = searchParams?.get('page') || 1
+  const pageSize = searchParams?.get('page_size') || 10
+  const startDate = searchParams?.get('start_date') || null
+  const endDate = searchParams?.get('end_date') || null
+  const [initialValues, setInitialValues] = useState<User | null>(null)
+  const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
+    page: Number(page),
+    page_size: Number(pageSize),
+    start_date: startDate,
+    end_date: endDate
+  })
 
   const [openModal, setOpenModal] = useState(false)
 
-  const dataSource = [
-    {
-      key: '1',
-      id: '1234567890',
-      name: 'John Doe',
-      email: 'john.doe@me.com',
-      phone_number: '08123456789',
-      paket: '10 mbps',
-      tanggal_berlangganan: '2025-01-01',
-      status: 'Baru'
-    }
-  ]
+  const users: User[] = data?.data
 
   const columns: TableProps['columns'] = [
-    { title: 'ID Pelanggan', dataIndex: 'id', key: 'id' },
+    {
+      title: 'ID Pelanggan',
+      dataIndex: 'id',
+      key: 'id',
+      render: (_, record) => record?.customerId
+    },
     { title: 'Nama', dataIndex: 'name', key: 'name' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
@@ -57,20 +65,26 @@ const DataPelanggan = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => <Chip text={text} color='orange' />
+      render: (status) => <Chip text={status} />
     },
     {
       title: 'Aksi',
       dataIndex: 'aksi',
       key: 'aksi',
-      render: () => (
+      render: (_, record) => (
         <div className='flex gap-2'>
-          <Button className='!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'>
+          <Button
+            className='!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
+            onClick={() => {
+              setOpenModal(true)
+              setInitialValues(record as User)
+            }}
+          >
             <HiMiniPencilSquare className='text-lg' />
             Edit
           </Button>
           <Link
-            href={`/dashboard/data-pelanggan/${'1234567890'}`}
+            href={`/dashboard/data-pelanggan/${record?.customerId}`}
             className='flex items-center gap-2 !rounded-lg border !border-slate-100 px-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
           >
             <HiEye className='text-lg' />
@@ -97,6 +111,7 @@ const DataPelanggan = () => {
             shape='round'
             defaultValue='Semua'
             value={status}
+            className='tab-filter'
             onChange={handleStatusChange}
           />
         </div>
@@ -123,8 +138,23 @@ const DataPelanggan = () => {
             </Button>
           </div>
         </div>
-        <DataTable dataSource={dataSource} columns={columns} limit={10} />
-        <ModalPelanggan open={openModal} onClose={() => setOpenModal(false)} />
+        <DataTable
+          dataSource={users}
+          columns={columns}
+          page={data?.page}
+          limit={data?.page_size}
+          totalData={data?.total}
+          isLoading={isLoading}
+          onRefresh={() => mutate()}
+        />
+        <ModalPelanggan
+          open={openModal}
+          onClose={() => {
+            setInitialValues(null)
+            setOpenModal(false)
+          }}
+          initialValues={initialValues}
+        />
       </div>
     </div>
   )

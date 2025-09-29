@@ -19,3 +19,20 @@ export function formatRupiah(
 
   return formatted
 }
+
+export function formatSpeed(
+  speed: string,
+  style: 'lower' | 'capital' | 'upper' = 'capital'
+) {
+  const match = speed.match(/^(\d+)\s*([a-zA-Z]+)$/)
+  if (!match) return speed
+
+  switch (style) {
+    case 'lower':
+      return `${match[1]} ${match[2].toLowerCase()}`
+    case 'upper':
+      return `${match[1]} ${match[2].toUpperCase()}`
+    default:
+      return `${match[1]} ${match[2].charAt(0).toUpperCase()}${match[2].slice(1).toLowerCase()}`
+  }
+}

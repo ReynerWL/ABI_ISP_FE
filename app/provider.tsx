@@ -45,8 +45,8 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   // const { data } = authRepository.hooks.useValidateToken()
 
+  TokenUtil.loadToken()
   useEffect(() => {
-    TokenUtil.loadToken()
     const validateToken = async () => {
       const localAccessToken = TokenUtil.accessToken
       const sessionAccessToken = sessionStorage?.getItem('access_token')

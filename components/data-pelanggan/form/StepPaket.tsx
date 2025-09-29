@@ -1,6 +1,28 @@
-import { Form, Radio } from 'antd'
+'use client'
+
+import { Paket, paketRepository } from '#/repository/paket'
+import { formatSpeed } from '#/utils/formatter'
+import { Form, Radio, Skeleton } from 'antd'
 
 const StepPaket = () => {
+  const { data, isLoading } = paketRepository.hooks.useGetPaket()
+
+  const pakets: Paket[] = data?.data
+
+  if (isLoading) {
+    return (
+      <div className='mb-2 flex flex-col gap-4'>
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <Skeleton.Button
+            key={idx}
+            style={{ width: '100%', height: 50, borderRadius: 8 }}
+            active
+          />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <Form.Item
       name={'paket'}
@@ -11,13 +33,10 @@ const StepPaket = () => {
       <Radio.Group
         className='paket-radio-group'
         name='paket'
-        options={[
-          { label: '10 Mbps', value: '10 Mbps' },
-          { label: '15 Mbps', value: '15 Mbps' },
-          { label: '20 Mbps', value: '20 Mbps' },
-          { label: '30 Mbps', value: '30 Mbps' },
-          { label: '40 Mbps', value: '40 Mbps' }
-        ]}
+        options={pakets?.map((paket: Paket) => ({
+          label: formatSpeed(paket.speed),
+          value: paket.id
+        }))}
       />
     </Form.Item>
   )

@@ -1,13 +1,16 @@
 'use client'
 
-import { Form, Steps } from 'antd'
+import { authRepository } from '#/repository/auth'
+import { Form, StepProps, Steps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import BaseModal from '../reusable/BaseModal'
 import StepInformasi from './form/StepInformasi'
 import StepKTP from './form/StepKTP'
 import StepNavigation from './form/StepNavigation'
 import StepPaket from './form/StepPaket'
+import StepPayment from './form/StepPayment'
 
 interface ModalPelangganProps {
   open: boolean
@@ -22,23 +25,37 @@ const ModalPelanggan = ({
 }: ModalPelangganProps) => {
   const [form] = useForm()
   const [stepCurrent, setStepCurrent] = useState(0)
+  const [loading, setLoading] = useState(false)
 
-  const stepItems = [
-    { title: 'Informasi Pelanggan' },
+  const stepItems: StepProps[] = [
+    { title: 'Informasi' },
     { title: 'KTP' },
-    { title: 'Paket' }
+    { title: 'Paket' },
+    { title: 'Pembayaran' }
   ]
 
   const stepFields: string[][] = [
-    ['tanggal_berlangganan', 'name', 'email', 'phone_number', 'alamat'],
+    [
+      'tanggal_berlangganan',
+      'name',
+      'email',
+      'phone_number',
+      'alamat',
+      'password'
+    ],
     ['photo_ktp'],
     ['paket']
   ]
 
   const formContent = [
-    <StepInformasi key={0} />,
+    <StepInformasi
+      key={0}
+      isEditMode={initialValues}
+      alamat={initialValues?.alamat}
+    />,
     <StepKTP key={1} form={form} />,
-    <StepPaket key={2} />
+    <StepPaket key={2} />,
+    <StepPayment key={3} />
   ]
 
   const handleClose = () => {
@@ -47,10 +64,38 @@ const ModalPelanggan = ({
     onClose()
   }
 
-  const handleFinish = (values: any) => {
-    const data = { ...values }
+  const handleFinish = async (values: any) => {
+    if (loading) return
 
-    console.log('Received values of form: ', data)
+    try {
+      setLoading(true)
+
+      const data = {
+        ...values,
+        provinsi: 'Jawa Barat',
+        kota: 'Kabupaten Bekasi',
+        kecamatan: 'Babelan'
+      }
+
+      const { error } = await authRepository.api.register(data)
+
+      if (!error) {
+        toast.success('Berhasil menambahkan data pelanggan!', { duration: 800 })
+
+        onClose()
+      }
+    } catch (error: any) {
+      const message = error?.response?.body?.error
+
+      console.log(message)
+
+      if (message) {
+        toast.error(message)
+        return
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
