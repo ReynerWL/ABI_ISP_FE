@@ -21,17 +21,20 @@ const DataPelanggan = () => {
   usePageTitle('Data Pelanggan')
   const router = useRouter()
   const searchParams = useSearchParams()
+  const search = searchParams?.get('search') || null
   const status = searchParams?.get('status') || 'Semua'
   const page = searchParams?.get('page') || 1
-  const pageSize = searchParams?.get('page_size') || 10
+  const limit = searchParams?.get('limit') || 10
   const startDate = searchParams?.get('start_date') || null
   const endDate = searchParams?.get('end_date') || null
   const [initialValues, setInitialValues] = useState<User | null>(null)
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
+    search,
     page: Number(page),
-    page_size: Number(pageSize),
+    limit: Number(limit),
     start_date: startDate,
-    end_date: endDate
+    end_date: endDate,
+    status: status === 'Semua' ? null : status
   })
 
   const [openModal, setOpenModal] = useState(false)
@@ -107,7 +110,14 @@ const DataPelanggan = () => {
         <Title>Data Pelanggan</Title>
         <div className='hidden md:block'>
           <Segmented
-            options={['Semua', 'Baru', 'Aktif', 'Pending', 'Nonaktif']}
+            options={[
+              'Semua',
+              'Baru',
+              'Aktif',
+              'Pending',
+              'Nonaktif',
+              'Ditolak'
+            ]}
             shape='round'
             defaultValue='Semua'
             value={status}
@@ -141,11 +151,11 @@ const DataPelanggan = () => {
         <DataTable
           dataSource={users}
           columns={columns}
-          page={data?.page}
-          limit={data?.page_size}
-          totalData={data?.total}
+          page={data?.pagination?.page}
+          limit={data?.pagination?.limit}
+          totalData={data?.pagination?.total}
+          totalPage={data?.pagination?.totalPages}
           isLoading={isLoading}
-          onRefresh={() => mutate()}
         />
         <ModalPelanggan
           open={openModal}
@@ -154,6 +164,7 @@ const DataPelanggan = () => {
             setOpenModal(false)
           }}
           initialValues={initialValues}
+          mutate={mutate}
         />
       </div>
     </div>

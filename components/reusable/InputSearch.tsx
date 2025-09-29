@@ -2,9 +2,11 @@
 
 import { Input } from 'antd'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { HiXMark } from 'react-icons/hi2'
 import { LuSearch } from 'react-icons/lu'
 import { useDebouncedCallback } from 'use-debounce'
+
 interface InputSearchProps {
   placeholder?: string
 }
@@ -12,12 +14,19 @@ interface InputSearchProps {
 const InputSearch = ({ placeholder = 'Cari ...' }: InputSearchProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [value, setValue] = useState('')
 
-  const handleChange = useDebouncedCallback((value: string) => {
+  // Sync state with query param
+  useEffect(() => {
+    const currentSearch = searchParams?.get('search') || ''
+    setValue(currentSearch)
+  }, [searchParams])
+
+  const handleChange = useDebouncedCallback((val: string) => {
     const queryParams = new URLSearchParams(searchParams?.toString())
 
-    if (value) {
-      queryParams.set('search', value)
+    if (val) {
+      queryParams.set('search', val)
     } else {
       queryParams.delete('search')
     }
@@ -30,6 +39,7 @@ const InputSearch = ({ placeholder = 'Cari ...' }: InputSearchProps) => {
       className='search-input'
       prefix={<LuSearch className={'mr-2 text-lg text-slate-600'} />}
       placeholder={placeholder}
+      value={value} // controlled input
       allowClear={{
         clearIcon: (
           <HiXMark
@@ -38,7 +48,10 @@ const InputSearch = ({ placeholder = 'Cari ...' }: InputSearchProps) => {
           />
         )
       }}
-      onChange={(e) => handleChange(e.target.value)}
+      onChange={(e) => {
+        setValue(e.target.value)
+        handleChange(e.target.value)
+      }}
     />
   )
 }

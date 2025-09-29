@@ -1,3 +1,4 @@
+import { http } from '#/utils/http'
 import useSWR from 'swr'
 
 export interface Kelurahan {
@@ -8,7 +9,8 @@ export interface Kelurahan {
 
 const url = {
   getKelurahanBabelan: () =>
-    'https://www.emsifa.com/api-wilayah-indonesia/api/villages/3216090.json'
+    'https://www.emsifa.com/api-wilayah-indonesia/api/villages/3216090.json',
+  uploadFile: () => '/file/upload'
 }
 
 const fetcher = async (url: string) => {
@@ -23,4 +25,8 @@ const hooks = {
   useGetKelurahanBabelan: () => useSWR(url.getKelurahanBabelan(), fetcher)
 }
 
-export const alamatRepository = { hooks }
+const api = {
+  uploadFile: (data: FormData) => http.post(url.uploadFile()).send(data)
+}
+
+export const generalRepository = { hooks, api }

@@ -1,7 +1,8 @@
 'use client'
 
-import { alamatRepository, Kelurahan } from '#/repository/alamat'
+import { generalRepository, Kelurahan } from '#/repository/general'
 import { DatePicker, Form, Input, Select } from 'antd'
+import dayjs from 'dayjs'
 import { HiOutlineEyeOff } from 'react-icons/hi'
 import {
   HiChevronDown,
@@ -17,7 +18,7 @@ const StepInformasi = ({
   isEditMode: boolean
   alamat?: string
 }) => {
-  const { data, isLoading } = alamatRepository.hooks.useGetKelurahanBabelan()
+  const { data, isLoading } = generalRepository.hooks.useGetKelurahanBabelan()
   const kelurahanOptions = data?.map((kelurahan: Kelurahan) => ({
     value: kelurahan.name,
     label: <p className='font-semibold text-slate-500'>{kelurahan.name}</p>
@@ -77,6 +78,7 @@ const StepInformasi = ({
         <DatePicker
           placeholder='Masukkan Tanggal Lahir'
           format={'DD-MM-YYYY'}
+          maxDate={dayjs()}
           suffixIcon={
             <HiOutlineCalendar
               className='text-lg text-slate-400 transition duration-200'

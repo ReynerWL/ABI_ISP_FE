@@ -257,7 +257,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                     {activeSection.map((value, index) => (
                       <div
                         key={index}
-                        className={`text-xs font-semibold md:text-sm`}
+                        className={`hidden text-xs font-semibold sm:block md:text-sm`}
                       >
                         <Link
                           href={`#${value.id}`}
