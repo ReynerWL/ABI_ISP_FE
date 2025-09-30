@@ -24,6 +24,9 @@ export interface ValidateToken {
   name: string
   role: string
 }
+export interface Users extends ValidateToken {
+  data: ValidateToken
+}
 
 const url = {
   login: () => '/auth/login',
@@ -33,7 +36,7 @@ const url = {
 
 const hooks = {
   useValidateToken: () =>
-    useSWR<ValidateToken>(url.validateToken(), http.fetcher, {
+    useSWR<Users>(url.validateToken(), http.fetcher, {
       revalidateOnFocus: false
     })
 }

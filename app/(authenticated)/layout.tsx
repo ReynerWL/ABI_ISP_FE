@@ -1,8 +1,10 @@
 'use client'
 
+import colorPallete from '#/constant/enums/colorPallete'
+import { authRepository } from '#/repository/auth'
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Drawer, Layout, Menu } from 'antd'
-import { Content, Header } from 'antd/es/layout/layout'
+import { Avatar, Button, Drawer, Layout, Menu, Skeleton } from 'antd'
+import { Content, Footer, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -60,12 +62,13 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
-
   const beranda = pathname === '/beranda'
-
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
   const [open, setOpen] = useState(false)
-  const { isSM, isMobile } = useUIState()
+  const { isSM, isMobile, token } = useUIState()
+
+  const { data, isLoading } = authRepository.hooks.useValidateToken()
+  const users = data?.data
 
   const showDrawer = () => {
     setOpen(!open)
@@ -99,6 +102,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     }
 
     window.addEventListener('scroll', handleScroll)
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -166,15 +170,18 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                   size={48}
                   className='!bg-secondary !text-xl font-semibold'
                 >
-                  CS
+                  {users?.name
+                    ?.split(' ')
+                    .map((word) => word[0])
+                    .join('') || 'NUll'}
                 </Avatar>
                 <div className='hidden items-center gap-4 sm:flex'>
                   <div>
                     <h1 className='text-base font-bold text-primary md:text-lg'>
-                      Cecilia Siregar
+                      {users?.name}
                     </h1>
-                    <p className='text-xs font-medium text-slate-400 md:text-sm'>
-                      Admin
+                    <p className='text-xs font-medium capitalize text-slate-400 md:text-sm'>
+                      {users?.role}
                     </p>
                   </div>
                   <HiChevronDown
@@ -202,80 +209,121 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                   src={'/logo.png'}
                   alt={'logo'}
                   width={isSM || isMobile ? 90 : 110}
-                  height={43}
+                  height={isSM || isMobile ? 90 : 110}
                   className={'cursor-pointer'}
                 />
               </Link>
 
+              <div className={'flex flex-row items-center gap-x-4 sm:hidden'}>
+                <Skeleton
+                  avatar
+                  active
+                  loading={isLoading}
+                  paragraph={{ rows: 0 }}
+                >
+                  <Button
+                    type='text'
+                    className={`!h-fit !p-1 hover:!bg-white ${token ? '!hidden' : '!flex'}`}
+                    onClick={() => router.push('/login')}
+                  >
+                    <HiUserCircle className={'text-4xl text-primary'} />
+                  </Button>
+
+                  <div
+                    className={`group flex items-center gap-4 ${token ? 'flex' : 'hidden'}`}
+                  >
+                    <Avatar
+                      size={42}
+                      className='!bg-secondary !text-xl font-semibold'
+                    >
+                      {users?.name
+                        ?.split(' ')
+                        .map((word) => word[0])
+                        .join('') || 'NUll'}
+                    </Avatar>
+                  </div>
+                  <Button type='text' className='!h-fit !p-1'>
+                    <HiBars3BottomRight
+                      className={'text-3xl text-slate-800'}
+                      onClick={showDrawer}
+                    />
+                  </Button>
+                </Skeleton>
+
+                <Drawer
+                  title={titleStyle}
+                  closable={{ 'aria-label': 'Close Button' }}
+                  onClose={onClose}
+                  open={open}
+                  width={200}
+                  mask={false}
+                >
+                  {activeSection.map((value, index) => (
+                    <div
+                      key={index}
+                      className={`items-center p-4 text-base font-semibold md:text-sm`}
+                    >
+                      <Link
+                        href={`#${value.id}`}
+                        className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+                        onClick={() => setOpen(!open)}
+                      >
+                        {value.name}
+                      </Link>
+                    </div>
+                  ))}
+                </Drawer>
+              </div>
               <div
                 className={
-                  'flex flex-row-reverse items-center gap-x-6 sm:flex-row md:gap-x-8 lg:gap-x-12'
+                  'hidden flex-row items-center gap-x-6 sm:flex sm:flex-row md:gap-x-8 lg:gap-x-12'
                 }
               >
-                {isMobile ? (
-                  <>
-                    <Button type='text' className='!h-fit !p-1'>
-                      <HiBars3BottomRight
-                        className={'text-3xl text-slate-800'}
-                        onClick={showDrawer}
-                      />
-                    </Button>
-                    <Button
-                      type='text'
-                      className='!h-fit !p-1 hover:!bg-white'
-                      onClick={() => router.push('/login')}
+                {activeSection.map((value, index) => (
+                  <div
+                    key={index}
+                    className={`text-xs font-semibold md:text-sm`}
+                  >
+                    <Link
+                      href={`#${value.id}`}
+                      className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
                     >
-                      <HiUserCircle className={'text-4xl text-primary'} />
-                    </Button>
-
-                    <Drawer
-                      title={titleStyle}
-                      closable={{ 'aria-label': 'Close Button' }}
-                      onClose={onClose}
-                      open={open}
-                      width={200}
-                      mask={false}
+                      {value.name}
+                    </Link>
+                  </div>
+                ))}
+                <Skeleton
+                  avatar
+                  active
+                  loading={isLoading}
+                  paragraph={{ rows: 0 }}
+                >
+                  <Button
+                    className={`!rounded-full !border-none !bg-blue-50 !px-6 !py-3 !text-xs !font-semibold !text-primary md:!px-8 md:!py-5 md:!text-sm ${token ? '!hidden' : '!flex'}`}
+                  >
+                    Masuk
+                  </Button>
+                  <div
+                    className={`group flex items-center gap-4 ${token ? 'flex' : 'hidden'}`}
+                  >
+                    <Avatar
+                      size={42}
+                      className='!bg-secondary !text-xl font-semibold'
                     >
-                      {activeSection.map((value, index) => (
-                        <div
-                          key={index}
-                          className={`items-center p-4 text-base font-semibold md:text-sm`}
-                        >
-                          <Link
-                            href={`#${value.id}`}
-                            className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
-                            onClick={() => setOpen(!open)}
-                          >
-                            {value.name}
-                          </Link>
-                        </div>
-                      ))}
-                    </Drawer>
-                  </>
-                ) : (
-                  <>
-                    {activeSection.map((value, index) => (
-                      <div
-                        key={index}
-                        className={`text-xs font-semibold md:text-sm`}
-                      >
-                        <Link
-                          href={`#${value.id}`}
-                          className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
-                        >
-                          {value.name}
-                        </Link>
-                      </div>
-                    ))}
-                    <Button
-                      className={
-                        '!rounded-full !border-none !bg-blue-50 !px-6 !py-3 !text-xs !font-semibold !text-primary md:!px-8 md:!py-5 md:!text-sm'
-                      }
-                    >
-                      Masuk
-                    </Button>
-                  </>
-                )}
+                      {users?.name
+                        ?.split(' ')
+                        .map((word) => word[0])
+                        .join('') || 'NUll'}
+                    </Avatar>
+                    <h1 className='text-base font-bold text-primary md:text-lg'>
+                      {users?.name}
+                    </h1>
+                    <HiChevronDown
+                      className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                      strokeWidth={0.8}
+                    />
+                  </div>
+                </Skeleton>
               </div>
             </div>
           </Header>
@@ -285,6 +333,19 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         >
           <div className={'h-full overflow-auto'}>{children}</div>
         </Content>
+        {beranda && (
+          <Footer
+            style={{
+              textAlign: 'center',
+              backgroundColor: colorPallete.Slate900,
+              color: colorPallete.White
+            }}
+            className={'!px-0 !text-xs sm:!text-sm'}
+          >
+            ©{new Date().getFullYear()} PT Amarta Buana Informati. All rights
+            reserved.
+          </Footer>
+        )}
       </Layout>
     </Layout>
   )

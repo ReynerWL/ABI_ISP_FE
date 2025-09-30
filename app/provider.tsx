@@ -39,8 +39,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null)
   // const [user, setUser] = useState<ValidateToken | null>(null)
 
-  console.log('TOKEN:', token)
-
   const router = useRouter()
   const pathname = usePathname()
   // const { data } = authRepository.hooks.useValidateToken()
@@ -69,21 +67,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   //     setUser(data)
   //   }
   // }, [data])
-
-  console.log(
-    '2XL:',
-    is2XL,
-    'xl:',
-    isXL,
-    'LG:',
-    isLG,
-    'MD:',
-    isMD,
-    'SM:',
-    isSM,
-    'isMobile:',
-    isMobile
-  )
 
   useEffect(() => {
     const handleResize = () => {
