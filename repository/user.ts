@@ -33,11 +33,12 @@ export interface Role {
 }
 
 export interface GetUserParams {
-  query?: string
+  search?: string | null
+  status?: string | null
   start_date?: string | null
   end_date?: string | null
   page?: number
-  page_size?: number
+  limit?: number
 }
 
 const url = {

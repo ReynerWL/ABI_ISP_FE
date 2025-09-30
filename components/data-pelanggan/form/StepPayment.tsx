@@ -1,24 +1,38 @@
-import { Form, Segmented } from 'antd'
+import UploadField from '#/components/reusable/UploadField'
+import { Bank, bankRepository } from '#/repository/bank'
+import { Form, FormInstance, Segmented, Skeleton } from 'antd'
 
-const StepPayment = () => {
+interface StepPaymentProps {
+  form: FormInstance
+}
+
+const StepPayment = ({ form }: StepPaymentProps) => {
+  const { data, isLoading } = bankRepository.hooks.useGetBanks()
+  const bankOptions = data?.data?.map((bank: Bank) => ({
+    label: bank.bank_name,
+    value: bank.id
+  }))
+
+  const handleChange = (value: string) => {
+    form.setFieldsValue({ banksId: value })
+  }
+
   return (
     <>
-      <Form.Item
-        name={'banksId'}
-        validateDebounce={500}
-        rules={[
-          { required: true, message: 'Pilih salah satu metode pembayaran' }
-        ]}
-      >
-        <Segmented
-          options={[
-            { label: 'Qris', value: 'qris' },
-            { label: 'BCA', value: 'bca' },
-            { label: 'Mandiri', value: 'mandiri' }
-          ]}
-          onChange={(e) => console.log(e)}
-        />
+      <Form.Item name={'banksId'} validateDebounce={500}>
+        {isLoading ? (
+          <Skeleton.Button className='!h-[44px] !w-full !rounded-lg' active />
+        ) : (
+          <Segmented options={bankOptions} onChange={handleChange} />
+        )}
       </Form.Item>
+      <UploadField
+        form={form}
+        name='bukti_pembayaran'
+        label='Bukti Pembayaran'
+        requiredMessage='Bukti Pembayaran wajib diisi'
+        successMessage='Bukti Pembayaran berhasil diunggah!'
+      />
     </>
   )
 }

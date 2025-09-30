@@ -12,12 +12,19 @@ export interface RegisterPayload {
   name: string
   birth_date: string
   password: string
-  province: string
-  city: string
-  district: string
+  provinsi: string
+  kota: string
+  kecamatan: string
+  kelurahan: string
   alamat: string
   photo_ktp: string
-  paket: string
+  payment: PaymentPayload
+}
+
+export interface PaymentPayload {
+  paketsId: string
+  banksId: string
+  buktiPembayaran: string
 }
 
 export interface ValidateToken {

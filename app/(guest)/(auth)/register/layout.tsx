@@ -1,3 +1,6 @@
+'use client'
+
+import { useUIState } from '#/app/provider'
 import { Button } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
@@ -11,20 +14,21 @@ const RegisterLayout = ({ children }: { children: React.ReactNode }) => {
     { name: 'Benefit', isActive: false },
     { name: 'Produk', isActive: false }
   ]
+  const { isSM, isMobile } = useUIState()
 
   return (
     <>
       <Header
         style={{ right: 0, left: 288, height: 64 }}
-        className='header-home'
+        className='header-beranda'
       >
         <div className='flex w-full flex-row items-center justify-between gap-4 px-4 md:px-16'>
           <Link href={'/'}>
             <Image
               src={'/logo.png'}
               alt={'logo'}
-              width={162}
-              height={43}
+              width={isSM || isMobile ? 90 : 110}
+              height={isSM || isMobile ? 90 : 110}
               className={'cursor-pointer'}
             />
           </Link>

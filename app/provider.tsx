@@ -50,7 +50,12 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
       const sessionAccessToken = sessionStorage?.getItem('access_token')
       const token = localAccessToken || sessionAccessToken
 
-      if (!token && pathname !== '/login' && pathname !== '/beranda') {
+      if (
+        !token &&
+        pathname !== '/login' &&
+        pathname !== '/beranda' &&
+        pathname !== '/register'
+      ) {
         router.push('/login')
         return
       }

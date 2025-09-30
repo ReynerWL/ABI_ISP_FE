@@ -228,7 +228,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                   >
                     <HiUserCircle className={'text-4xl text-primary'} />
                   </Button>
-
                   <div
                     className={`group flex items-center gap-4 ${token ? 'flex' : 'hidden'}`}
                   >

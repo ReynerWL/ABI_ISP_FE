@@ -14,14 +14,16 @@ import StepPayment from './form/StepPayment'
 
 interface ModalPelangganProps {
   open: boolean
-  onClose: () => void
   initialValues?: any
+  onClose: () => void
+  mutate: () => void
 }
 
 const ModalPelanggan = ({
   open,
   initialValues,
-  onClose
+  onClose,
+  mutate
 }: ModalPelangganProps) => {
   const [form] = useForm()
   const [stepCurrent, setStepCurrent] = useState(0)
@@ -40,11 +42,13 @@ const ModalPelanggan = ({
       'name',
       'email',
       'phone_number',
+      'kelurahan',
       'alamat',
       'password'
     ],
     ['photo_ktp'],
-    ['paket']
+    ['paket'],
+    ['banksId', 'bukti_pembayaran']
   ]
 
   const formContent = [
@@ -55,7 +59,7 @@ const ModalPelanggan = ({
     />,
     <StepKTP key={1} form={form} />,
     <StepPaket key={2} />,
-    <StepPayment key={3} />
+    <StepPayment key={3} form={form} />
   ]
 
   const handleClose = () => {
@@ -71,10 +75,22 @@ const ModalPelanggan = ({
       setLoading(true)
 
       const data = {
-        ...values,
+        email: values.email,
+        name: values.name,
+        phone_number: values.phone_number,
+        birth_date: values.birth_date,
+        password: values.password,
         provinsi: 'Jawa Barat',
         kota: 'Kabupaten Bekasi',
-        kecamatan: 'Babelan'
+        kecamatan: 'Babelan',
+        kelurahan: values.kelurahan,
+        alamat: values.alamat,
+        photo_ktp: values.photo_ktp,
+        payment: {
+          paketsId: values.paket,
+          banksId: values.banksId,
+          buktiPembayaran: values.bukti_pembayaran
+        }
       }
 
       const { error } = await authRepository.api.register(data)
@@ -83,9 +99,10 @@ const ModalPelanggan = ({
         toast.success('Berhasil menambahkan data pelanggan!', { duration: 800 })
 
         onClose()
+        mutate()
       }
     } catch (error: any) {
-      const message = error?.response?.body?.error
+      const message = error?.response?.body?.message
 
       console.log(message)
 
