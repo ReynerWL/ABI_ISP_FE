@@ -107,7 +107,6 @@ const StepInformasi = ({
         <Input placeholder='Masukkan email' type='email' />
       </Form.Item>
       <Form.Item
-        name={'phone_number'}
         label='No. Telp'
         validateDebounce={500}
         preserve={true}
@@ -118,16 +117,19 @@ const StepInformasi = ({
       >
         <div className='flex flex-col gap-2'>
           <div className='flex gap-3'>
-            <div className='rounded-lg border border-slate-200 p-1 px-2 font-medium text-slate-500'>
+            <div className='rounded-lg border border-slate-200 px-2.5 py-1.5 font-semibold text-slate-500'>
               +62
             </div>
-            <Input placeholder='8xxxxxxxxxx' autoComplete='off' />
+            <Form.Item noStyle name='phone_number'>
+              <Input placeholder='8xxxxxxxxxx' autoComplete='off' />
+            </Form.Item>
           </div>
           <p className='m-0 text-xs font-medium italic text-slate-400'>
             *Pastikan nomor ponsel masih aktif.
           </p>
         </div>
       </Form.Item>
+
       <Form.Item
         name={'kelurahan'}
         label='Kelurahan'
