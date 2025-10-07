@@ -19,11 +19,6 @@ const InfoPelanggan = ({
   alamat,
   status
 }: InfoPelangganProps) => {
-  const chipColor: Record<
-    InfoPelangganProps['status'],
-    'green' | 'orange' | 'red' | 'gray'
-  > = { Baru: 'gray', Aktif: 'green', Pending: 'orange', Nonaktif: 'red' }
-
   return (
     <div className='flex w-full flex-col gap-8 rounded-2xl bg-white p-6'>
       <div className='flex justify-between'>
@@ -37,7 +32,7 @@ const InfoPelanggan = ({
           </div>
         </div>
         <div className='flex items-center'>
-          <Chip text='Pending' color={chipColor[status]} />
+          <Chip text={status} />
         </div>
       </div>
       <div className='grid grid-cols-2 gap-y-6'>

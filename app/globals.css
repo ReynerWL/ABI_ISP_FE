@@ -268,17 +268,17 @@ html {
 
     & .ant-steps-item.ant-steps-item-finish {
       & .ant-steps-item-icon {
-        @apply size-[22px] bg-green-700 md:size-5 !important;
+        @apply size-[22px] bg-primary md:size-5 !important;
         & .ant-steps-icon {
           @apply top-[-2px] font-bold text-white md:top-[-3px] !important;
         }
       }
 
       & .ant-steps-item-title {
-        @apply text-green-700 !important;
+        @apply text-primary !important;
 
         &::after {
-          @apply bg-green-700 !important;
+          @apply bg-primary !important;
         }
       }
     }

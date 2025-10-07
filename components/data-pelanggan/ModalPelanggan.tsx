@@ -45,7 +45,8 @@ const ModalPelanggan = ({
       'phone_number',
       'kelurahan',
       'alamat',
-      'password'
+      'password',
+      'birth_date'
     ],
     ['photo_ktp'],
     ['paket'],
@@ -132,6 +133,7 @@ const ModalPelanggan = ({
       title='Tambah Data'
       onClose={handleClose}
       titleBorder={false}
+      width={stepCurrent === 0 ? 600 : 520}
     >
       <div className='flex flex-col gap-4'>
         <Steps

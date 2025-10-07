@@ -26,7 +26,7 @@ const StepPaket = () => {
   return (
     <Form.Item
       name={'paket'}
-      validateDebounce={500}
+      validateDebounce={1000}
       preserve={true}
       rules={[{ required: true, message: 'Pilih salah satu jenis paket' }]}
     >

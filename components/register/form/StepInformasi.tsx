@@ -9,7 +9,7 @@ const StepInformasi = () => {
       <Form.Item
         label='Email'
         name='email'
-        validateDebounce={500}
+        validateDebounce={1000}
         rules={[
           { required: true, message: 'Email wajib diisi' },
           { type: 'email', message: 'Email tidak valid' }
@@ -20,7 +20,7 @@ const StepInformasi = () => {
       <Form.Item
         label='Nomor Ponsel'
         name='phone_number'
-        validateDebounce={500}
+        validateDebounce={1000}
         rules={[
           { required: true, message: 'Nomor Telpon wajib diisi' },
           { pattern: /^8\d{8,10}$/, message: 'Nomor Telpon tidak valid' }
@@ -41,7 +41,7 @@ const StepInformasi = () => {
       <Form.Item
         label='Nama'
         name='name'
-        validateDebounce={500}
+        validateDebounce={1000}
         rules={[{ required: true, message: 'Nama wajib diisi' }]}
       >
         <Input placeholder='Masukkan nama lengkapmu' autoComplete='off' />
@@ -49,7 +49,7 @@ const StepInformasi = () => {
       <Form.Item
         label='Tanggal Lahir'
         name='birth_date'
-        validateDebounce={500}
+        validateDebounce={1000}
         rules={[{ required: true, message: 'Tanggal lahir wajib diisi' }]}
       >
         <DatePicker

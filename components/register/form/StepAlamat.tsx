@@ -19,7 +19,7 @@ const StepAlamat = () => {
       <Form.Item
         name={'alamat'}
         label='Alamat'
-        validateDebounce={500}
+        validateDebounce={1000}
         preserve={true}
         rules={[{ required: true, message: 'Alamat wajib diisi' }]}
       >

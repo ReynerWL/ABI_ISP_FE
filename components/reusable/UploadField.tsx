@@ -85,7 +85,7 @@ const UploadField = ({
       name={name}
       label={label}
       preserve={true}
-      validateDebounce={500}
+      validateDebounce={1000}
       rules={[{ required: true, message: requiredMessage }, ...rules]}
     >
       <div>
