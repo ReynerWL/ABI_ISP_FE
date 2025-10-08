@@ -41,21 +41,24 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   const router = useRouter()
   const pathname = usePathname()
-  // const { data } = authRepository.hooks.useValidateToken()
 
   TokenUtil.loadToken()
+
   useEffect(() => {
     const validateToken = async () => {
+      // BYPASS DEV MODE
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('⚠️ Development mode: bypass token validation')
+        setToken('dev-token-bypass')
+        setValidating(false)
+        return
+      }
+
       const localAccessToken = TokenUtil.accessToken
       const sessionAccessToken = sessionStorage?.getItem('access_token')
       const token = localAccessToken || sessionAccessToken
 
-      if (
-        !token &&
-        pathname !== '/login' &&
-        pathname !== '/beranda' &&
-        pathname !== '/register'
-      ) {
+      if (!token && pathname !== '/login' && pathname !== '/beranda') {
         router.push('/login')
         return
       }
@@ -66,12 +69,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
     validateToken()
   }, [router, pathname])
-
-  // useEffect(() => {
-  //   if(data){
-  //     setUser(data)
-  //   }
-  // }, [data])
 
   useEffect(() => {
     const handleResize = () => {
@@ -101,6 +98,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     validating
     // user
   }
+
   return (
     <UIStateContext.Provider value={value}>
       <ConfigProvider
