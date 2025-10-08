@@ -3,6 +3,7 @@ import React from 'react'
 import { HiXMark } from 'react-icons/hi2'
 
 interface BaseModalProps {
+  width?: number
   open: boolean
   title?: string
   children?: React.ReactNode
@@ -12,6 +13,7 @@ interface BaseModalProps {
 }
 
 const BaseModal = ({
+  width,
   open,
   title,
   footer,
@@ -20,7 +22,13 @@ const BaseModal = ({
   onClose
 }: BaseModalProps) => {
   return (
-    <Modal centered open={open} closable={false} footer={footer || null}>
+    <Modal
+      centered
+      open={open}
+      closable={false}
+      footer={footer || null}
+      width={width}
+    >
       <div className='flex flex-col gap-4'>
         <div
           className={`flex justify-between border-slate-200 ${titleBorder ? 'border-b pb-4' : ''}`}

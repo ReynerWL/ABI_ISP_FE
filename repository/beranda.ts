@@ -1,6 +1,5 @@
 import { http } from '#/utils/http'
 import useSWR from 'swr'
-import qs from 'qs'
 
 export interface GetAllPaket {
   name?: string | null

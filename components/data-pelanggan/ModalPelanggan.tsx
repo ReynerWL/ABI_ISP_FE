@@ -3,6 +3,7 @@
 import { authRepository } from '#/repository/auth'
 import { Form, StepProps, Steps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import BaseModal from '../reusable/BaseModal'
@@ -44,7 +45,8 @@ const ModalPelanggan = ({
       'phone_number',
       'kelurahan',
       'alamat',
-      'password'
+      'password',
+      'birth_date'
     ],
     ['photo_ktp'],
     ['paket'],
@@ -117,7 +119,11 @@ const ModalPelanggan = ({
 
   useEffect(() => {
     if (initialValues) {
-      form.setFieldsValue(initialValues)
+      form.setFieldsValue({
+        ...initialValues,
+        birth_date: dayjs(initialValues.birth_date),
+        kelurahan: initialValues.kelurahan
+      })
     }
   }, [initialValues, form])
 
@@ -127,6 +133,7 @@ const ModalPelanggan = ({
       title='Tambah Data'
       onClose={handleClose}
       titleBorder={false}
+      width={stepCurrent === 0 ? 600 : 520}
     >
       <div className='flex flex-col gap-4'>
         <Steps

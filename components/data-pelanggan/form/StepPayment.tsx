@@ -19,7 +19,7 @@ const StepPayment = ({ form }: StepPaymentProps) => {
 
   return (
     <>
-      <Form.Item name={'banksId'} validateDebounce={500}>
+      <Form.Item name={'banksId'} validateDebounce={1000}>
         {isLoading ? (
           <Skeleton.Button className='!h-[44px] !w-full !rounded-lg' active />
         ) : (

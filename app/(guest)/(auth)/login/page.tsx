@@ -92,7 +92,7 @@ const Login = () => {
             <Form.Item
               label='Email'
               name='email'
-              validateDebounce={500}
+              validateDebounce={1000}
               rules={[
                 { required: true, message: 'Email wajib diisi' },
                 { type: 'email', message: 'Email tidak valid' }
