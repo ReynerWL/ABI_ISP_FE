@@ -45,7 +45,8 @@ const CustomMonthPicker = () => {
       onChange={handleChange}
       picker='month'
       className='custom-date-range-picker'
-      placeholder='Bulan'
+      placeholder='Bulan Tranksaksi'
+      style={{ minWidth: 200 }}
       format={'MMMM YYYY'}
       suffixIcon={
         selectedValue ? (

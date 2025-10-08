@@ -106,7 +106,7 @@ html {
 /* ---------------------------- DATE RANGE PICKER --------------------------- */
 .custom-date-range-picker.ant-picker-range,
 .custom-date-range-picker.ant-picker {
-  @apply rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
+  @apply h-full w-full rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
 
   & .ant-picker-input input {
     @apply w-fit font-semibold text-slate-600 !important;
@@ -131,6 +131,33 @@ html {
   & .ant-picker-clear {
     inset-inline-end: 16px !important;
   }
+}
+
+.custom-bank-select.ant-select {
+  @apply h-full w-full items-center font-medium shadow-none !important;
+}
+
+.custom-bank-select .ant-select-selector {
+  @apply h-full rounded-lg border-slate-200 px-4 py-2.5 shadow-none hover:border-slate-300 !important;
+  border-width: 1px !important;
+}
+
+.custom-bank-select .ant-select-selection-search-input {
+  /* Pastikan input di dalam selector tidak memiliki padding default yang konflik */
+  padding: 0 !important;
+}
+
+.custom-bank-select .ant-select-selection-item {
+  /* Teks yang terpilih harus rata dengan text input Date Picker */
+  @apply font-semibold text-slate-600 !important;
+}
+
+.custom-bank-select .ant-select-selection-placeholder {
+  /* Placeholder harus rata dengan placeholder Date Picker */
+  @apply font-normal tracking-wide text-slate-300 !important;
+}
+.custom-bank-select .ant-select-item-option-content {
+  font-weight: 600;
 }
 
 /* ------------------------------- DATA TABLE ------------------------------- */
