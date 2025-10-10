@@ -4,7 +4,7 @@ import { TokenUtil } from '#/utils/token'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { App, ConfigProvider } from 'antd'
 import { usePathname, useRouter } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, Suspense, useContext, useEffect, useState } from 'react'
 
 interface UIState {
   is2XL: boolean
@@ -101,21 +101,26 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UIStateContext.Provider value={value}>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: '#0049AC',
-            fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
-          },
-          components: {
-            Segmented: { itemSelectedBg: '#0049AC', itemSelectedColor: '#fff' }
-          }
-        }}
-      >
-        <AntdRegistry>
-          <App>{children}</App>
-        </AntdRegistry>
-      </ConfigProvider>
+      <Suspense>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#0049AC',
+              fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
+            },
+            components: {
+              Segmented: {
+                itemSelectedBg: '#0049AC',
+                itemSelectedColor: '#fff'
+              }
+            }
+          }}
+        >
+          <AntdRegistry>
+            <App>{children}</App>
+          </AntdRegistry>
+        </ConfigProvider>
+      </Suspense>
     </UIStateContext.Provider>
   )
 }

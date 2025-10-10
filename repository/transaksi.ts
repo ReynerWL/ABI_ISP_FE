@@ -1,0 +1,43 @@
+import { http } from '#/utils/http'
+import useSWR from 'swr'
+import { User } from './user'
+import { Bank } from './bank'
+import { buildQueryParams } from '#/utils/params'
+
+export interface DataTransaksi {
+  user: User
+  price: number
+  bank: Bank
+  buktiPembayaran: string
+  createdAt: string
+  start_date: string
+  due_date: string
+}
+
+export interface ListTransaksiResponse {
+  data: DataTransaksi[]
+  total: number
+}
+
+export interface GetTransakasiParams {
+  search: string | null
+  bank?: string | null
+  month?: string | null
+  page?: number
+  limit?: number
+}
+
+const url = {
+  getAllTransaksi: (params: GetTransakasiParams) => {
+    const query = buildQueryParams(params)
+    return `/payment?${query}`
+  }
+}
+
+const hooks = {
+  useGetAllTransaksi: (params: GetTransakasiParams) => {
+    return useSWR(url.getAllTransaksi(params), http.fetcher)
+  }
+}
+
+export const transakasiRepository = { url, hooks }

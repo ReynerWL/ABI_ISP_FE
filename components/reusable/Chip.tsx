@@ -7,8 +7,11 @@ interface ChipProps {
 }
 
 const Chip = ({ text }: ChipProps) => {
-  const lowerText = text.toLowerCase()
-  const displayText = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  const lowerText = text.toLowerCase().replace('-', '_')
+  const displayText = text
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('-')
 
   const { bgColor, textColor } = chipColor[lowerText] || {
     bgColor: '#6B728033',

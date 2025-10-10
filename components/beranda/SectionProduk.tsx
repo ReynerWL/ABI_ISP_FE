@@ -13,7 +13,7 @@ interface props {
 export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
   return (
     <div
-      id={'4'}
+      id={'Produk'}
       className={
         'flex scroll-mt-20 flex-col justify-center gap-y-8 px-4 md:px-10 xl:px-16 2xl:px-20'
       }
@@ -42,7 +42,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
         </div>
         <div
           className={
-            'no-scrollbar flex w-full flex-row gap-x-6 overflow-y-auto p-3'
+            'produk-scrollbar flex w-full flex-row gap-x-6 overflow-x-auto p-3'
           }
         >
           {data?.map((value, index) => (

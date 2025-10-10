@@ -28,6 +28,7 @@ const DataTable = ({
 }: DataTableProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  console.log('limit:', limit)
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams?.toString())

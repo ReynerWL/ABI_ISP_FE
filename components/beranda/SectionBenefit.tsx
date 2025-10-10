@@ -14,7 +14,7 @@ interface props {
 export const SectionBenefit = ({ data, widthImage }: props) => {
   return (
     <div
-      id={'3'}
+      id={'Benefit'}
       className={
         'flex scroll-mt-20 flex-col items-center -space-y-16 px-4 sm:px-14 md:flex-row md:-space-x-44 md:-space-y-0 md:px-10 xl:px-16 2xl:px-20'
       }

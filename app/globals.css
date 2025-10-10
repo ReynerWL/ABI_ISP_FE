@@ -53,6 +53,14 @@ html {
   @apply rounded-full bg-primary !important;
 }
 
+.produk-scrollbar::-webkit-scrollbar {
+  @apply h-1.5 rounded-full bg-slate-100 !important;
+}
+
+.produk-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-primary !important;
+}
+
 /* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
 .dashboard-sider.ant-layout-sider {
   @apply z-20 hidden bg-white p-6 pt-4 lg:block !important;
@@ -88,7 +96,7 @@ html {
 
 /* ------------------------------ SEARCH INPUT ------------------------------ */
 .search-input {
-  @apply w-full rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
+  @apply h-full w-full rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
 
   & .ant-input {
     @apply font-medium text-slate-600 !important;
@@ -103,10 +111,31 @@ html {
   }
 }
 
+/* ------------------------------ FILTER TRANSAKSI ------------------------------ */
+.bank-select .ant-select-selector {
+  @apply w-52 rounded-xl border-slate-200 px-4 py-2 shadow-none hover:border-slate-300 !important;
+
+  & .ant-select-selection-search-input {
+    @apply p-0 !important;
+  }
+
+  & .ant-select-selection-item {
+    @apply font-semibold text-slate-600 !important;
+  }
+
+  & .ant-select-selection-placeholder {
+    @apply font-normal tracking-wide text-slate-300 !important;
+  }
+
+  &. .ant-select-item-option-content {
+    @apply font-semibold;
+  }
+}
+
 /* ---------------------------- DATE RANGE PICKER --------------------------- */
 .custom-date-range-picker.ant-picker-range,
 .custom-date-range-picker.ant-picker {
-  @apply h-full w-full rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
+  @apply h-full rounded-xl border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
 
   & .ant-picker-input input {
     @apply w-fit font-semibold text-slate-600 !important;
@@ -127,37 +156,10 @@ html {
   & .ant-picker-active-bar {
     @apply w-[100px] bg-secondary !important;
   }
-
-  & .ant-picker-clear {
-    inset-inline-end: 16px !important;
-  }
 }
 
-.custom-bank-select.ant-select {
-  @apply h-full w-full items-center font-medium shadow-none !important;
-}
-
-.custom-bank-select .ant-select-selector {
-  @apply h-full rounded-lg border-slate-200 px-4 py-2.5 shadow-none hover:border-slate-300 !important;
-  border-width: 1px !important;
-}
-
-.custom-bank-select .ant-select-selection-search-input {
-  /* Pastikan input di dalam selector tidak memiliki padding default yang konflik */
-  padding: 0 !important;
-}
-
-.custom-bank-select .ant-select-selection-item {
-  /* Teks yang terpilih harus rata dengan text input Date Picker */
-  @apply font-semibold text-slate-600 !important;
-}
-
-.custom-bank-select .ant-select-selection-placeholder {
-  /* Placeholder harus rata dengan placeholder Date Picker */
-  @apply font-normal tracking-wide text-slate-300 !important;
-}
-.custom-bank-select .ant-select-item-option-content {
-  font-weight: 600;
+.custom-date-range-picker.ant-picker-range .ant-picker-clear {
+  inset-inline-end: 16px !important;
 }
 
 /* ------------------------------- DATA TABLE ------------------------------- */
@@ -428,6 +430,60 @@ html {
   &.ktp-upload {
     & .ant-upload-drag {
       @apply rounded-lg border-none bg-transparent px-6 py-10 hover:border-primary hover:bg-slate-50 !important;
+
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          #e2e8f0,
+          #e2e8f0 12px,
+          transparent 12px,
+          transparent 20px
+        ) !important;
+      background-position:
+        left top,
+        right top,
+        left bottom,
+        left top !important;
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y !important;
+      background-size:
+        100% 1.5px,
+        1.6px 100%,
+        100% 1.5px,
+        1.5px 100% !important;
+
+      & .ant-upload-drag-container {
+        @apply flex flex-col items-center justify-center gap-2 !important;
+      }
+    }
+  }
+}
+
+/* --------------------------- UPLOAD BUKTI PEMBAYARAN DRAGGER --------------------------- */
+.ant-upload-wrapper {
+  &.ktp-upload {
+    & .ant-upload-drag {
+      @apply rounded-lg border-none bg-transparent p-6 hover:border-primary hover:bg-slate-50 !important;
 
       background-image:
         repeating-linear-gradient(

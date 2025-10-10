@@ -7,7 +7,7 @@ interface InfoPelangganProps {
   email: string
   noTelp: string
   alamat: string
-  status: 'Baru' | 'Aktif' | 'Pending' | 'Nonaktif'
+  status: 'Baru' | 'Aktif' | 'Pra-Aktif' | 'Nonaktif'
 }
 
 const InfoPelanggan = ({

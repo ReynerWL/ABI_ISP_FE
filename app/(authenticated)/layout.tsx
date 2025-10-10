@@ -3,7 +3,7 @@
 import colorPallete from '#/constant/enums/colorPallete'
 import { authRepository } from '#/repository/auth'
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Drawer, Layout, Menu, Skeleton } from 'antd'
+import { Avatar, Button, Drawer, Layout, Menu, Popover, Skeleton } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
@@ -11,28 +11,32 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import {
+  HiArrowLeftStartOnRectangle,
   HiBars3BottomLeft,
   HiBars3BottomRight,
   HiChevronDown,
   HiDocumentMagnifyingGlass,
   HiInboxArrowDown,
+  HiServer,
   HiUserCircle,
   HiUsers
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
 import { useUIState } from '../provider'
+import { TokenUtil } from '#/utils/token'
 
-interface MenuItem {
+export interface MenuItem {
   id: string
   name: string
   isActive: boolean
+  icon?: React.JSX.Element
 }
 
 const listMenu: MenuItem[] = [
-  { name: 'Beranda', isActive: true, id: '1' },
-  { name: 'Tentang Kami', isActive: false, id: '2' },
-  { name: 'Benefit', isActive: false, id: '3' },
-  { name: 'Produk', isActive: false, id: '4' }
+  { name: 'Beranda', isActive: true, id: 'Hero' },
+  { name: 'Tentang Kami', isActive: false, id: 'Tentang_Kami' },
+  { name: 'Benefit', isActive: false, id: 'Benefit' },
+  { name: 'Produk', isActive: false, id: 'Produk' }
 ]
 
 const items: MenuProps['items'] = [
@@ -63,6 +67,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
   const beranda = pathname === '/beranda'
+  const detail = pathname === '/detail'
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
   const [open, setOpen] = useState(false)
   const { isSM, isMobile, token } = useUIState()
@@ -116,9 +121,31 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   )
 
+  const content = (
+    <div className={'flex flex-col gap-2'}>
+      <Button
+        className={`!flex !w-full !flex-row !justify-start !gap-2 !rounded-lg !border-none !p-6 !text-base !font-semibold !text-slate-500 !shadow-none`}
+        onClick={() => router.push('/detail')}
+      >
+        <HiServer className={'text-xl'} />
+        Lihat Paket Anda
+      </Button>
+      <Button
+        className={`!flex !w-full !flex-row !justify-start !gap-2 !rounded-lg !border-none !p-6 !text-base !font-semibold !text-slate-500 !shadow-none`}
+        onClick={() => {
+          TokenUtil.clearTokens()
+          return router.push('/login', { scroll: false })
+        }}
+      >
+        <HiArrowLeftStartOnRectangle className={'text-xl'} />
+        Keluar
+      </Button>
+    </div>
+  )
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {!beranda && (
+      {!beranda && !detail && (
         <Sider
           width={288}
           style={{
@@ -149,50 +176,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         </Sider>
       )}
 
-      <Layout className={`h-full ${beranda ? '' : 'lg:ml-[288px]'}`}>
-        {!beranda ? (
-          <Header
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              left: 288,
-              height: 64
-            }}
-            className='dashboard-header'
-          >
-            <div className='flex w-full items-center justify-between gap-4 lg:justify-end'>
-              <Button type='text' className='!h-fit !p-1 lg:!hidden'>
-                <HiBars3BottomLeft className='!text-3xl' />
-              </Button>
-              <div className='group flex items-center gap-4'>
-                <Avatar
-                  size={48}
-                  className='!bg-secondary !text-xl font-semibold'
-                >
-                  {users?.name
-                    ?.split(' ')
-                    .map((word) => word[0])
-                    .join('') || 'NUll'}
-                </Avatar>
-                <div className='hidden items-center gap-4 sm:flex'>
-                  <div>
-                    <h1 className='text-base font-bold text-primary md:text-lg'>
-                      {users?.name}
-                    </h1>
-                    <p className='text-xs font-medium capitalize text-slate-400 md:text-sm'>
-                      {users?.role}
-                    </p>
-                  </div>
-                  <HiChevronDown
-                    className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
-                    strokeWidth={0.8}
-                  />
-                </div>
-              </div>
-            </div>
-          </Header>
-        ) : (
+      <Layout className={`h-full ${beranda || detail ? '' : 'lg:ml-[288px]'}`}>
+        {beranda || detail ? (
           <Header
             style={{
               position: 'fixed',
@@ -299,6 +284,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                 >
                   <Button
                     className={`!rounded-full !border-none !bg-blue-50 !px-6 !py-3 !text-xs !font-semibold !text-primary md:!px-8 md:!py-5 md:!text-sm ${token ? '!hidden' : '!flex'}`}
+                    onClick={() => router.push('/login')}
                   >
                     Masuk
                   </Button>
@@ -323,6 +309,58 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                     />
                   </div>
                 </Skeleton>
+              </div>
+            </div>
+          </Header>
+        ) : (
+          <Header
+            style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              left: 288,
+              height: 64
+            }}
+            className='dashboard-header'
+          >
+            <div className='flex w-full items-center justify-between gap-4 lg:justify-end'>
+              <Button type='text' className='!h-fit !p-1 lg:!hidden'>
+                <HiBars3BottomLeft className='!text-3xl' />
+              </Button>
+              <div className='group flex items-center gap-4'>
+                <Avatar
+                  size={48}
+                  className='!bg-secondary !text-xl font-semibold'
+                >
+                  {users?.name
+                    ?.split(' ')
+                    .map((word) => word[0])
+                    .join('') || 'NUll'}
+                </Avatar>
+                <div className='hidden items-center gap-4 sm:flex'>
+                  <div>
+                    <h1 className='text-base font-bold text-primary md:text-lg'>
+                      {users?.name}
+                    </h1>
+                    <p className='text-xs font-medium capitalize text-slate-400 md:text-sm'>
+                      {users?.role}
+                    </p>
+                  </div>
+                  <Popover
+                    placement={'bottomRight'}
+                    title={''}
+                    content={content}
+                    arrow={{ pointAtCenter: true }}
+                    trigger={'click'}
+                    className={'tab-profile'}
+                    style={{ padding: '24px' }}
+                  >
+                    <HiChevronDown
+                      className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                      strokeWidth={0.8}
+                    />
+                  </Popover>
+                </div>
               </div>
             </div>
           </Header>

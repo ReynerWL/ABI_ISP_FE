@@ -2,6 +2,11 @@ import { http } from '#/utils/http'
 import { buildQueryParams } from '#/utils/params'
 import useSWR from 'swr'
 
+export interface Subscription {
+  start_date: string
+  due_date: string
+  createdAt: string
+}
 export interface User {
   id: string
   customerId: any
@@ -16,17 +21,52 @@ export interface User {
   pronvisi: string
   kota: string
   kecamatan: string
+  kelurahan: string
   photo_ktp: string
   priority: boolean
   createdAt: string
   updatedAt: string
+  buktiPembayaran: string
   deletedAt: any
   role: Role
+  paket?: Paket
+  payment?: Payment[]
+  tanggal_berlangganan?: string
+  subscription: Subscription
+}
+
+export interface DetailUser {
+  data: User
 }
 
 export interface Role {
   id: string
   name: string
+  createdAt: string
+  updatedAt: string
+  deletedAt: any
+}
+export interface Payment {
+  buktiPembayaran: string
+  id: string
+  price: number
+  reason: string
+  status: string
+  start_date?: string | null
+  due_date?: string | null
+  confirmAt?: string | null
+}
+
+export interface ListPayment {
+  data: Payment[]
+  count: number
+}
+export interface Paket {
+  id: string
+  name: string
+  photo: string
+  price: number
+  speed: string
   createdAt: string
   updatedAt: string
   deletedAt: any
@@ -41,20 +81,35 @@ export interface GetUserParams {
   limit?: number
 }
 
+export interface DetailUser {}
+
 const url = {
   getUser: (params: GetUserParams) => {
     const query = buildQueryParams(params)
 
     return `/user?${query}`
+  },
+  getDetailUser() {
+    return `/user/detail`
+  },
+  getEditUser(id: string) {
+    return `/users/${id}`
   }
 }
 
 const hooks = {
   useGetUser: (params: GetUserParams) => {
     return useSWR(url.getUser(params), http.fetcher)
+  },
+  useGetDetailUser() {
+    return useSWR(url.getDetailUser(), http.fetcher)
   }
 }
 
-const api = {}
+const api = {
+  updateUser(id: string, data: User) {
+    return http.put(url.getEditUser(id)).send(data)
+  }
+}
 
 export const userRepository = { url, hooks, api }

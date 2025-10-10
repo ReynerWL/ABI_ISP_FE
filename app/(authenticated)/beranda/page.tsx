@@ -75,9 +75,9 @@ const listBenefit = [
 ]
 
 const Home = () => {
+  usePageTitle('Beranda')
   const { isXL, isMD, isLG, isMobile } = useUIState()
   const { data, isLoading } = berandaRepository.hooks.useGetAllPaket()
-  usePageTitle('Beranda')
 
   return (
     <div className={'flex flex-col justify-center gap-y-16 overflow-auto'}>

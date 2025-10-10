@@ -13,9 +13,11 @@ import {
 
 const StepInformasi = ({
   isEditMode,
+  isDetailMode,
   alamat
 }: {
   isEditMode: boolean
+  isDetailMode?: boolean
   alamat?: string
 }) => {
   const { data, isLoading } = generalRepository.hooks.useGetKelurahanBabelan()
@@ -191,7 +193,7 @@ const StepInformasi = ({
           label='Kelurahan'
           validateDebounce={1000}
           preserve={true}
-          className='col-span-1 md:col-span-2'
+          className={`${isDetailMode ? 'col-span-1' : 'col-span-1 md:col-span-2'}`}
           rules={[{ required: true, message: 'Kelurahan wajib diisi' }]}
         >
           <Select

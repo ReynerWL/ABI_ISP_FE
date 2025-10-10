@@ -43,9 +43,9 @@ const Dashboard = () => {
               />
               <InfoCard
                 icon={HiClock}
-                title='Pelanggan Pending'
-                description={summary?.pendingCustomer + ' data'}
-                href='/dashboard/data-pelanggan?status=Pending'
+                title='Pelanggan Pra-Aktif'
+                description={summary?.praAktifCustomer + ' data'}
+                href='/dashboard/data-pelanggan?status=Pra-Aktif'
                 isLoading={isLoading}
               />
               <InfoCard

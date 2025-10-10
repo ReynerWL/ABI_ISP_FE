@@ -13,7 +13,7 @@ interface props {
 export const SectionAbout = ({ data }: props) => {
   return (
     <div
-      id={'2'}
+      id={'Tentang_Kami'}
       className={
         'flex scroll-mt-20 flex-row justify-center bg-slate-50 px-4 md:px-10 xl:px-16 2xl:px-20'
       }

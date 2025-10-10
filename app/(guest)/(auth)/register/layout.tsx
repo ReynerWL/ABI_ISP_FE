@@ -5,6 +5,7 @@ import { Button } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const RegisterLayout = ({ children }: { children: React.ReactNode }) => {
@@ -15,6 +16,7 @@ const RegisterLayout = ({ children }: { children: React.ReactNode }) => {
     { name: 'Produk', isActive: false }
   ]
   const { isSM, isMobile } = useUIState()
+  const router = useRouter()
 
   return (
     <>
@@ -46,6 +48,7 @@ const RegisterLayout = ({ children }: { children: React.ReactNode }) => {
               className={
                 '!rounded-full !border-none !bg-blue-50 !px-8 !py-5 !font-semibold !text-primary'
               }
+              onClick={() => router.push('/login')}
             >
               Masuk
             </Button>

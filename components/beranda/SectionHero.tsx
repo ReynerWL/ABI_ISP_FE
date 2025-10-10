@@ -9,7 +9,7 @@ interface props {
 export const SectionHero = ({ widthImage }: props) => {
   return (
     <div
-      id={'1'}
+      id={'Hero'}
       className='mt-4 flex !w-full scroll-m-0 flex-col-reverse items-center justify-between gap-y-6 px-4 sm:scroll-mt-20 md:flex-row md:px-10 xl:px-16 2xl:px-20'
     >
       <div

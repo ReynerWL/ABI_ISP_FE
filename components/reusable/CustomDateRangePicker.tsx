@@ -10,7 +10,7 @@ const { RangePicker } = DatePicker
 const CustomDateRangePicker = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const dateRange = searchParams?.get('dateRange') || ''
+  // const dateRange = searchParams?.get('dateRange') || ''
 
   const handleChange = (dates: any) => {
     const queryParams = new URLSearchParams(searchParams?.toString())
@@ -32,9 +32,7 @@ const CustomDateRangePicker = () => {
       placeholder={['Tanggal Awal', 'Tanggal Akhir']}
       suffixIcon={
         <HiOutlineCalendar
-          className={`text-xl transition duration-200 ${
-            dateRange ? 'text-secondary' : 'text-slate-400'
-          }`}
+          className={`text-xl text-slate-400 transition duration-200`}
           strokeWidth={1.8}
         />
       }

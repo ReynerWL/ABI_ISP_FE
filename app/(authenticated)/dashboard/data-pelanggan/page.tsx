@@ -114,7 +114,7 @@ const DataPelanggan = () => {
               'Semua',
               'Baru',
               'Aktif',
-              'Pending',
+              'Pra-Aktif',
               'Nonaktif',
               'Ditolak'
             ]}

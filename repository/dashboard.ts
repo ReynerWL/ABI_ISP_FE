@@ -4,7 +4,7 @@ import useSWR from 'swr'
 export interface Dashboard {
   totalCustomer: number
   newCustomer: number
-  pendingCustomer: number
+  praAktifCustomer: number
   activeCustomer: number
   inactiveCustomer: number
   packageInformations: PackageInformation[]

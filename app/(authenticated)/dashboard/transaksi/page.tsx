@@ -2,127 +2,132 @@
 
 import BaseModal from '#/components/reusable/BaseModal'
 import DataTable from '#/components/reusable/DataTable'
+import { EmptyImg } from '#/components/reusable/EmptyImg'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
-import type { BankOption } from '#/components/transaksi/CustomBankSelect'
-import CustomBank from '#/components/transaksi/CustomBankSelect'
-import CustomMonthPicker from '#/components/transaksi/CustomDateMonth'
-import { Button, Image, TableProps } from 'antd'
+import type { BankOption } from '#/components/transaksi/BankSelect'
+import CustomBankSelect from '#/components/transaksi/BankSelect'
+import CustomMonthPicker from '#/components/transaksi/DateMonth'
+import usePageTitle from '#/hooks/usePageTitle'
+import { Bank, bankRepository } from '#/repository/bank'
+import { DataTransaksi, transakasiRepository } from '#/repository/transaksi'
+import { formatRupiah } from '#/utils/formatter'
+import { Button, TableProps } from 'antd'
 import dayjs from 'dayjs'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { HiOutlineDownload } from 'react-icons/hi'
 import { HiPhoto } from 'react-icons/hi2'
 
 const Transaksi = () => {
-  const router = useRouter()
+  usePageTitle('Transaksi')
   const searchParams = useSearchParams()
-
-  // query params
-  const bankQuery = searchParams?.get('bank') || ''
-
-  // local UI state
+  const search = searchParams?.get('search') || null
+  const bank = searchParams?.get('bank') || ''
+  const month = searchParams?.get('month') || ''
   const [openModal, setOpenModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const [selectedBank, setSelectedBank] = useState<string | undefined>(
-    undefined
-  )
 
-  const bankOptions: BankOption[] = [
-    { label: 'Bank Central Asia (BCA)', value: 'bca' },
-    { label: 'Bank Rakyat Indonesia (BRI)', value: 'bri' },
-    { label: 'Bank Negara Indonesia (BNI)', value: 'bni' },
-    { label: 'Bank Mandiri', value: 'mandiri' },
-    { label: 'CIMB Niaga', value: 'cimb' },
-    { label: 'Bank Danamon', value: 'danamon' },
-    { label: 'Permata Bank', value: 'permata' },
-    { label: 'Bank Syariah Indonesia (BSI)', value: 'bsi' },
-    { label: 'Bank Mega', value: 'mega' },
-    { label: 'OCBC NISP', value: 'ocbc' },
-    { label: 'Maybank Indonesia', value: 'maybank' },
-    { label: 'Panin Bank', value: 'panin' }
-  ]
+  const { data: listBank } = bankRepository.hooks.useGetBanks()
 
-  useEffect(() => {
-    if (bankQuery) setSelectedBank(bankQuery)
-    else setSelectedBank(undefined)
-  }, [bankQuery])
+  const { data: listTransaksi, isLoading: loadingTransaksi } =
+    transakasiRepository.hooks.useGetAllTransaksi({ search, bank, month })
 
-  const handleBankChange = (val?: string) => {
-    setSelectedBank(val)
-    const queryParams = new URLSearchParams(searchParams?.toString() || '')
-    if (val) queryParams.set('bank', val)
-    else queryParams.delete('bank')
-    router.replace(`?${queryParams.toString()}`)
-  }
+  const convertDataBank = (data: Bank[]): BankOption[] =>
+    data?.map((val) => ({
+      label: `${val.bank_name} - ${val.owner}`,
+      value: val.bank_name
+    }))
 
-  const dataSource = [
-    {
-      key: '1',
-      id: '1234567890',
-      nama: 'John Doe',
-      paket: '10 mbps',
-      harga: '10000',
-      tanggal_berlangganan: '2025-01-01',
-      tanggal_transaksi: '2025-01-01',
-      jatuh_tempo: '2025-01-01',
-      tanggal_bayar: '2025-01-01',
-      bukti_pembayaran: '/dummy/bukti_pembayaran.png',
-      bank: 'bca'
-    }
-  ]
+  const Transaksi: DataTransaksi[] = listTransaksi?.data
 
   const columns: TableProps['columns'] = [
-    { title: 'ID Pelanggan', dataIndex: 'id', key: 'id' },
-    { title: 'Nama Pelanggan', dataIndex: 'nama', key: 'nama' },
+    {
+      title: 'ID Pelanggan',
+      dataIndex: ['user', 'customerId'],
+      key: 'customerId',
+      render: (_, record) => record?.user?.customerId ?? '-'
+    },
+    {
+      title: 'Nama Pelanggan',
+      dataIndex: ['user', 'name'],
+      key: 'name',
+      render: (_, record) => record?.user?.name ?? '-'
+    },
     {
       title: 'Paket',
-      dataIndex: 'paket',
-      key: 'paket',
-      sorter: (a, b) => String(a.paket).localeCompare(String(b.paket))
+      dataIndex: ['paket', 'speed'],
+      key: 'speed',
+      render: (_, record) => record?.paket?.speed ?? '-',
+      sorter: (a, b) => a.paket?.speed.localeCompare(b.paket?.speed)
     },
     {
       title: 'Harga',
-      dataIndex: 'harga',
-      key: 'harga',
-      render: (text) => new Intl.NumberFormat('id-ID').format(Number(text))
+      dataIndex: 'price',
+      key: 'price',
+      render: (value) => formatRupiah(value ?? 0, { withPrefix: true })
+    },
+    {
+      title: 'Bank',
+      dataIndex: ['bank', 'bank_name'],
+      key: 'bank_name',
+      render: (_, record) =>
+        record?.bank?.bank_name ? (
+          <span>{`${record?.bank?.bank_name} - ${record?.bank?.owner}`}</span>
+        ) : (
+          '-'
+        )
     },
     {
       title: 'Tanggal Berlangganan',
-      dataIndex: 'tanggal_berlangganan',
-      key: 'tanggal_berlangganan',
-      render: (text) => dayjs(text).format('DD/MM/YYYY'),
+      dataIndex: ['user', 'createdAt'],
+      key: 'user_createdAt',
+      render: (_, record) =>
+        record?.user?.createdAt ? (
+          dayjs(record?.user?.createdAt).format('DD/MM/YYYY')
+        ) : (
+          <span className={'text-slate-500'}>-</span>
+        ),
       sorter: (a, b) =>
-        dayjs(a.tanggal_berlangganan).unix() -
-        dayjs(b.tanggal_berlangganan).unix()
+        dayjs(a?.user?.createdAt).unix() - dayjs(b?.user?.createdAt).unix()
     },
     {
       title: 'Jatuh Tempo',
-      dataIndex: 'jatuh_tempo',
-      key: 'jatuh_tempo',
-      render: (text) => dayjs(text).format('DD/MM/YYYY'),
-      sorter: (a, b) =>
-        dayjs(a.jatuh_tempo).unix() - dayjs(b.jatuh_tempo).unix()
+      dataIndex: 'due_date',
+      key: 'due_date',
+      render: (value) =>
+        value ? (
+          dayjs(value).format('DD/MM/YYYY')
+        ) : (
+          <span className={'text-slate-500'}>-</span>
+        ),
+      sorter: (a, b) => dayjs(a?.due_date).unix() - dayjs(b?.due_date).unix()
     },
     {
       title: 'Tanggal Bayar',
-      dataIndex: 'tanggal_bayar',
-      key: 'tanggal_bayar',
-      render: (text) => dayjs(text).format('DD/MM/YYYY'),
-      sorter: (a, b) =>
-        dayjs(a.tanggal_bayar).unix() - dayjs(b.tanggal_bayar).unix()
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (value) =>
+        value ? (
+          dayjs(value).format('DD/MM/YYYY')
+        ) : (
+          <span className={'text-slate-500'}>-</span>
+        ),
+      sorter: (a, b) => dayjs(a?.createdAt).unix() - dayjs(b?.createdAt).unix()
     },
     {
       title: 'Bukti Pembayaran',
-      dataIndex: 'bukti_pembayaran',
-      key: 'bukti_pembayaran',
-      render: (_: any, record: any) => (
+      dataIndex: 'buktiPembayaran',
+      key: 'buktiPembayaran',
+      render: (value) => (
         <div className='flex gap-2'>
           <Button
-            className='!rounded-lg !border-slate-100 !p-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
-            disabled={!record.bukti_pembayaran}
+            className={
+              '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
+            }
             onClick={() => {
-              setSelectedImage(record.bukti_pembayaran)
+              setSelectedImage(value)
               setOpenModal(true)
             }}
           >
@@ -139,17 +144,12 @@ const Transaksi = () => {
       <div className='flex items-center justify-between'>
         <Title>Transaksi</Title>
       </div>
-
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
-        <div className='flex flex-col gap-3 md:flex-row md:gap-6'>
+        <div className='flex h-11 flex-col gap-3 md:flex-row md:gap-6'>
           <InputSearch />
           <div className='flex flex-1 items-center gap-3 text-nowrap'>
             <span className='font-semibold text-slate-500'>Bank :</span>
-            <CustomBank
-              options={bankOptions}
-              value={selectedBank}
-              onChange={handleBankChange}
-            />
+            <CustomBankSelect options={convertDataBank(listBank?.data)} />
           </div>
           <div className='flex flex-1 items-center gap-3 text-nowrap'>
             <span className='font-semibold text-slate-500'>Bulan :</span>
@@ -165,9 +165,13 @@ const Transaksi = () => {
             </Button>
           </div>
         </div>
-
-        <DataTable dataSource={dataSource} columns={columns} limit={10} />
-
+        <DataTable
+          dataSource={Transaksi}
+          columns={columns}
+          limit={10}
+          totalData={listTransaksi?.total}
+          isLoading={loadingTransaksi}
+        />
         <BaseModal
           title='Bukti Pembayaran'
           open={openModal}
@@ -177,12 +181,16 @@ const Transaksi = () => {
           }}
         >
           <div className='flex items-center justify-center'>
-            {selectedImage && (
+            {selectedImage ? (
               <Image
                 src={selectedImage}
                 alt='Bukti Pembayaran'
-                className='max-h-[80vh] max-w-full rounded-lg object-contain'
+                width={472}
+                height={472}
+                className='rounded-lg object-contain'
               />
+            ) : (
+              <EmptyImg />
             )}
           </div>
         </BaseModal>

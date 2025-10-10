@@ -16,7 +16,7 @@ const DetailPelanggan = () => {
           <InfoPelanggan
             id='1234'
             tanggalBerlangganan='2023-01-01'
-            status='Pending'
+            status='Pra-Aktif'
             namaPelanggan='John Doe'
             email='john.doe@me.com'
             noTelp='08123456789'
