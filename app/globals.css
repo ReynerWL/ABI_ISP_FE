@@ -91,7 +91,7 @@ html {
 }
 
 .header-beranda.ant-layout-header {
-  @apply fixed left-0 top-0 z-50 flex h-fit w-full cursor-pointer items-center !bg-white !p-4 md:!px-10 md:!py-5 xl:!px-14 2xl:!px-20 !important;
+  @apply fixed left-0 top-0 z-50 flex h-fit w-full items-center !bg-white !p-4 md:!px-10 md:!py-5 xl:!px-14 2xl:!px-20 !important;
 }
 
 /* ------------------------------ SEARCH INPUT ------------------------------ */
@@ -127,7 +127,7 @@ html {
     @apply font-normal tracking-wide text-slate-300 !important;
   }
 
-  &. .ant-select-item-option-content {
+  & .ant-select-item-option-content {
     @apply font-semibold;
   }
 }

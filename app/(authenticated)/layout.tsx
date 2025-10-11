@@ -2,6 +2,7 @@
 
 import colorPallete from '#/constant/enums/colorPallete'
 import { authRepository } from '#/repository/auth'
+import { TokenUtil } from '#/utils/token'
 import type { MenuProps } from 'antd'
 import { Avatar, Button, Drawer, Layout, Menu, Popover, Skeleton } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
@@ -23,7 +24,6 @@ import {
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
 import { useUIState } from '../provider'
-import { TokenUtil } from '#/utils/token'
 
 export interface MenuItem {
   id: string

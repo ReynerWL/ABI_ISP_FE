@@ -63,17 +63,23 @@ const Login = () => {
   }
 
   return (
-    <div className='flex h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
+    <div className='flex h-dvh w-full items-center justify-center bg-white px-6 md:bg-slate-50'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex w-full flex-col rounded-3xl bg-white sm:w-[640px] md:min-h-[770px] md:items-center md:justify-center md:p-7 md:shadow-[4px_4px_48px_0px_#0068FF0D]'
+        className='flex h-auto w-full flex-col rounded-3xl bg-white sm:w-[640px] md:items-center md:justify-center md:p-7 md:shadow-[4px_4px_48px_0px_#0068FF0D] 2xl:min-h-[680px]'
       >
-        <div className='flex flex-col gap-6 md:w-full md:px-20'>
+        <div className='flex flex-col gap-6 py-10 md:w-full md:px-20 2xl:py-0'>
           <div className='space-y-3'>
             <Link href={'/'}>
-              <Image src={'/logo.png'} alt={'logo'} width={144} height={44} />
+              <Image
+                src={'/logo.png'}
+                alt={'logo'}
+                width={126}
+                height={64}
+                className='xl:h-[82px] xl:w-[151px]'
+              />
             </Link>
             <div className='flex flex-col gap-2'>
               <h1 className='text-3xl font-bold sm:text-4xl'>Selamat Datang</h1>
