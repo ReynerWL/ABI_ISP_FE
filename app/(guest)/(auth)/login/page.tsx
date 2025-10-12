@@ -37,11 +37,9 @@ const Login = () => {
 
       toast.success('Berhasil masuk! Mengarahkan ke beranda...')
 
-      setTimeout(() => {
-        toast.dismiss()
-        router.push('/dashboard')
-      }, 800)
+      router.push('/')
     } catch (error: any) {
+      setLoading(false)
       const statusCode = error?.response?.status
 
       if (statusCode === 500) {
@@ -57,8 +55,6 @@ const Login = () => {
       }
 
       toast.error('Terjadi kesalahan tak terduga. Silakan coba lagi.')
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -113,6 +109,7 @@ const Login = () => {
             <Form.Item
               label='Password'
               name='password'
+              validateDebounce={1000}
               rules={[{ required: true, message: 'Password wajib diisi' }]}
             >
               <Input.Password

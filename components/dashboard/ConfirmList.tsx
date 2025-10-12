@@ -2,6 +2,7 @@
 
 import { NeedConfirmation } from '#/repository/dashboard'
 import { Skeleton } from 'antd'
+import Image from 'next/image'
 import Link from 'next/link'
 import { HiInboxArrowDown } from 'react-icons/hi2'
 import Chip from '../reusable/Chip'
@@ -23,7 +24,9 @@ const ConfirmList = ({
           {list?.length || 0} data
         </p>
       </div>
-      <div className='custom-scrollbar flex flex-col gap-2 overflow-y-auto'>
+      <div
+        className={`custom-scrollbar flex flex-col gap-2 overflow-y-auto ${list?.length === 0 && 'h-full'}`}
+      >
         {list?.map((item: NeedConfirmation) => (
           <ConfirmListItem
             key={item.customerId}
@@ -33,6 +36,20 @@ const ConfirmList = ({
             loading={loading}
           />
         ))}
+        {list?.length === 0 && !loading && (
+          <div className='flex h-full w-full flex-col items-center justify-center'>
+            <Image
+              src={'/empty-data.svg'}
+              width={200}
+              height={200}
+              alt='Empty'
+              className='h-auto w-36 sm:w-40 md:w-48'
+            />
+            <h1 className='text-sm font-medium text-slate-500'>
+              Tidak ada data yang perlu dikonfirmasi
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   )

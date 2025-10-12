@@ -1,6 +1,5 @@
 import { Button } from 'antd'
 import Image from 'next/image'
-import React from 'react'
 
 interface props {
   widthImage: number
@@ -10,7 +9,7 @@ export const SectionHero = ({ widthImage }: props) => {
   return (
     <div
       id={'Hero'}
-      className='mt-4 flex !w-full scroll-m-0 flex-col-reverse items-center justify-between gap-y-6 px-4 sm:scroll-mt-20 md:flex-row md:px-10 xl:px-16 2xl:px-20'
+      className='mt-4 flex !w-full scroll-mt-20 flex-col-reverse items-center justify-between gap-y-6 px-4 md:flex-row md:px-10 xl:px-16 2xl:px-20'
     >
       <div
         className={

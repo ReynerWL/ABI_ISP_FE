@@ -42,10 +42,7 @@ const url = {
 }
 
 const hooks = {
-  useValidateToken: () =>
-    useSWR<Users>(url.validateToken(), http.fetcher, {
-      revalidateOnFocus: false
-    })
+  useValidateToken: () => useSWR<Users>(url.validateToken(), http.fetcher)
 }
 
 const api = {

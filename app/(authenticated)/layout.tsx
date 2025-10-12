@@ -1,10 +1,11 @@
 'use client'
 
+import BerandaHeader from '#/components/layout/BerandaHeader'
 import colorPallete from '#/constant/enums/colorPallete'
 import { authRepository } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Drawer, Layout, Menu, Popover, Skeleton } from 'antd'
+import { Avatar, Button, Layout, Menu, Popover } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
@@ -14,16 +15,13 @@ import React, { useEffect, useState } from 'react'
 import {
   HiArrowLeftStartOnRectangle,
   HiBars3BottomLeft,
-  HiBars3BottomRight,
   HiChevronDown,
   HiDocumentMagnifyingGlass,
   HiInboxArrowDown,
   HiServer,
-  HiUserCircle,
   HiUsers
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
-import { useUIState } from '../provider'
 
 export interface MenuItem {
   id: string
@@ -69,19 +67,9 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const beranda = pathname === '/beranda'
   const detail = pathname === '/detail'
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
-  const [open, setOpen] = useState(false)
-  const { isSM, isMobile, token } = useUIState()
 
-  const { data, isLoading } = authRepository.hooks.useValidateToken()
-  const users = data?.data
-
-  const showDrawer = () => {
-    setOpen(!open)
-  }
-
-  const onClose = () => {
-    setOpen(!open)
-  }
+  const { data } = authRepository.hooks.useValidateToken()
+  const user = data?.data
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,8 +83,8 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             const offsetHeight = el.offsetHeight
 
             if (
-              scrollY >= offsetTop - 100 &&
-              scrollY < offsetTop + offsetHeight - 100
+              scrollY >= offsetTop - 150 &&
+              scrollY < offsetTop + offsetHeight - 150
             ) {
               return { ...item, isActive: true }
             }
@@ -110,16 +98,6 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  const titleStyle = (
-    <div
-      className={
-        'items-center text-base font-semibold text-slate-500 md:text-sm'
-      }
-    >
-      Menu
-    </div>
-  )
 
   const content = (
     <div className={'flex flex-col gap-2'}>
@@ -146,6 +124,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       {!beranda && !detail && (
+        /* ---------------------------- DASHBOARD SIDEBAR ---------------------------- */
         <Sider
           width={288}
           style={{
@@ -175,144 +154,12 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           />
         </Sider>
       )}
-
       <Layout className={`h-full ${beranda || detail ? '' : 'lg:ml-[288px]'}`}>
         {beranda || detail ? (
-          <Header
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              left: 288,
-              height: 64
-            }}
-            className='header-beranda'
-          >
-            <div className='flex w-full flex-row items-center justify-between'>
-              <Link href={'/'}>
-                <Image
-                  src={'/logo.png'}
-                  alt={'logo'}
-                  width={isSM || isMobile ? 90 : 110}
-                  height={isSM || isMobile ? 90 : 110}
-                  className={'cursor-pointer'}
-                />
-              </Link>
-
-              <div className={'flex flex-row items-center gap-x-4 sm:hidden'}>
-                <Skeleton
-                  avatar
-                  active
-                  loading={isLoading}
-                  paragraph={{ rows: 0 }}
-                >
-                  <Button
-                    type='text'
-                    className={`!h-fit !p-1 hover:!bg-white ${token ? '!hidden' : '!flex'}`}
-                    onClick={() => router.push('/login')}
-                  >
-                    <HiUserCircle className={'text-4xl text-primary'} />
-                  </Button>
-                  <div
-                    className={`group flex items-center gap-4 ${token ? 'flex' : 'hidden'}`}
-                  >
-                    <Avatar
-                      size={42}
-                      className='!bg-secondary !text-xl font-semibold'
-                    >
-                      {users?.name
-                        ?.split(' ')
-                        .map((word) => word[0])
-                        .join('') || 'NUll'}
-                    </Avatar>
-                  </div>
-                  <Button type='text' className='!h-fit !p-1'>
-                    <HiBars3BottomRight
-                      className={'text-3xl text-slate-800'}
-                      onClick={showDrawer}
-                    />
-                  </Button>
-                </Skeleton>
-
-                <Drawer
-                  title={titleStyle}
-                  closable={{ 'aria-label': 'Close Button' }}
-                  onClose={onClose}
-                  open={open}
-                  width={200}
-                  mask={false}
-                >
-                  {activeSection.map((value, index) => (
-                    <div
-                      key={index}
-                      className={`items-center p-4 text-base font-semibold md:text-sm`}
-                    >
-                      <Link
-                        href={`#${value.id}`}
-                        className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
-                        onClick={() => setOpen(!open)}
-                      >
-                        {value.name}
-                      </Link>
-                    </div>
-                  ))}
-                </Drawer>
-              </div>
-              <div
-                className={
-                  'hidden flex-row items-center gap-x-6 sm:flex sm:flex-row md:gap-x-8 lg:gap-x-12'
-                }
-              >
-                {activeSection.map((value, index) => (
-                  <div
-                    key={index}
-                    className={`text-xs font-semibold md:text-sm`}
-                  >
-                    <Link
-                      href={`#${value.id}`}
-                      className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
-                    >
-                      {value.name}
-                    </Link>
-                  </div>
-                ))}
-                <Skeleton
-                  avatar
-                  active
-                  loading={isLoading}
-                  paragraph={{ rows: 0 }}
-                >
-                  <Button
-                    className={`!rounded-full !border-none !bg-blue-50 !px-6 !py-3 !text-xs !font-semibold !text-primary md:!px-8 md:!py-5 md:!text-sm ${token ? '!hidden' : '!flex'}`}
-                    onClick={() => router.push('/login')}
-                  >
-                    Masuk
-                  </Button>
-                  <div
-                    className={`group flex items-center gap-4 ${token ? 'flex' : 'hidden'}`}
-                  >
-                    <Avatar
-                      size={42}
-                      className='!bg-secondary !text-xl font-semibold'
-                    >
-                      {users?.name
-                        ?.split(' ')
-                        .map((word) => word[0])
-                        .join('') || 'NUll'}
-                    </Avatar>
-                    <h1 className='text-base font-bold text-primary md:text-lg'>
-                      {users?.name}
-                    </h1>
-                    <HiChevronDown
-                      className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
-                      strokeWidth={0.8}
-                    />
-                  </div>
-                </Skeleton>
-              </div>
-            </div>
-          </Header>
+          /* ----------------------------- BERANDA HEADER ----------------------------- */
+          <BerandaHeader activeSection={activeSection} user={user} />
         ) : (
+          /* ---------------------------- DASHBOARD HEADER ---------------------------- */
           <Header
             style={{
               position: 'fixed',
@@ -330,9 +177,9 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               <div className='group flex items-center gap-4'>
                 <Avatar
                   size={48}
-                  className='!bg-secondary !text-xl font-semibold'
+                  className='hidden !bg-secondary !text-xl font-semibold'
                 >
-                  {users?.name
+                  {user?.name
                     ?.split(' ')
                     .map((word) => word[0])
                     .join('') || 'NUll'}
@@ -340,10 +187,10 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
                 <div className='hidden items-center gap-4 sm:flex'>
                   <div>
                     <h1 className='text-base font-bold text-primary md:text-lg'>
-                      {users?.name}
+                      {user?.name}
                     </h1>
                     <p className='text-xs font-medium capitalize text-slate-400 md:text-sm'>
-                      {users?.role}
+                      {user?.role}
                     </p>
                   </div>
                   <Popover
@@ -366,9 +213,9 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           </Header>
         )}
         <Content
-          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white md:mt-[84px]' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
+          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white sm:mt-20 md:mt-24' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
         >
-          <div className={'h-full overflow-auto'}>{children}</div>
+          {children}
         </Content>
         {beranda && (
           <Footer

@@ -46,14 +46,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const validateToken = async () => {
-      // BYPASS DEV MODE
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('⚠️ Development mode: bypass token validation')
-        setToken('dev-token-bypass')
-        setValidating(false)
-        return
-      }
-
       const localAccessToken = TokenUtil.accessToken
       const sessionAccessToken = sessionStorage?.getItem('access_token')
       const token = localAccessToken || sessionAccessToken

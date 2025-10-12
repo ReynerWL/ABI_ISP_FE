@@ -11,8 +11,10 @@ import {
   dashboardRepository
 } from '#/repository/dashboard'
 import { HiArchiveBox, HiClock, HiSignal, HiSignalSlash } from 'react-icons/hi2'
+import { toast } from 'sonner'
 
 const Dashboard = () => {
+  toast.dismiss()
   const { isLoading, data } = dashboardRepository.hooks.useGetDashboard()
   const summary: DashboardData = data?.data
 

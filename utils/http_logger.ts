@@ -1,4 +1,5 @@
 export function attachSuperagentLogger(req: any) {
+  if (process.env.NODE_ENV === 'production') return
   const callback = req.callback
   console.log(
     '%s %s %s',

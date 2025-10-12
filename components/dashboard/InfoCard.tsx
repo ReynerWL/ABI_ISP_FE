@@ -27,7 +27,7 @@ const InfoCard = ({
       <motion.div
         whileHover={{ scale: 1.01, y: -5 }}
         transition={{ type: 'keyframes', stiffness: 300, damping: 15 }}
-        className='group flex h-full cursor-pointer rounded-2xl bg-white p-6 hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400'
+        className='group flex h-full cursor-pointer rounded-2xl bg-white p-6 hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-500'
       >
         <div className='flex w-full flex-col gap-4 md:justify-between xl:gap-0'>
           <IconComponent className='text-2xl text-secondary group-hover:text-white' />
