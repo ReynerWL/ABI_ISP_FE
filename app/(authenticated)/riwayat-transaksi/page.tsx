@@ -9,7 +9,7 @@ import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
 import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
 import { HiChevronDoubleLeft } from 'react-icons/hi'
 import { useRouter } from 'next/navigation'
-import { Heading } from '#/components/detail/Heading'
+import { Heading } from '#/components/riwayat/Heading'
 import Image from 'next/image'
 import { formatRupiah } from '#/utils/formatter'
 import Chip from '#/components/reusable/Chip'
@@ -23,7 +23,7 @@ import { useForm } from 'antd/es/form/Form'
 import StepInformasi from '#/components/data-pelanggan/form/StepInformasi'
 import dayjs from 'dayjs'
 import DataTable from '#/components/reusable/DataTable'
-import Desc from '#/components/detail/DescStatus'
+import Desc from '#/components/riwayat/DescStatus'
 import BaseModal from '#/components/reusable/BaseModal'
 import { EmptyImg } from '#/components/reusable/EmptyImg'
 
@@ -41,14 +41,8 @@ const listMenu: MenuItem[] = [
     icon: <HiDocumentMagnifyingGlass className={'text-xl'} />
   }
 ]
-
-// interface Props {
-//   params: { id: string }
-// }
-
 const Detail = () => {
   usePageTitle('Detail')
-  // const userId = params.id;
   const router = useRouter()
   const [form] = useForm()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
@@ -300,12 +294,12 @@ const Detail = () => {
                 </p>
               </div>
               <div className={'flex w-full justify-end'}>
-                <Chip text={initialValues?.data.status ?? ''} />
+                <Chip text={initialValues?.data?.status ?? ''} />
               </div>
             </div>
             <Desc
               text={initialValues?.data.status ?? ''}
-              dueDate={initialValues?.data.subscription.due_date}
+              dueDate={initialValues?.data?.subscription?.due_date}
             />
           </div>
           <Form

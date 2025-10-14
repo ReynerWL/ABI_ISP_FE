@@ -28,9 +28,11 @@ export interface PaymentPayload {
 }
 
 export interface ValidateToken {
-  name: string
-  role: string
+  name?: string | undefined
+  email?: string | undefined
+  role?: string | undefined
 }
+
 export interface Users extends ValidateToken {
   data: ValidateToken
 }

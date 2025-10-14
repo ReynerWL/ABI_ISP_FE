@@ -15,7 +15,7 @@ export const SectionAbout = ({ data }: props) => {
     <div
       id={'Tentang_Kami'}
       className={
-        'flex scroll-mt-20 flex-row justify-center bg-slate-50 px-4 md:px-10 xl:px-16 2xl:px-20'
+        'flex scroll-mt-28 flex-row justify-center bg-slate-50 px-4 md:px-10 xl:px-16 2xl:px-20'
       }
     >
       <div className={'flex flex-col gap-8 py-12 lg:py-16'}>

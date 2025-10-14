@@ -2,10 +2,11 @@
 
 import BerandaHeader from '#/components/layout/BerandaHeader'
 import colorPallete from '#/constant/enums/colorPallete'
+import { RoleAccess } from '#/constant/roleAcces'
 import { authRepository } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Layout, Menu, Popover } from 'antd'
+import { Avatar, Button, Dropdown, Layout, Menu, Skeleton } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
@@ -13,15 +14,14 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import {
-  HiArrowLeftStartOnRectangle,
   HiBars3BottomLeft,
   HiChevronDown,
+  HiChevronUp,
   HiDocumentMagnifyingGlass,
-  HiInboxArrowDown,
-  HiServer,
-  HiUsers
+  HiInboxArrowDown
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
+import { useUIState } from '../provider'
 
 export interface MenuItem {
   id: string
@@ -52,11 +52,6 @@ const items: MenuProps['items'] = [
     key: 'transaksi',
     label: <Link href={'/dashboard/transaksi'}>Transaksi</Link>,
     icon: <HiDocumentMagnifyingGlass className='!text-xl' />
-  },
-  {
-    key: 'users',
-    label: <Link href={'/dashboard/users'}>Users</Link>,
-    icon: <HiUsers className='!text-xl' />
   }
 ]
 
@@ -65,11 +60,33 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
   const beranda = pathname === '/beranda'
-  const detail = pathname === '/detail'
+  const history = pathname === '/riwayat-transaksi'
+  const { token } = useUIState()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
+  const [open, setOpen] = useState<boolean>(false)
 
-  const { data } = authRepository.hooks.useValidateToken()
+  const { data, isLoading } = authRepository.hooks.useValidateToken()
   const user = data?.data
+
+  useEffect(() => {
+    if (!user || isLoading) return
+
+    if (!user) {
+      TokenUtil.clearTokens()
+      return router.push('/login', { scroll: false })
+    }
+
+    const allowedRoles = RoleAccess.find(
+      (val) => pathname && val.path.test(pathname)
+    )
+
+    if (
+      allowedRoles &&
+      !allowedRoles.role.includes(user?.role?.toLowerCase() ?? '')
+    ) {
+      router.push(user.role === 'User' ? '/beranda' : '/dashboard')
+    }
+  }, [pathname, router, user, isLoading])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,65 +116,74 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const content = (
-    <div className={'flex flex-col gap-2'}>
-      <Button
-        className={`!flex !w-full !flex-row !justify-start !gap-2 !rounded-lg !border-none !p-6 !text-base !font-semibold !text-slate-500 !shadow-none`}
-        onClick={() => router.push('/detail')}
-      >
-        <HiServer className={'text-xl'} />
-        Lihat Paket Anda
-      </Button>
-      <Button
-        className={`!flex !w-full !flex-row !justify-start !gap-2 !rounded-lg !border-none !p-6 !text-base !font-semibold !text-slate-500 !shadow-none`}
-        onClick={() => {
-          TokenUtil.clearTokens()
-          return router.push('/login', { scroll: false })
-        }}
-      >
-        <HiArrowLeftStartOnRectangle className={'text-xl'} />
-        Keluar
-      </Button>
-    </div>
-  )
+  const dropdownItems: MenuProps['items'] = [
+    {
+      key: 1,
+      label: (
+        <div className='flex flex-col text-slate-900'>
+          <h1 className='font-semibold'>{user?.name}</h1>
+          <p className='text-xs font-medium text-slate-500'>{user?.email}</p>
+        </div>
+      ),
+      disabled: true
+    },
+    { type: 'divider' },
+    {
+      key: 5,
+      label: 'Logout',
+      danger: true,
+      onClick: () => {
+        TokenUtil.clearTokens()
+        return router.push('/login', { scroll: false })
+      }
+    }
+  ]
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      {!beranda && !detail && (
-        /* ---------------------------- DASHBOARD SIDEBAR ---------------------------- */
-        <Sider
-          width={288}
-          style={{
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            bottom: 0,
-            height: '100vh',
-            overflow: 'auto'
-          }}
-          className='dashboard-sider'
-        >
-          <Link href={'/'}>
-            <Image
-              src={'/logo.png'}
-              alt={'logo'}
-              width={110}
-              height={56}
-              className={'cursor-pointer'}
-            />
-          </Link>
-          <Menu
-            mode='inline'
-            selectedKeys={[selectedKey]}
-            items={items}
-            className='dashboard-menu !mt-6'
+      <Sider
+        width={288}
+        style={{
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          height: '100vh',
+          overflow: 'auto',
+          display: beranda || history ? 'none' : 'inline'
+        }}
+        className={beranda || history ? '' : 'dashboard-sider'}
+      >
+        <Link href={'/'}>
+          <Image
+            src={'/logo.png'}
+            alt={'logo'}
+            width={110}
+            height={56}
+            className={'cursor-pointer'}
           />
-        </Sider>
-      )}
-      <Layout className={`h-full ${beranda || detail ? '' : 'lg:ml-[288px]'}`}>
-        {beranda || detail ? (
+        </Link>
+        <Menu
+          mode='inline'
+          selectedKeys={[selectedKey]}
+          items={items}
+          className='dashboard-menu !mt-6'
+        />
+      </Sider>
+      <Layout className={`h-full ${beranda || history ? '' : 'lg:ml-[288px]'}`}>
+        {beranda || history ? (
           /* ----------------------------- BERANDA HEADER ----------------------------- */
-          <BerandaHeader activeSection={activeSection} user={user} />
+          <BerandaHeader
+            activeSection={activeSection}
+            token={token}
+            loading={isLoading}
+            user={user}
+            onClickLogout={() => {
+              TokenUtil.clearTokens()
+              return router.push('/login', { scroll: false })
+            }}
+            onClickHistory={() => router.push('/riwayat-transaksi')}
+          />
         ) : (
           /* ---------------------------- DASHBOARD HEADER ---------------------------- */
           <Header
@@ -174,40 +200,70 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               <Button type='text' className='!h-fit !p-1 lg:!hidden'>
                 <HiBars3BottomLeft className='!text-3xl' />
               </Button>
-              <div className='group flex items-center gap-4'>
-                <Avatar
-                  size={48}
-                  className='hidden !bg-secondary !text-xl font-semibold'
-                >
-                  {user?.name
-                    ?.split(' ')
-                    .map((word) => word[0])
-                    .join('') || 'NUll'}
-                </Avatar>
-                <div className='hidden items-center gap-4 sm:flex'>
-                  <div>
-                    <h1 className='text-base font-bold text-primary md:text-lg'>
-                      {user?.name}
-                    </h1>
-                    <p className='text-xs font-medium capitalize text-slate-400 md:text-sm'>
-                      {user?.role}
-                    </p>
-                  </div>
-                  <Popover
-                    placement={'bottomRight'}
-                    title={''}
-                    content={content}
-                    arrow={{ pointAtCenter: true }}
-                    trigger={'click'}
-                    className={'tab-profile'}
-                    style={{ padding: '24px' }}
-                  >
-                    <HiChevronDown
-                      className='rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
-                      strokeWidth={0.8}
+              <div className={'group flex items-center gap-4'}>
+                {isLoading ? (
+                  <>
+                    <Skeleton.Avatar
+                      active
+                      size={'large'}
+                      style={{ display: 'flex' }}
                     />
-                  </Popover>
-                </div>
+                    <Skeleton.Input
+                      active
+                      size={'large'}
+                      style={{ display: 'flex' }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Avatar
+                      size={45}
+                      className='hidden !bg-secondary !text-xl font-semibold'
+                    >
+                      {user?.name
+                        ?.split(' ')
+                        .map((word) => word[0])
+                        .join('') || 'NUll'}
+                    </Avatar>
+                    <div className='hidden items-center gap-4 sm:flex'>
+                      <div>
+                        <h1 className='text-lg font-bold text-primary'>
+                          {user?.name}
+                        </h1>
+                        <p className='text-sm font-medium capitalize text-slate-400'>
+                          {user?.role}
+                        </p>
+                      </div>
+                      <Dropdown
+                        menu={{ items: dropdownItems }}
+                        placement='bottomRight'
+                        className={'!hidden cursor-pointer sm:!flex'}
+                        trigger={['click']}
+                        popupRender={(menu) => (
+                          <div className='min-w-[150px]'>{menu}</div>
+                        )}
+                      >
+                        {!open ? (
+                          <HiChevronDown
+                            className={
+                              'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                            }
+                            strokeWidth={0.8}
+                            onClick={() => setOpen(true)}
+                          />
+                        ) : (
+                          <HiChevronUp
+                            className={
+                              'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                            }
+                            strokeWidth={0.8}
+                            onClick={() => setOpen(false)}
+                          />
+                        )}
+                      </Dropdown>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </Header>
@@ -217,19 +273,18 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
         >
           {children}
         </Content>
-        {beranda && (
-          <Footer
-            style={{
-              textAlign: 'center',
-              backgroundColor: colorPallete.Slate900,
-              color: colorPallete.White
-            }}
-            className={'!px-0 !text-xs sm:!text-sm'}
-          >
-            ©{new Date().getFullYear()} PT Amarta Buana Informati. All rights
-            reserved.
-          </Footer>
-        )}
+        <Footer
+          style={{
+            textAlign: 'center',
+            backgroundColor: colorPallete.Slate900,
+            color: colorPallete.White,
+            display: beranda ? 'inline' : 'none'
+          }}
+          className={'!px-0 !text-xs sm:!text-sm'}
+        >
+          ©{new Date().getFullYear()} PT Amarta Buana Informati. All rights
+          reserved.
+        </Footer>
       </Layout>
     </Layout>
   )

@@ -37,7 +37,7 @@ const Login = () => {
 
       toast.success('Berhasil masuk! Mengarahkan ke beranda...')
 
-      router.push('/')
+      router.push('/validation')
     } catch (error: any) {
       setLoading(false)
       const statusCode = error?.response?.status

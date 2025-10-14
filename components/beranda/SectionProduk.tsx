@@ -2,6 +2,7 @@ import { GetAllPaket } from '#/repository/beranda'
 import { formatRupiah } from '#/utils/formatter'
 import { Button, Skeleton } from 'antd'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 interface props {
@@ -11,11 +12,12 @@ interface props {
 }
 
 export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
+  const router = useRouter()
   return (
     <div
       id={'Produk'}
       className={
-        'flex scroll-mt-20 flex-col justify-center gap-y-8 px-4 md:px-10 xl:px-16 2xl:px-20'
+        'flex scroll-mt-28 flex-col justify-center gap-y-8 px-4 md:px-10 xl:px-16 2xl:px-20'
       }
     >
       <Skeleton active loading={loading} round paragraph={{ rows: 6 }}>
@@ -82,6 +84,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                 className={
                   '!rounded-xl !border-none !bg-blue-50 !px-8 !py-5 !text-sm !font-semibold !text-primary xl:!text-base'
                 }
+                onClick={() => router.push('/register')}
               >
                 Langganan Sekarang
               </Button>

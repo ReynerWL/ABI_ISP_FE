@@ -7,6 +7,7 @@ export interface Subscription {
   due_date: string
   createdAt: string
 }
+
 export interface User {
   id: string
   customerId: any

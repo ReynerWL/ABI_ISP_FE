@@ -15,7 +15,6 @@ interface UIState {
   isMobile: boolean
   token: string | null
   validating: boolean
-  // user: ValidateToken | null
 }
 
 const UIStateContext = createContext<UIState | undefined>(undefined)
@@ -29,6 +28,9 @@ export const useUIState = () => {
 }
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
+  TokenUtil.loadToken()
+  const router = useRouter()
+  const pathname = usePathname()
   const [is2XL, setIs2XL] = useState(false)
   const [isXL, setIsXL] = useState(false)
   const [isLG, setIsLG] = useState(false)
@@ -37,12 +39,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [validating, setValidating] = useState(true)
   const [token, setToken] = useState<string | null>(null)
-  // const [user, setUser] = useState<ValidateToken | null>(null)
-
-  const router = useRouter()
-  const pathname = usePathname()
-
-  TokenUtil.loadToken()
 
   useEffect(() => {
     const validateToken = async () => {
@@ -79,17 +75,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const value = {
-    is2XL,
-    isXL,
-    isLG,
-    isMD,
-    isSM,
-    isMobile,
-    token,
-    validating
-    // user
-  }
+  const value = { is2XL, isXL, isLG, isMD, isSM, isMobile, token, validating }
 
   return (
     <UIStateContext.Provider value={value}>

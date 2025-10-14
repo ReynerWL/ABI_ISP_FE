@@ -1,5 +1,5 @@
-import { Button } from 'antd'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface props {
   widthImage: number
@@ -9,7 +9,7 @@ export const SectionHero = ({ widthImage }: props) => {
   return (
     <div
       id={'Hero'}
-      className='mt-4 flex !w-full scroll-mt-20 flex-col-reverse items-center justify-between gap-y-6 px-4 md:flex-row md:px-10 xl:px-16 2xl:px-20'
+      className='mt-4 flex !w-full scroll-mt-28 flex-col-reverse items-center justify-between gap-y-6 px-4 md:flex-row md:px-10 xl:px-16 2xl:px-20'
     >
       <div
         className={
@@ -45,13 +45,14 @@ export const SectionHero = ({ widthImage }: props) => {
           </p>
         </div>
         <div className={'flex w-full justify-center md:justify-start'}>
-          <Button
+          <Link
             className={
-              'w-fit !rounded-full !border-none !bg-secondary !px-4 !py-6 !text-base !font-semibold !text-white md:!py-5 md:!text-xs lg:!py-6 lg:!text-base'
+              '!h-fit w-fit !rounded-full !border-none !bg-secondary !px-4 !py-4 !text-base !font-semibold !text-white md:!py-4 md:!text-xs lg:!py-4 lg:!text-base'
             }
+            href={'#Produk'}
           >
             Berlangganan Sekarang
-          </Button>
+          </Link>
         </div>
       </div>
       <div className={''}>
