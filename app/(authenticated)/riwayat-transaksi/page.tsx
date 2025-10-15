@@ -1,31 +1,31 @@
 'use client'
 
-import usePageTitle from '#/hooks/usePageTitle'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-import { MenuItem } from '../layout'
-import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
-import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
-import { HiChevronDoubleLeft } from 'react-icons/hi'
-import { useRouter } from 'next/navigation'
-import { Heading } from '#/components/riwayat/Heading'
-import Image from 'next/image'
-import { formatRupiah } from '#/utils/formatter'
+import StepInformasi from '#/components/data-pelanggan/form/StepInformasi'
+import BaseModal from '#/components/reusable/BaseModal'
 import Chip from '#/components/reusable/Chip'
-import { DetailUser, ListPayment, userRepository } from '#/repository/user'
+import DataTable from '#/components/reusable/DataTable'
+import { EmptyImg } from '#/components/reusable/EmptyImg'
+import Desc from '#/components/riwayat/DescStatus'
+import { Heading } from '#/components/riwayat/Heading'
+import usePageTitle from '#/hooks/usePageTitle'
+import { ListPayment, User, userRepository } from '#/repository/user'
+import { formatRupiah } from '#/utils/formatter'
+import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
+import { useForm } from 'antd/es/form/Form'
+import { UploadChangeParam } from 'antd/es/upload'
 import Dragger from 'antd/es/upload/Dragger'
+import dayjs from 'dayjs'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
+import { HiChevronDoubleLeft } from 'react-icons/hi'
+import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
 import { PiTrash } from 'react-icons/pi'
 import { toast } from 'sonner'
-import { UploadChangeParam } from 'antd/es/upload'
-import { useForm } from 'antd/es/form/Form'
-import StepInformasi from '#/components/data-pelanggan/form/StepInformasi'
-import dayjs from 'dayjs'
-import DataTable from '#/components/reusable/DataTable'
-import Desc from '#/components/riwayat/DescStatus'
-import BaseModal from '#/components/reusable/BaseModal'
-import { EmptyImg } from '#/components/reusable/EmptyImg'
+import { MenuItem } from '../layout'
 
 const listMenu: MenuItem[] = [
   {
@@ -46,7 +46,7 @@ const Detail = () => {
   const router = useRouter()
   const [form] = useForm()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
-  const [initialValues, setInitialValues] = useState<DetailUser | null>(null)
+  const [initialValues, setInitialValues] = useState<User | null>(null)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -277,29 +277,29 @@ const Detail = () => {
               }
             >
               <Image
-                src={initialValues?.data?.paket?.photo ?? '/emptyImg.svg'}
+                src={initialValues?.paket?.photo ?? '/emptyImg.svg'}
                 alt={'Paket'}
                 width={64}
                 height={64}
               />
               <div className={'flex w-full flex-col gap-1'}>
                 <p className={'text-xs font-medium text-slate-500'}>
-                  {initialValues?.data?.paket?.name}
+                  {initialValues?.paket?.name}
                 </p>{' '}
                 <p className={'text-base font-bold text-primary'}>
-                  {formatRupiah(initialValues?.data?.paket?.price ?? 0, {
+                  {formatRupiah(initialValues?.paket?.price ?? 0, {
                     withPrefix: true
                   })}
                   /Bulan
                 </p>
               </div>
               <div className={'flex w-full justify-end'}>
-                <Chip text={initialValues?.data?.status ?? ''} />
+                <Chip text={initialValues?.status ?? ''} />
               </div>
             </div>
             <Desc
-              text={initialValues?.data.status ?? ''}
-              dueDate={initialValues?.data?.subscription?.due_date}
+              text={initialValues?.status ?? ''}
+              dueDate={initialValues?.subscription?.due_date}
             />
           </div>
           <Form
@@ -364,7 +364,7 @@ const Detail = () => {
             <StepInformasi
               key={0}
               isEditMode
-              alamat={initialValues?.data?.alamat}
+              alamat={initialValues?.alamat}
               isDetailMode
             />
           </Form>

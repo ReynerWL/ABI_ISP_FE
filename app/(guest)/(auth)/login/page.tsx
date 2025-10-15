@@ -1,8 +1,7 @@
 'use client'
 
 import usePageTitle from '#/hooks/usePageTitle'
-import { authRepository, LoginPayload } from '#/repository/auth'
-import { UserPayload } from '#/repository/user'
+import { authRepository, LoginPayload, UserPayload } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import { Button, Form, Input } from 'antd'
 import Checkbox from 'antd/es/checkbox/Checkbox'
