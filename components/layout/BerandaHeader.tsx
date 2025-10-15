@@ -1,30 +1,27 @@
+'use client'
+
 import { MenuItem } from '#/app/(authenticated)/layout'
-import { ValidateToken } from '#/repository/auth'
+import { useUser } from '#/context/UserContext'
+import { TokenUtil } from '#/utils/token'
 import { Avatar, Button, Drawer, Dropdown, MenuProps, Skeleton } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
 import { HiBars3BottomRight } from 'react-icons/hi2'
+import { TbLayoutDashboardFilled, TbLogout } from 'react-icons/tb'
 
 interface BerandaHeaderProps {
   activeSection: MenuItem[]
-  token: string | null
-  loading: boolean
-  user?: ValidateToken
-  onClickHistory: () => void
-  onClickLogout: () => void
+  isLoading?: boolean
 }
 
-const BerandaHeader = ({
-  activeSection,
-  token,
-  loading,
-  user,
-  onClickHistory,
-  onClickLogout
-}: BerandaHeaderProps) => {
+const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
+  const token = TokenUtil.accessToken
+  const { user } = useUser()
+  const router = useRouter()
   const [openDrawer, setOpenDrawer] = useState(false)
 
   const dropdownItems: MenuProps['items'] = [
@@ -39,9 +36,37 @@ const BerandaHeader = ({
       disabled: true
     },
     { type: 'divider' },
-    { key: 3, label: 'History', onClick: onClickHistory },
-    { type: 'divider' },
-    { key: 5, label: 'Logout', danger: true, onClick: onClickLogout }
+    ...(user?.role.toLowerCase() !== 'admin'
+      ? [{ key: 2, label: <Link href={'/riwayat-transaksi'}>History</Link> }]
+      : [
+          {
+            key: 2,
+            label: (
+              <Link
+                href={'/dashboard'}
+                className='flex items-center gap-2 !text-slate-600'
+              >
+                <TbLayoutDashboardFilled className='text-lg' />
+                Dashboard
+              </Link>
+            )
+          }
+        ]),
+    {
+      key: 3,
+      label: (
+        <div className='flex items-center gap-2'>
+          <TbLogout className='text-lg' />
+          <span>Logout</span>
+        </div>
+      ),
+      danger: true,
+      onClick: () => {
+        TokenUtil.clearTokens()
+        TokenUtil.persistToken()
+        router.push('/login', { scroll: false })
+      }
+    }
   ]
 
   return (
@@ -81,50 +106,54 @@ const BerandaHeader = ({
               </Link>
             ))}
           </div>
-          {!loading ? (
-            <>
-              <Link
-                href={'/login'}
-                className={`${!token ? '!flex items-center gap-2 !rounded-full !border-none !bg-blue-50 px-6 py-2.5 !text-xs !font-semibold !text-primary hover:!bg-blue-100 md:!text-sm' : '!hidden'}`}
-              >
-                <AiOutlineUser className='hidden text-lg sm:block' />
-                Masuk
-              </Link>
-              <Button type='text' className='!h-fit !p-1 sm:!hidden'>
-                <HiBars3BottomRight
-                  className={'text-3xl text-slate-800'}
-                  onClick={() => setOpenDrawer(!openDrawer)}
-                />
-              </Button>
-              <Dropdown
-                menu={{ items: dropdownItems }}
-                placement='bottomRight'
-                className={
-                  user && token ? '!hidden cursor-pointer sm:!flex' : '!hidden'
-                }
-                trigger={['click']}
-                popupRender={(menu) => (
-                  <div className='min-w-[150px]'>{menu}</div>
-                )}
-              >
-                <Avatar
-                  size={42}
-                  className='!bg-secondary !text-xl font-semibold'
-                >
-                  {user?.name
-                    ?.split(' ')
-                    .map((word: string) => word[0])
-                    .join('') || <AiOutlineUser className='text-xl' />}
-                </Avatar>
-              </Dropdown>
-            </>
-          ) : (
-            <Skeleton.Avatar
+          {isLoading ? (
+            <Skeleton.Node
               active
-              size={'large'}
-              style={{ display: 'flex' }}
-            />
+              style={{
+                display: 'flex',
+                width: 45,
+                height: 45,
+                borderRadius: '100%'
+              }}
+            >
+              <AiOutlineUser className='!text-xl !text-slate-500' />
+            </Skeleton.Node>
+          ) : user && token ? (
+            <Dropdown
+              menu={{ items: dropdownItems }}
+              placement='bottomRight'
+              className='!hidden cursor-pointer sm:!flex'
+              trigger={['click']}
+              popupRender={(menu) => (
+                <div className='min-w-[150px]'>{menu}</div>
+              )}
+            >
+              <Avatar
+                size={42}
+                className='!bg-secondary !text-xl font-semibold'
+              >
+                {user?.name
+                  ?.split(' ')
+                  .map((word: string) => word[0])
+                  .join('') || <AiOutlineUser className='text-xl' />}
+              </Avatar>
+            </Dropdown>
+          ) : (
+            <Link
+              href={'/login'}
+              className={`!flex items-center gap-2 !rounded-full !border-none !bg-blue-50 px-6 py-2.5 !text-xs !font-semibold !text-primary hover:!bg-blue-100 md:!text-sm`}
+            >
+              <AiOutlineUser className='hidden text-lg sm:block' />
+              Masuk
+            </Link>
           )}
+
+          <Button type='text' className='!h-fit !p-1 sm:!hidden'>
+            <HiBars3BottomRight
+              className={'text-3xl text-slate-800'}
+              onClick={() => setOpenDrawer(!openDrawer)}
+            />
+          </Button>
         </div>
       </div>
 
@@ -145,42 +174,20 @@ const BerandaHeader = ({
         mask={false}
         classNames={{ wrapper: 'sm:!hidden' }}
       >
-        <div className={'flex h-full flex-col justify-between'}>
-          <div>
-            {activeSection.map((value, index) => (
-              <div
-                key={index}
-                className={`items-center py-4 text-sm font-semibold`}
-              >
-                <Link
-                  href={value.id === 'Hero' ? '#' : `#${value.id}`}
-                  className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
-                  onClick={() => setOpenDrawer(!openDrawer)}
-                >
-                  {value.name}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <div className='flex flex-col gap-3 text-slate-900'>
-            <div>
-              <h1 className='text-base font-semibold'>{user?.name}</h1>
-              <p className='text-sm font-medium text-slate-500'>
-                {user?.email}
-              </p>
-            </div>
-            <hr />
+        {activeSection.map((value, index) => (
+          <div
+            key={index}
+            className={`items-center py-4 text-base font-semibold md:text-sm`}
+          >
             <Link
-              href={'/login'}
-              className={
-                'rounded-xl bg-red-50 p-3 text-center font-bold text-red-600'
-              }
-              onClick={() => onClickLogout}
+              href={value.id === 'Hero' ? '#' : `#${value.id}`}
+              className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
-              Logout
+              {value.name}
             </Link>
           </div>
-        </div>
+        ))}
       </Drawer>
     </Header>
   )

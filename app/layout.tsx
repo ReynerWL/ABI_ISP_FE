@@ -1,3 +1,4 @@
+import { TokenUtil } from '#/utils/token'
 import '@ant-design/v5-patch-for-react-19'
 import 'antd/dist/reset.css'
 import { Plus_Jakarta_Sans } from 'next/font/google'
@@ -18,6 +19,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  TokenUtil.loadToken()
   return (
     <html lang='en' className={`${plusJakartaSans.variable}`}>
       <Head />

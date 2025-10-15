@@ -27,14 +27,11 @@ export interface PaymentPayload {
   buktiPembayaran: string
 }
 
-export interface ValidateToken {
-  name?: string | undefined
-  email?: string | undefined
-  role?: string | undefined
-}
-
-export interface Users extends ValidateToken {
-  data: ValidateToken
+export interface UserPayload {
+  id: string
+  name: string
+  email: string
+  role: string
 }
 
 const url = {
@@ -44,7 +41,7 @@ const url = {
 }
 
 const hooks = {
-  useValidateToken: () => useSWR<Users>(url.validateToken(), http.fetcher)
+  useValidateToken: () => useSWR(url.validateToken(), http.fetcher)
 }
 
 const api = {

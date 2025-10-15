@@ -1,11 +1,11 @@
 'use client'
 
-import { useUIState } from '#/app/provider'
 import { SectionAbout } from '#/components/beranda/SectionAbout'
 import { SectionBenefit } from '#/components/beranda/SectionBenefit'
 import { SectionFooter } from '#/components/beranda/SectionFooter'
 import { SectionHero } from '#/components/beranda/SectionHero'
 import { SectionProduk } from '#/components/beranda/SectionProduk'
+import { useUIState } from '#/context/UIStateContext'
 import usePageTitle from '#/hooks/usePageTitle'
 import { berandaRepository } from '#/repository/beranda'
 import {

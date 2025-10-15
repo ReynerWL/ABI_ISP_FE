@@ -2,10 +2,12 @@
 
 import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, LoginPayload } from '#/repository/auth'
+import { UserPayload } from '#/repository/user'
 import { TokenUtil } from '#/utils/token'
 import { Button, Form, Input } from 'antd'
 import Checkbox from 'antd/es/checkbox/Checkbox'
 import { motion } from 'framer-motion'
+import { jwtDecode } from 'jwt-decode'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -27,17 +29,33 @@ const Login = () => {
       const { body } = await authRepository.api.login(values)
       const accessToken = body?.data?.accessToken
 
+      const decoded = jwtDecode<UserPayload>(accessToken)
+      const userRole = decoded?.role.toLowerCase()
+
       if (rememberMe) {
         TokenUtil.setRememberMe(rememberMe)
         TokenUtil.setAccessToken(accessToken)
         TokenUtil.persistToken()
       } else {
         sessionStorage.setItem('access_token', accessToken || '')
+        TokenUtil.setAccessToken(accessToken)
+        TokenUtil.persistToken()
       }
 
-      toast.success('Berhasil masuk! Mengarahkan ke beranda...')
+      toast.success(
+        `Berhasil masuk! Mengarahkan ke ${userRole === 'admin' ? 'dashboard' : 'beranda'}...`
+      )
 
-      router.push('/validation')
+      switch (userRole) {
+        case 'admin':
+          router.push('/dashboard')
+          break
+        case 'user':
+          router.push('/beranda')
+          break
+        default:
+          break
+      }
     } catch (error: any) {
       setLoading(false)
       const statusCode = error?.response?.status

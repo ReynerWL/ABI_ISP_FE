@@ -1,8 +1,8 @@
 import { http } from '#/utils/http'
-import useSWR from 'swr'
-import { User } from './user'
-import { Bank } from './bank'
 import { buildQueryParams } from '#/utils/params'
+import useSWR from 'swr'
+import { Bank } from './bank'
+import { User } from './user'
 
 export interface DataTransaksi {
   user: User

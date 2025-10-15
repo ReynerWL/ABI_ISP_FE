@@ -36,10 +36,6 @@ export interface User {
   subscription: Subscription
 }
 
-export interface DetailUser {
-  data: User
-}
-
 export interface Role {
   id: string
   name: string
@@ -81,8 +77,6 @@ export interface GetUserParams {
   page?: number
   limit?: number
 }
-
-export interface DetailUser {}
 
 const url = {
   getUser: (params: GetUserParams) => {

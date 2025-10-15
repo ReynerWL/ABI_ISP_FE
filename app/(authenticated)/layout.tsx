@@ -1,27 +1,22 @@
 'use client'
 
 import BerandaHeader from '#/components/layout/BerandaHeader'
+import DashboardHeader from '#/components/layout/DashboardHeader'
+import { config } from '#/config/app'
 import colorPallete from '#/constant/enums/colorPallete'
-import { RoleAccess } from '#/constant/roleAcces'
-import { authRepository } from '#/repository/auth'
+import { useUser } from '#/context/UserContext'
 import { TokenUtil } from '#/utils/token'
 import type { MenuProps } from 'antd'
-import { Avatar, Button, Dropdown, Layout, Menu, Skeleton } from 'antd'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
+import { Layout, Menu } from 'antd'
+import { Content, Footer } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import {
-  HiBars3BottomLeft,
-  HiChevronDown,
-  HiChevronUp,
-  HiDocumentMagnifyingGlass,
-  HiInboxArrowDown
-} from 'react-icons/hi2'
+import { HiDocumentMagnifyingGlass, HiInboxArrowDown } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
-import { useUIState } from '../provider'
+import { toast } from 'sonner'
 
 export interface MenuItem {
   id: string
@@ -56,37 +51,14 @@ const items: MenuProps['items'] = [
 ]
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter()
+  toast.dismiss()
+  const { setUser } = useUser()
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
   const beranda = pathname === '/beranda'
   const history = pathname === '/riwayat-transaksi'
-  const { token } = useUIState()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
-  const [open, setOpen] = useState<boolean>(false)
-
-  const { data, isLoading } = authRepository.hooks.useValidateToken()
-  const user = data?.data
-
-  useEffect(() => {
-    if (!user || isLoading) return
-
-    if (!user) {
-      TokenUtil.clearTokens()
-      return router.push('/login', { scroll: false })
-    }
-
-    const allowedRoles = RoleAccess.find(
-      (val) => pathname && val.path.test(pathname)
-    )
-
-    if (
-      allowedRoles &&
-      !allowedRoles.role.includes(user?.role?.toLowerCase() ?? '')
-    ) {
-      router.push(user.role === 'User' ? '/beranda' : '/dashboard')
-    }
-  }, [pathname, router, user, isLoading])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,28 +88,27 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const dropdownItems: MenuProps['items'] = [
-    {
-      key: 1,
-      label: (
-        <div className='flex flex-col text-slate-900'>
-          <h1 className='font-semibold'>{user?.name}</h1>
-          <p className='text-xs font-medium text-slate-500'>{user?.email}</p>
-        </div>
-      ),
-      disabled: true
-    },
-    { type: 'divider' },
-    {
-      key: 5,
-      label: 'Logout',
-      danger: true,
-      onClick: () => {
-        TokenUtil.clearTokens()
-        return router.push('/login', { scroll: false })
+  useEffect(() => {
+    TokenUtil.loadToken()
+
+    const fetchUser = async () => {
+      try {
+        const result = await fetch(`${config.baseUrl}/auth/validate-token`, {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${TokenUtil.accessToken}` }
+        })
+
+        const response = await result.json()
+
+        setUser(response.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
       }
     }
-  ]
+    fetchUser()
+  }, [])
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -173,100 +144,10 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <Layout className={`h-full ${beranda || history ? '' : 'lg:ml-[288px]'}`}>
         {beranda || history ? (
           /* ----------------------------- BERANDA HEADER ----------------------------- */
-          <BerandaHeader
-            activeSection={activeSection}
-            token={token}
-            loading={isLoading}
-            user={user}
-            onClickLogout={() => {
-              TokenUtil.clearTokens()
-              return router.push('/login', { scroll: false })
-            }}
-            onClickHistory={() => router.push('/riwayat-transaksi')}
-          />
+          <BerandaHeader activeSection={activeSection} isLoading={loading} />
         ) : (
           /* ---------------------------- DASHBOARD HEADER ---------------------------- */
-          <Header
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: 0,
-              left: 288,
-              height: 64
-            }}
-            className='dashboard-header'
-          >
-            <div className='flex w-full items-center justify-between gap-4 lg:justify-end'>
-              <Button type='text' className='!h-fit !p-1 lg:!hidden'>
-                <HiBars3BottomLeft className='!text-3xl' />
-              </Button>
-              <div className={'group flex items-center gap-4'}>
-                {isLoading ? (
-                  <>
-                    <Skeleton.Avatar
-                      active
-                      size={'large'}
-                      style={{ display: 'flex' }}
-                    />
-                    <Skeleton.Input
-                      active
-                      size={'large'}
-                      style={{ display: 'flex' }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Avatar
-                      size={45}
-                      className='hidden !bg-secondary !text-xl font-semibold'
-                    >
-                      {user?.name
-                        ?.split(' ')
-                        .map((word) => word[0])
-                        .join('') || 'NUll'}
-                    </Avatar>
-                    <div className='hidden items-center gap-4 sm:flex'>
-                      <div>
-                        <h1 className='text-lg font-bold text-primary'>
-                          {user?.name}
-                        </h1>
-                        <p className='text-sm font-medium capitalize text-slate-400'>
-                          {user?.role}
-                        </p>
-                      </div>
-                      <Dropdown
-                        menu={{ items: dropdownItems }}
-                        placement='bottomRight'
-                        className={'!hidden cursor-pointer sm:!flex'}
-                        trigger={['click']}
-                        popupRender={(menu) => (
-                          <div className='min-w-[150px]'>{menu}</div>
-                        )}
-                      >
-                        {!open ? (
-                          <HiChevronDown
-                            className={
-                              'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
-                            }
-                            strokeWidth={0.8}
-                            onClick={() => setOpen(true)}
-                          />
-                        ) : (
-                          <HiChevronUp
-                            className={
-                              'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
-                            }
-                            strokeWidth={0.8}
-                            onClick={() => setOpen(false)}
-                          />
-                        )}
-                      </Dropdown>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </Header>
+          <DashboardHeader isLoading={loading} />
         )}
         <Content
           className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white sm:mt-20 md:mt-24' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
