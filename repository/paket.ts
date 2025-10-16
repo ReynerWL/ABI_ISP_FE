@@ -6,6 +6,7 @@ export interface Paket {
   name: string
   price: number
   speed: string
+  photo: string
   createdAt: string
   updatedAt: string
   deletedAt: any

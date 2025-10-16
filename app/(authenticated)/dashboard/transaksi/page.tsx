@@ -145,25 +145,20 @@ const Transaksi = () => {
         <Title>Transaksi</Title>
       </div>
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
-        <div className='flex h-11 flex-col gap-3 md:flex-row md:gap-6'>
-          <InputSearch />
-          <div className='flex flex-1 items-center gap-3 text-nowrap'>
-            <span className='font-semibold text-slate-500'>Bank :</span>
-            <CustomBankSelect options={convertDataBank(listBank?.data)} />
-          </div>
-          <div className='flex flex-1 items-center gap-3 text-nowrap'>
-            <span className='font-semibold text-slate-500'>Bulan :</span>
-            <CustomMonthPicker />
-          </div>
-          <div className='flex w-full gap-6 md:w-fit'>
-            <Button
-              className='!h-full !w-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 md:!w-fit'
-              type='primary'
-            >
-              <HiOutlineDownload className='text-[23px]' strokeWidth={1.9} />
-              Ekspor
-            </Button>
-          </div>
+        <div className='grid h-fit grid-cols-10 gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
+          <InputSearch className={'order-1 !col-span-8'} />
+          <Button
+            className='order-2 !col-span-2 !h-full !w-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 xl:order-4 xl:!w-fit'
+            type='primary'
+          >
+            <HiOutlineDownload className='text-[23px]' strokeWidth={1.9} />
+            Ekspor
+          </Button>
+          <CustomBankSelect
+            options={convertDataBank(listBank?.data)}
+            className={'order-3 col-span-5 xl:order-2'}
+          />
+          <CustomMonthPicker className={'order-4 col-span-5 xl:order-3'} />
         </div>
         <DataTable
           dataSource={Transaksi}

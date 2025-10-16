@@ -1,4 +1,4 @@
-import { GetAllPaket } from '#/repository/beranda'
+import { Paket } from '#/repository/paket'
 import { formatRupiah } from '#/utils/formatter'
 import { Button, Skeleton } from 'antd'
 import Image from 'next/image'
@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 interface props {
-  data?: GetAllPaket[]
+  data?: Paket[]
   widthImage?: number
   loading?: boolean
 }
@@ -62,7 +62,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                 {value.name}
               </p>
               <Image
-                src={value.photo ?? ''}
+                src={value.photo}
                 alt={'logo'}
                 width={widthImage}
                 height={widthImage}
@@ -70,7 +70,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
               />
               <div className={'grid grid-flow-row justify-center gap-y-3'}>
                 <p className={'text-lg font-bold text-primary'}>
-                  {formatRupiah(value.price ?? '', { withPrefix: true })}/Bulan
+                  {formatRupiah(value.price, { withPrefix: true })}/Bulan
                 </p>
                 <p
                   className={

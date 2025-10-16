@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import {
   HiEnvelope,
@@ -114,9 +115,12 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
             Kontak
           </h4>
           <div className={'flex flex-col gap-y-3 text-white'}>
-            <div
+            <Link
+              href={'https://maps.app.goo.gl/wCZRhAXJZoz5dhTm7'}
+              target='_blank'
+              rel='noopener noreferrer'
               className={
-                'flex flex-row gap-x-3 text-sm font-normal text-slate-50 2xl:text-base'
+                'flex flex-row gap-x-3 text-sm font-normal text-slate-50 hover:text-slate-200 2xl:text-base'
               }
             >
               <HiMapPin
@@ -128,23 +132,29 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
                 Perumahan Puri Kasablanka 3 , JL.Mede Raya Blok AA1 No.27
                 Sukamekar Kec.Sukawangi, Kabupaten Bekasi ,Jawa Barat 17656
               </p>
-            </div>
-            <div
+            </Link>
+            <Link
+              href={'https://wa.me/+6285939335865'}
+              target='_blank'
+              rel='noopener noreferrer'
               className={
-                'flex flex-row gap-x-3 font-normal text-slate-50 xl:text-sm 2xl:text-base'
+                'flex flex-row gap-x-3 font-normal text-slate-50 hover:text-slate-200 xl:text-sm 2xl:text-base'
               }
             >
               <HiPhone className={'text-base xl:text-lg 2xl:text-xl'} />
               <p>+62 859 3933 5865</p>
-            </div>
-            <div
+            </Link>
+            <Link
+              href={'mailto:no-reply@amartanet.id'}
+              target='_blank'
+              rel='noopener noreferrer'
               className={
-                'flex flex-row gap-x-3 font-normal text-slate-50 xl:text-sm 2xl:text-base'
+                'flex flex-row gap-x-3 font-normal text-slate-50 hover:text-slate-200 xl:text-sm 2xl:text-base'
               }
             >
               <HiEnvelope className={'text-base xl:text-lg 2xl:text-xl'} />
               <p>no-reply@amartanet.id</p>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

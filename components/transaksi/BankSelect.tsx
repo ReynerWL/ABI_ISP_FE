@@ -7,9 +7,15 @@ import { HiChevronDown, HiXMark } from 'react-icons/hi2'
 
 export type BankOption = { label: string; value: string }
 
-type CustomBankSelectProps = { options: BankOption[] }
+type CustomBankSelectProps = {
+  options: BankOption[]
+  className?: string | null
+}
 
-const CustomBankSelect: React.FC<CustomBankSelectProps> = ({ options }) => {
+const CustomBankSelect: React.FC<CustomBankSelectProps> = ({
+  options,
+  className
+}) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const bank = searchParams?.get('bank') || ''
@@ -29,31 +35,33 @@ const CustomBankSelect: React.FC<CustomBankSelectProps> = ({ options }) => {
     router.replace(`?${queryParams.toString()}`)
   }
   return (
-    <Select
-      showSearch
-      placeholder={'Nama Bank'}
-      value={selectedBank}
-      filterOption={(input, option) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-      }
-      options={options}
-      onChange={handleBankChange}
-      className={'bank-select !h-full'}
-      suffixIcon={
-        <HiChevronDown
-          className={`text-xl text-slate-400 transition duration-200`}
-          strokeWidth={1}
-        />
-      }
-      allowClear={{
-        clearIcon: (
-          <HiXMark
-            className={`text-xl text-slate-400 transition duration-200`}
-            strokeWidth={0.4}
-          />
-        )
-      }}
-    />
+    <div
+      className={`flex items-center gap-3 text-nowrap font-semibold text-slate-500 ${className}`}
+    >
+      <p className={'hidden xl:flex'}>Bank :</p>
+      <Select
+        showSearch
+        placeholder={'Nama Bank'}
+        value={selectedBank}
+        filterOption={(input, option) =>
+          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+        }
+        options={options}
+        onChange={handleBankChange}
+        className={`bank-select !h-full min-w-full xl:min-w-52`}
+        suffixIcon={
+          <HiChevronDown className='text-slate-300' size={20} strokeWidth={1} />
+        }
+        allowClear={{
+          clearIcon: (
+            <HiXMark
+              className='size-5 bg-white text-slate-400 transition duration-200 hover:text-slate-500'
+              strokeWidth={0.5}
+            />
+          )
+        }}
+      />
+    </div>
   )
 }
 

@@ -7,7 +7,7 @@ import { SectionHero } from '#/components/beranda/SectionHero'
 import { SectionProduk } from '#/components/beranda/SectionProduk'
 import { useUIState } from '#/context/UIStateContext'
 import usePageTitle from '#/hooks/usePageTitle'
-import { berandaRepository } from '#/repository/beranda'
+import { paketRepository } from '#/repository/paket'
 import {
   HiDevicePhoneMobile,
   HiPhone,
@@ -77,26 +77,21 @@ const listBenefit = [
 const Home = () => {
   usePageTitle('Beranda')
   const { isXL, isMD, isLG, isMobile } = useUIState()
-  const { data, isLoading } = berandaRepository.hooks.useGetAllPaket()
+  const { data, isLoading } = paketRepository.hooks.useGetPaket()
 
   return (
     <div className={'flex flex-col justify-center gap-y-16 overflow-auto'}>
-      {/* Section Hero */}
       <SectionHero widthImage={isXL ? 620 : isLG ? 900 : isMD ? 600 : 898} />
-      {/* Section Tentang Kami */}
       <SectionAbout data={listAbout} />
-      {/* Section Top Benefit */}
       <SectionBenefit
         data={listBenefit}
         widthImage={isXL ? 549 : isLG ? 380 : isMD ? 320 : 649}
       />
-      {/* Section Produk */}
       <SectionProduk
         data={data?.data}
         widthImage={isMD ? 160 : 296}
         loading={isLoading}
       />
-      {/* Footer */}
       <SectionFooter
         widthLogo={isXL ? 180 : isLG || isMD || isMobile ? 200 : 280}
         widthIcon={isXL ? 20 : 18}

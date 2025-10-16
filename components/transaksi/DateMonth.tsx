@@ -7,7 +7,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { HiOutlineCalendar, HiXMark } from 'react-icons/hi2'
 
-const CustomMonthPicker = () => {
+interface props {
+  className?: string | null
+}
+
+const CustomMonthPicker = ({ className }: props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const month = searchParams?.get('month') || ''
@@ -35,29 +39,33 @@ const CustomMonthPicker = () => {
   }
 
   return (
-    <DatePicker
-      onChange={handleChange}
-      value={selectedValue}
-      picker='month'
-      className='custom-date-range-picker'
-      placeholder='Bulan Tranksaksi'
-      format={'MMMM YYYY'}
-      style={{ minWidth: 200 }}
-      allowClear={{
-        clearIcon: (
-          <HiXMark
+    <div
+      className={`flex items-center gap-3 text-nowrap font-semibold text-slate-500 ${className}`}
+    >
+      <p className={'hidden xl:flex'}>Bulan :</p>
+      <DatePicker
+        onChange={handleChange}
+        value={selectedValue}
+        picker='month'
+        className='custom-date-range-picker !min-w-full xl:!min-w-52'
+        placeholder='Bulan Tranksaksi'
+        format={'MMMM YYYY'}
+        allowClear={{
+          clearIcon: (
+            <HiXMark
+              className={`text-xl text-slate-400 transition duration-200`}
+              strokeWidth={0.4}
+            />
+          )
+        }}
+        suffixIcon={
+          <HiOutlineCalendar
             className={`text-xl text-slate-400 transition duration-200`}
-            strokeWidth={0.4}
+            strokeWidth={1.8}
           />
-        )
-      }}
-      suffixIcon={
-        <HiOutlineCalendar
-          className={`text-xl text-slate-400 transition duration-200`}
-          strokeWidth={1.8}
-        />
-      }
-    />
+        }
+      />
+    </div>
   )
 }
 

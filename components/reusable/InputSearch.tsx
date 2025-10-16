@@ -9,9 +9,13 @@ import { useDebouncedCallback } from 'use-debounce'
 
 interface InputSearchProps {
   placeholder?: string
+  className?: string
 }
 
-const InputSearch = ({ placeholder = 'Cari ...' }: InputSearchProps) => {
+const InputSearch = ({
+  placeholder = 'Cari ...',
+  className
+}: InputSearchProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [value, setValue] = useState('')
@@ -36,7 +40,7 @@ const InputSearch = ({ placeholder = 'Cari ...' }: InputSearchProps) => {
 
   return (
     <Input
-      className='search-input'
+      className={`search-input ${className}`}
       prefix={<LuSearch className={'mr-2 text-lg text-slate-600'} />}
       placeholder={placeholder}
       value={value} // controlled input

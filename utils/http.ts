@@ -10,7 +10,13 @@ let AuthIntercept = superagentIntercept((err: any, res: any) => {
     console.log('AuthIntercept 401')
     TokenUtil.clearTokens()
     TokenUtil.persistToken()
-    window.location.href = '/login'
+
+    const publicPath = ['/beranda', '/login', '/register']
+    const currentPath = window.location.href
+
+    if (!publicPath.includes(currentPath)) {
+      window.location.href = '/beranda'
+    }
   }
 })
 
