@@ -52,13 +52,15 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
       style={{ position: 'fixed', top: 0, right: 0, left: 288, height: 64 }}
       className='dashboard-header'
     >
-      <div className='ml-[288px] flex w-full items-center justify-between gap-4 lg:justify-between'>
-        <p className='text-sm font-medium text-slate-700'>
-          {dayjs().format('dddd, DD MMMM YYYY')}
-        </p>
-        <Button type='text' className='!h-fit !p-1 lg:!hidden'>
-          <HiBars3BottomLeft className='!text-3xl' />
-        </Button>
+      <div className='ml-0 flex w-full items-center justify-between gap-4 lg:ml-[288px] lg:justify-between'>
+        <div className='flex items-center gap-6'>
+          <Button type='text' className='!h-fit !p-1 lg:!hidden'>
+            <HiBars3BottomLeft className='!text-3xl' />
+          </Button>
+          <p className='hidden text-sm font-medium text-slate-700 sm:flex'>
+            {dayjs().format('dddd, DD MMMM YYYY')}
+          </p>
+        </div>
         <div className={'group flex items-center gap-4'}>
           {isLoading ? (
             <>
@@ -89,7 +91,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
               <Dropdown
                 menu={{ items: dropdownItems }}
                 placement='bottomRight'
-                className={'!hidden cursor-pointer sm:!flex'}
+                className={'!flex cursor-pointer'}
                 trigger={['click']}
                 popupRender={(menu) => (
                   <div className='min-w-[150px]'>{menu}</div>

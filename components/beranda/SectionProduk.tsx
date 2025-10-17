@@ -2,7 +2,7 @@ import { Paket } from '#/repository/paket'
 import { formatRupiah } from '#/utils/formatter'
 import { Button, Skeleton } from 'antd'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
 interface props {
@@ -13,6 +13,15 @@ interface props {
 
 export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const onClickPaket = (val: string) => {
+    const queryParams = new URLSearchParams(searchParams?.toString() || '')
+    if (val) queryParams.set('paket', val)
+    else queryParams.delete('paket')
+    router.push(`/register?${queryParams.toString()}`)
+  }
+
   return (
     <div
       id={'Produk'}
@@ -84,7 +93,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                 className={
                   '!rounded-xl !border-none !bg-blue-50 !px-8 !py-5 !text-sm !font-semibold !text-primary xl:!text-base'
                 }
-                onClick={() => router.push('/register')}
+                onClick={() => onClickPaket(value.id)}
               >
                 Langganan Sekarang
               </Button>

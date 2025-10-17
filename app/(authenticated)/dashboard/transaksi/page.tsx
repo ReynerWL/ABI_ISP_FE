@@ -145,14 +145,14 @@ const Transaksi = () => {
         <Title>Transaksi</Title>
       </div>
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
-        <div className='grid h-fit grid-cols-10 gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
+        <div className='grid h-fit grid-cols-10 gap-4 lg:gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
           <InputSearch className={'order-1 !col-span-8'} />
           <Button
-            className='order-2 !col-span-2 !h-full !w-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 xl:order-4 xl:!w-fit'
+            className='order-2 !col-span-2 !h-full !w-full !rounded-lg !bg-blue-50 !p-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 lg:!px-3 xl:order-4 xl:!w-fit xl:!px-5'
             type='primary'
           >
-            <HiOutlineDownload className='text-[23px]' strokeWidth={1.9} />
-            Ekspor
+            <HiOutlineDownload className='text-xl' strokeWidth={1.9} />
+            <p className='hidden sm:inline'>Ekspor</p>
           </Button>
           <CustomBankSelect
             options={convertDataBank(listBank?.data)}

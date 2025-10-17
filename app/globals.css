@@ -87,7 +87,7 @@ html {
 
 /* ---------------------------- DASHBOARD HEADER ---------------------------- */
 .dashboard-header.ant-layout-header {
-  @apply fixed left-0 top-0 z-10 flex h-fit w-full items-center !bg-white !p-4 md:!px-10 md:!py-5 !important;
+  @apply fixed left-0 top-0 z-10 flex h-fit w-full items-center !bg-white !p-5 md:!px-10 md:!py-5 !important;
 }
 
 .header-beranda.ant-layout-header {

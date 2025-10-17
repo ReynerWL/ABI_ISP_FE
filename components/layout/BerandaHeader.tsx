@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
-import { HiBars3BottomRight } from 'react-icons/hi2'
+import { HiBars3BottomRight, HiOutlineClock } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled, TbLogout } from 'react-icons/tb'
 
 interface BerandaHeaderProps {
@@ -37,7 +37,20 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
     },
     { type: 'divider' },
     ...(user?.role.toLowerCase() !== 'admin'
-      ? [{ key: 2, label: <Link href={'/riwayat-transaksi'}>History</Link> }]
+      ? [
+          {
+            key: 2,
+            label: (
+              <Link
+                href={'/riwayat-transaksi'}
+                className='flex items-center gap-2 !text-slate-600'
+              >
+                <HiOutlineClock className='text-lg' />
+                History
+              </Link>
+            )
+          }
+        ]
       : [
           {
             key: 2,
@@ -174,20 +187,56 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
         mask={false}
         classNames={{ wrapper: 'sm:!hidden' }}
       >
-        {activeSection.map((value, index) => (
+        <div className={'flex h-full flex-col justify-between'}>
+          <div className={'flex flex-col gap-8'}>
+            {activeSection.map((value, index) => (
+              <div
+                key={index}
+                className={`items-center text-sm font-semibold md:text-sm`}
+              >
+                <Link
+                  href={value.id === 'Hero' ? '#' : `#${value.id}`}
+                  className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+                  onClick={() => setOpenDrawer(!openDrawer)}
+                >
+                  {value.name}
+                </Link>
+              </div>
+            ))}
+          </div>
+
           <div
-            key={index}
-            className={`items-center py-4 text-base font-semibold md:text-sm`}
+            className={`flex flex-col gap-3 text-base font-semibold md:text-sm`}
           >
+            <div className='flex flex-col border-b border-slate-200 pb-4 text-slate-800'>
+              <h1 className='font-semibold'>{user?.name}</h1>
+              <p className='truncate text-sm font-medium text-slate-500'>
+                {user?.email}
+              </p>
+            </div>
+
             <Link
-              href={value.id === 'Hero' ? '#' : `#${value.id}`}
-              className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} hover:text-secondary`}
+              href={'/riwayat-transaksi'}
+              className='flex items-center gap-2 text-sm !text-slate-500'
               onClick={() => setOpenDrawer(!openDrawer)}
             >
-              {value.name}
+              <HiOutlineClock className='text-lg' />
+              History
             </Link>
+            <Button
+              type='text'
+              className='flex !h-fit !justify-start !p-0 !text-sm !font-semibold !text-red-500 sm:!hidden'
+              onClick={() => {
+                TokenUtil.clearTokens()
+                TokenUtil.persistToken()
+                router.push('/login', { scroll: false })
+              }}
+            >
+              <TbLogout className='text-lg' />
+              <span>Logout</span>
+            </Button>
           </div>
-        ))}
+        </div>
       </Drawer>
     </Header>
   )

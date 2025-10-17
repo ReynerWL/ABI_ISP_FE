@@ -2,6 +2,7 @@
 
 import ConfirmList from '#/components/dashboard/ConfirmList'
 import InfoCard from '#/components/dashboard/InfoCard'
+import ModalQr from '#/components/dashboard/ModalQr'
 import PaketChart from '#/components/dashboard/PaketChart'
 import TotalPelangganCard from '#/components/dashboard/TotalPelangganCard'
 import TransactionChart from '#/components/dashboard/TransactionChart'
@@ -18,7 +19,10 @@ const Dashboard = () => {
 
   return (
     <div className='w-full'>
-      <Title>Dashboard</Title>
+      <div className='flex flex-row items-center justify-between'>
+        <Title>Dashboard</Title>
+        <ModalQr />
+      </div>
       <div className='mt-6 flex w-full flex-col gap-4 md:gap-6'>
         <div className='flex w-full flex-col gap-4 md:gap-6 xl:h-[320px] xl:flex-row'>
           <div className='flex w-full flex-col gap-4 sm:flex-row md:gap-6'>

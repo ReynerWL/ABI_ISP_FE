@@ -34,6 +34,7 @@ const CustomBankSelect: React.FC<CustomBankSelectProps> = ({
     else queryParams.delete('bank')
     router.replace(`?${queryParams.toString()}`)
   }
+
   return (
     <div
       className={`flex items-center gap-3 text-nowrap font-semibold text-slate-500 ${className}`}

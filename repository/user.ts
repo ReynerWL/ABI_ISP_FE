@@ -36,6 +36,10 @@ export interface User {
   subscription: Subscription
 }
 
+export interface DetailUser {
+  data: User
+}
+
 export interface Role {
   id: string
   name: string

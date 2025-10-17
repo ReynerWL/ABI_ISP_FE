@@ -8,7 +8,7 @@ import { EmptyImg } from '#/components/reusable/EmptyImg'
 import Desc from '#/components/riwayat/DescStatus'
 import { Heading } from '#/components/riwayat/Heading'
 import usePageTitle from '#/hooks/usePageTitle'
-import { ListPayment, User, userRepository } from '#/repository/user'
+import { DetailUser, ListPayment, userRepository } from '#/repository/user'
 import { formatRupiah } from '#/utils/formatter'
 import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
@@ -46,7 +46,7 @@ const Detail = () => {
   const router = useRouter()
   const [form] = useForm()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
-  const [initialValues, setInitialValues] = useState<User | null>(null)
+  const [initialValues, setInitialValues] = useState<DetailUser | null>(null)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
@@ -277,29 +277,29 @@ const Detail = () => {
               }
             >
               <Image
-                src={initialValues?.paket?.photo ?? '/emptyImg.svg'}
+                src={initialValues?.data?.paket?.photo ?? '/emptyImg.svg'}
                 alt={'Paket'}
                 width={64}
                 height={64}
               />
               <div className={'flex w-full flex-col gap-1'}>
                 <p className={'text-xs font-medium text-slate-500'}>
-                  {initialValues?.paket?.name}
+                  {initialValues?.data?.paket?.name}
                 </p>{' '}
                 <p className={'text-base font-bold text-primary'}>
-                  {formatRupiah(initialValues?.paket?.price ?? 0, {
+                  {formatRupiah(initialValues?.data?.paket?.price ?? 0, {
                     withPrefix: true
                   })}
                   /Bulan
                 </p>
               </div>
               <div className={'flex w-full justify-end'}>
-                <Chip text={initialValues?.status ?? ''} />
+                <Chip text={initialValues?.data?.status ?? ''} />
               </div>
             </div>
             <Desc
-              text={initialValues?.status ?? ''}
-              dueDate={initialValues?.subscription?.due_date}
+              text={initialValues?.data?.status ?? ''}
+              dueDate={initialValues?.data?.subscription?.due_date}
             />
           </div>
           <Form
@@ -364,7 +364,7 @@ const Detail = () => {
             <StepInformasi
               key={0}
               isEditMode
-              alamat={initialValues?.alamat}
+              alamat={initialValues?.data?.alamat}
               isDetailMode
             />
           </Form>
