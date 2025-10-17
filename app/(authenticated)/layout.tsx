@@ -108,7 +108,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       }
     }
     fetchUser()
-  }, [])
+  }, [setUser])
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -131,6 +131,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
             alt={'logo'}
             width={110}
             height={56}
+            unoptimized
             className={'cursor-pointer'}
           />
         </Link>

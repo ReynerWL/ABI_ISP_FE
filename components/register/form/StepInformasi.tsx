@@ -12,7 +12,7 @@ const StepInformasi = () => {
         validateDebounce={1000}
         rules={[
           { required: true, message: 'Email wajib diisi' },
-          { type: 'email', message: 'Email tidak valid' }
+          { type: 'email', message: 'Format email tidak valid' }
         ]}
       >
         <Input placeholder='Masukkan emailmu' type='email' autoComplete='off' />
@@ -22,8 +22,12 @@ const StepInformasi = () => {
         name='phone_number'
         validateDebounce={1000}
         rules={[
-          { required: true, message: 'Nomor Telpon wajib diisi' },
-          { pattern: /^8\d{8,10}$/, message: 'Nomor Telpon tidak valid' }
+          { required: true, message: 'Nomor Ponsel wajib diisi' },
+          {
+            pattern: /^8\d{8,11}$/,
+            message:
+              'Silakan masukkan nomor ponsel yang valid (contoh: 8123456789)'
+          }
         ]}
       >
         <div className='flex flex-col gap-2'>
@@ -75,7 +79,11 @@ const StepInformasi = () => {
       <Form.Item
         label='Password'
         name='password'
-        rules={[{ required: true, message: 'Password wajib diisi' }]}
+        validateDebounce={1000}
+        rules={[
+          { required: true, message: 'Password wajib diisi' },
+          { min: 8, message: 'Password minimal 8 karakter' }
+        ]}
       >
         <Input.Password
           placeholder='Masukkan password'

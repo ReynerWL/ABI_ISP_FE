@@ -3,7 +3,6 @@ import { TokenUtil } from '#/utils/token'
 import { Avatar, Button, Dropdown, MenuProps, Skeleton } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import dayjs from 'dayjs'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
 import { HiBars3BottomLeft, HiChevronDown, HiChevronUp } from 'react-icons/hi2'
@@ -14,7 +13,6 @@ interface DashboardHeaderProps {
 }
 
 const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
-  const router = useRouter()
   const { user } = useUser()
   const [open, setOpen] = useState<boolean>(false)
 
@@ -33,7 +31,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
     {
       key: 5,
       label: (
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 font-medium'>
           <TbLogout className='text-lg' />
           <span>Logout</span>
         </div>
@@ -42,7 +40,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
       onClick: () => {
         TokenUtil.clearTokens()
         TokenUtil.persistToken()
-        return router.push('/login', { scroll: false })
+        window.location.href = '/login'
       }
     }
   ]

@@ -45,16 +45,18 @@ const Login = () => {
         `Berhasil masuk! Mengarahkan ke ${userRole === 'admin' ? 'dashboard' : 'beranda'}...`
       )
 
-      switch (userRole) {
-        case 'admin':
-          router.push('/dashboard')
-          break
-        case 'user':
-          router.push('/beranda')
-          break
-        default:
-          break
-      }
+      setTimeout(() => {
+        switch (userRole) {
+          case 'admin':
+            router.push('/dashboard')
+            break
+          case 'user':
+            router.push('/beranda')
+            break
+          default:
+            break
+        }
+      }, 1000)
     } catch (error: any) {
       setLoading(false)
       const statusCode = error?.response?.status
@@ -91,6 +93,7 @@ const Login = () => {
                 alt={'logo'}
                 width={126}
                 height={64}
+                unoptimized
                 className='xl:h-[82px] xl:w-[151px]'
               />
             </Link>
@@ -117,11 +120,7 @@ const Login = () => {
                 { type: 'email', message: 'Email tidak valid' }
               ]}
             >
-              <Input
-                placeholder='Masukkan emailmu'
-                type='email'
-                autoComplete='off'
-              />
+              <Input placeholder='Masukkan emailmu' type='email' />
             </Form.Item>
             <Form.Item
               label='Password'

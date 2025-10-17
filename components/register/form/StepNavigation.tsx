@@ -1,5 +1,6 @@
 import { Button } from 'antd'
 import { FormInstance } from 'antd/es/form'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 interface StepNavigationProps {
@@ -19,6 +20,7 @@ const StepNavigation = ({
   loading,
   setStepCurrent
 }: StepNavigationProps) => {
+  const router = useRouter()
   const handleNext = async () => {
     try {
       await form.validateFields(stepFields[stepCurrent])
@@ -36,6 +38,9 @@ const StepNavigation = ({
   const handlePrev = () => {
     if (stepCurrent > 0) {
       setStepCurrent(stepCurrent - 1)
+    }
+    if (stepCurrent === 0) {
+      router.back()
     }
   }
 

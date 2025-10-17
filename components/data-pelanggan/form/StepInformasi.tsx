@@ -1,6 +1,7 @@
 'use client'
 
 import { generalRepository, Kelurahan } from '#/repository/general'
+import { toProperCase } from '#/utils/formatter'
 import { DatePicker, Form, Input, Select } from 'antd'
 import dayjs from 'dayjs'
 import { HiOutlineEyeOff } from 'react-icons/hi'
@@ -23,8 +24,12 @@ const StepInformasi = ({
   const { data, isLoading } = generalRepository.hooks.useGetKelurahanBabelan()
 
   const kelurahanOptions = data?.map((kelurahan: Kelurahan) => ({
-    value: kelurahan.name,
-    label: <p className='font-semibold text-slate-500'>{kelurahan.name}</p>
+    value: toProperCase(kelurahan.name),
+    label: (
+      <p className='font-semibold text-slate-500'>
+        {toProperCase(kelurahan.name)}
+      </p>
+    )
   }))
 
   return (

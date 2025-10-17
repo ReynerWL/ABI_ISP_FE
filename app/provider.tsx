@@ -13,9 +13,6 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
           token: {
             colorPrimary: '#0049AC',
             fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
-          },
-          components: {
-            Segmented: { itemSelectedBg: '#0049AC', itemSelectedColor: '#fff' }
           }
         }}
       >

@@ -7,7 +7,7 @@ export function formatRupiah(
   const numberValue = typeof value === 'string' ? parseFloat(value) : value
   if (isNaN(numberValue)) return '0'
 
-  let formatted = numberValue.toLocaleString('id-ID')
+  let formatted = numberValue.toLocaleString('en-US')
 
   if (withPrefix) {
     formatted = `Rp. ${formatted}`
@@ -24,7 +24,7 @@ export function formatSpeed(
   speed: string,
   style: 'lower' | 'capital' | 'upper' = 'capital'
 ) {
-  const match = speed.match(/^(\d+)\s*([a-zA-Z]+)$/)
+  const match = speed?.match(/^(\d+)\s*([a-zA-Z]+)$/)
   if (!match) return speed
 
   switch (style) {
@@ -35,4 +35,13 @@ export function formatSpeed(
     default:
       return `${match[1]} ${match[2].charAt(0).toUpperCase()}${match[2].slice(1).toLowerCase()}`
   }
+}
+
+export const toProperCase = (text: string): string => {
+  if (!text) return ''
+  return text
+    .toLowerCase()
+    .split(/[\s-]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
 }

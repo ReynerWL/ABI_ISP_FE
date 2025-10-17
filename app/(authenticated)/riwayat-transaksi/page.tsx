@@ -19,7 +19,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
 import { HiChevronDoubleLeft } from 'react-icons/hi'
 import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
@@ -56,14 +56,7 @@ const Detail = () => {
 
   const PaymentsUser: ListPayment[] = detailUser?.data.payments.data
 
-  useEffect(() => {
-    if (detailUser !== undefined) {
-      setFormFieldsValue()
-      setInitialValues(detailUser)
-    }
-  }, [detailUser])
-
-  const setFormFieldsValue = () => {
+  const setFormFieldsValue = useCallback(() => {
     const { data } = detailUser ?? {}
 
     form.setFieldsValue({
@@ -76,7 +69,14 @@ const Detail = () => {
       phone_number: data?.phone_number,
       tanggal_berlangganan: dayjs(data?.createdAt)
     })
-  }
+  }, [detailUser, form])
+
+  useEffect(() => {
+    if (detailUser !== undefined) {
+      setFormFieldsValue()
+      setInitialValues(detailUser)
+    }
+  }, [detailUser, setFormFieldsValue])
 
   useEffect(() => {
     const handleScroll = () => {

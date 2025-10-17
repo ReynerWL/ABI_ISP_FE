@@ -1,3 +1,4 @@
+import { generalRepository } from '#/repository/general'
 import {
   Button,
   Form,
@@ -21,8 +22,14 @@ interface StepKTPProps {
 const StepKTP = ({ form }: StepKTPProps) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
-  const handleUpload = (file: UploadFile) => {
-    form.setFieldsValue({ photo_ktp: file })
+  const handleUpload = async (file: any) => {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('type', 'photo_ktp')
+
+    const { body } = await generalRepository.api.uploadFile(data)
+
+    form.setFieldsValue({ photo_ktp: body?.data?.url })
   }
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>

@@ -7,10 +7,14 @@ import { Avatar, Button, Drawer, Dropdown, MenuProps, Skeleton } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
-import { HiBars3BottomRight, HiOutlineClock } from 'react-icons/hi2'
+import {
+  HiBars3BottomRight,
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineClock
+} from 'react-icons/hi2'
 import { TbLayoutDashboardFilled, TbLogout } from 'react-icons/tb'
 
 interface BerandaHeaderProps {
@@ -20,9 +24,9 @@ interface BerandaHeaderProps {
 
 const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
   const token = TokenUtil.accessToken
-  const { user } = useUser()
-  const router = useRouter()
+  const { user, setUser } = useUser()
   const [openDrawer, setOpenDrawer] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(false)
 
   const dropdownItems: MenuProps['items'] = [
     {
@@ -43,7 +47,7 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
             label: (
               <Link
                 href={'/riwayat-transaksi'}
-                className='flex items-center gap-2 !text-slate-600'
+                className='flex items-center gap-2 font-medium !text-slate-600'
               >
                 <HiOutlineClock className='text-lg' />
                 History
@@ -57,7 +61,7 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
             label: (
               <Link
                 href={'/dashboard'}
-                className='flex items-center gap-2 !text-slate-600'
+                className='flex items-center gap-2 font-medium !text-slate-600'
               >
                 <TbLayoutDashboardFilled className='text-lg' />
                 Dashboard
@@ -77,7 +81,8 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
       onClick: () => {
         TokenUtil.clearTokens()
         TokenUtil.persistToken()
-        router.push('/login', { scroll: false })
+        setUser(null)
+        window.location.href = '/beranda'
       }
     }
   ]
@@ -95,6 +100,7 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
             priority
             width={92}
             height={48}
+            unoptimized
             className={'sm:h-[60px] sm:w-[110px] md:h-[68px] md:w-[126px]'}
           />
         </Link>
@@ -135,21 +141,47 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
             <Dropdown
               menu={{ items: dropdownItems }}
               placement='bottomRight'
-              className='!hidden cursor-pointer sm:!flex'
+              className={'group !hidden cursor-pointer sm:!flex'}
               trigger={['click']}
               popupRender={(menu) => (
                 <div className='min-w-[150px]'>{menu}</div>
               )}
+              open={openDropdown}
+              onOpenChange={(value) => setOpenDropdown(value)}
             >
-              <Avatar
-                size={42}
-                className='!bg-secondary !text-xl font-semibold'
-              >
-                {user?.name
-                  ?.split(' ')
-                  .map((word: string) => word[0])
-                  .join('') || <AiOutlineUser className='text-xl' />}
-              </Avatar>
+              <div className='flex items-center gap-6'>
+                <div className='flex items-center gap-4'>
+                  <Avatar
+                    size={45}
+                    className='hidden !bg-secondary !text-xl font-semibold'
+                  >
+                    {user?.name
+                      ?.split(' ')
+                      .map((word) => word[0])
+                      .join('') || 'NUll'}
+                  </Avatar>
+                  <div>
+                    <h1 className='text-base font-bold text-primary'>
+                      {user?.name}
+                    </h1>
+                  </div>
+                </div>
+                {!openDropdown ? (
+                  <HiChevronDown
+                    className={
+                      'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                    }
+                    strokeWidth={0.8}
+                  />
+                ) : (
+                  <HiChevronUp
+                    className={
+                      'rounded-full border border-slate-200 p-1 text-2xl text-slate-500 group-hover:bg-slate-50'
+                    }
+                    strokeWidth={0.8}
+                  />
+                )}
+              </div>
             </Dropdown>
           ) : (
             <Link

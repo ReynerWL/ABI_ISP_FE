@@ -1,6 +1,7 @@
 import { http } from '#/utils/http'
 import { buildQueryParams } from '#/utils/params'
 import useSWR from 'swr'
+import { Paket } from './paket'
 
 export interface Subscription {
   start_date: string
@@ -62,16 +63,6 @@ export interface ListPayment {
   data: Payment[]
   count: number
 }
-export interface Paket {
-  id: string
-  name: string
-  photo: string
-  price: number
-  speed: string
-  createdAt: string
-  updatedAt: string
-  deletedAt: any
-}
 
 export interface GetUserParams {
   search?: string | null
@@ -80,6 +71,10 @@ export interface GetUserParams {
   end_date?: string | null
   page?: number
   limit?: number
+}
+
+export interface UserDetail {
+  data: User
 }
 
 const url = {

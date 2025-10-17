@@ -83,7 +83,6 @@ const UploadField = ({
   return (
     <Form.Item
       name={name}
-      label={label}
       preserve={true}
       validateDebounce={1000}
       rules={[{ required: true, message: requiredMessage }, ...rules]}

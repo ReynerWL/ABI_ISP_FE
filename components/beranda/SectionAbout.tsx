@@ -1,4 +1,7 @@
-import React, { JSX } from 'react'
+'use client'
+
+import { motion } from 'framer-motion'
+import { JSX } from 'react'
 
 interface aboutList {
   icon: JSX.Element
@@ -19,7 +22,12 @@ export const SectionAbout = ({ data }: props) => {
       }
     >
       <div className={'flex flex-col gap-8 py-12 lg:py-16'}>
-        <div
+        {/* Header Animation */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          viewport={{ once: true }}
           className={
             'flex flex-col items-center justify-center gap-y-2 md:gap-y-3 xl:grid xl:grid-flow-row xl:justify-items-center'
           }
@@ -39,16 +47,38 @@ export const SectionAbout = ({ data }: props) => {
             Alasan ribuan pelanggan mempercayakan kebutuhan internet mereka
             kepada kami
           </p>
-        </div>
+        </motion.div>
+
+        {/* Cards Animation */}
         <div className={'flex flex-col gap-6 xl:flex-row xl:gap-12'}>
           {data.map((value, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                ease: 'easeOut',
+                delay: index * 0.15
+              }}
+              viewport={{ once: true }}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className={
-                'flex flex-row items-center gap-8 rounded-2xl bg-white p-8 xl:flex-col xl:items-start xl:p-6'
+                'flex flex-row items-center gap-8 rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md xl:flex-col xl:items-start xl:p-6'
               }
             >
-              {value.icon}
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{
+                  duration: 0.5,
+                  ease: 'easeOut',
+                  delay: index * 0.15 + 0.2
+                }}
+                viewport={{ once: true }}
+              >
+                {value.icon}
+              </motion.div>
               <div className={'flex flex-col gap-y-1 xl:gap-y-2 2xl:gap-y-4'}>
                 <p className={'text-lg font-bold text-slate-700 2xl:text-2xl'}>
                   {value.title}
@@ -61,7 +91,7 @@ export const SectionAbout = ({ data }: props) => {
                   {value.desc}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import FieldPembayaran from '#/components/register/form/FieldPembayaran'
 import StepAlamat from '#/components/register/form/StepAlamat'
 import StepIcon from '#/components/register/form/StepIcon'
 import StepInformasi from '#/components/register/form/StepInformasi'
@@ -8,8 +9,9 @@ import StepNavigation from '#/components/register/form/StepNavigation'
 import StepPaket from '#/components/register/form/StepPaket'
 import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, RegisterPayload } from '#/repository/auth'
-import { Form, StepProps, Steps } from 'antd'
-import { useForm } from 'antd/es/form/Form'
+import { Paket, paketRepository } from '#/repository/paket'
+import { Form, StepProps, Steps, UploadFile } from 'antd'
+import { useForm, useWatch } from 'antd/es/form/Form'
 import { motion } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -19,16 +21,31 @@ const Register = () => {
   usePageTitle('Register')
   const router = useRouter()
   const [form] = useForm()
+
   const searchParams = useSearchParams()
   const paketParam = searchParams?.get('paket') || ''
+  const paketValue = useWatch('paket', form)
+
   const [stepCurrent, setStepCurrent] = useState(0)
   const [loading, setLoading] = useState(false)
+
+  const [selectedPaket, setSelectedPaket] = useState<Paket | null>(null)
+  const [fileList, setFileList] = useState<UploadFile[]>([])
+  const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
+
+  const { data, isLoading } = paketRepository.hooks.useGetPaket()
+  const pakets: Paket[] = data?.data
 
   const formContent = [
     <StepInformasi key={0} />,
     <StepAlamat key={1} />,
     <StepKTP key={2} form={form} />,
-    <StepPaket key={3} />
+    <StepPaket
+      key={3}
+      setSelectedPaket={setSelectedPaket}
+      pakets={pakets}
+      isLoading={isLoading}
+    />
   ]
 
   const stepFields: string[][] = [
@@ -85,14 +102,22 @@ const Register = () => {
   const handleFinish = async (values: RegisterPayload) => {
     if (loading) return
 
+    console.log(values)
+
+    if (selectedPaket && !buktiPembayaran) {
+      toast.error('Mohon unggah bukti pembayaran sebelum melanjutkan!')
+      return
+    }
+
     try {
       setLoading(true)
 
       const data = {
         ...values,
-        province: 'Jawa Barat',
-        city: 'Kabupaten Bekasi',
-        district: 'Babelan'
+        provinsi: 'Jawa Barat',
+        kota: 'Kabupaten Bekasi',
+        kecamatan: 'Babelan',
+        payment: { buktiPembayaran, paketsId: selectedPaket?.id }
       }
 
       const { error } = await authRepository.api.register(data)
@@ -101,11 +126,11 @@ const Register = () => {
         toast.success('Register berhasil! Silakan login...')
         setTimeout(() => {
           toast.dismiss()
-          router.push('/dashboard')
+          router.push('/login')
         }, 1000)
       }
     } catch (error: any) {
-      const message = error?.response?.body?.error
+      const message = error?.response?.body?.message
 
       console.log(message)
 
@@ -124,15 +149,36 @@ const Register = () => {
     }
   }, [form, paketParam])
 
+  useEffect(() => {
+    if (!paketParam) return
+    if (paketValue && paketValue !== paketParam) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('paket')
+      window.history.replaceState({}, '', url.pathname)
+    }
+  }, [paketValue, paketParam])
+
+  useEffect(() => {
+    if (!pakets?.length || !paketParam) return
+
+    const paketFromParam = pakets.find((p) => p.id === paketParam)
+    if (paketFromParam) {
+      setSelectedPaket(paketFromParam)
+      form.setFieldValue('paket', paketFromParam.id)
+    }
+  }, [pakets, paketParam, form])
+
   return (
-    <div className='mt-[64px] flex min-h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
+    <div className='flex min-h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex w-full flex-col rounded-3xl bg-white sm:w-[770px] md:items-center md:justify-center md:p-16 md:shadow-[4px_4px_48px_0px_#0068FF0D] xl:w-[940px]'
+        className={`grid w-full rounded-3xl bg-white sm:w-[770px] md:min-w-[800px] md:justify-center md:p-16 md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-auto xl:w-auto xl:min-w-[940px] ${stepCurrent === 3 && paketValue ? 'grid-cols-[700px_auto] items-start gap-6' : 'grid-cols-1 md:items-center'}`}
       >
-        <div className='m-0 flex flex-col gap-6 md:w-full lg:gap-9'>
+        <div
+          className={`m-0 flex flex-col gap-6 md:w-full lg:gap-9 ${stepCurrent === 3 && paketValue && 'w-[600px] border-r border-slate-200 pr-6'}`}
+        >
           <div className='space-y-6'>
             <div className='space-y-2'>
               <h1 className='m-0 text-3xl font-bold sm:text-4xl'>Data Diri</h1>
@@ -178,6 +224,14 @@ const Register = () => {
             />
           </Form>
         </div>
+        {stepCurrent === 3 && paketValue && (
+          <FieldPembayaran
+            selectedPaket={selectedPaket}
+            fileList={fileList}
+            setFileList={setFileList}
+            setBuktiPembayaran={setBuktiPembayaran}
+          />
+        )}
       </motion.div>
     </div>
   )

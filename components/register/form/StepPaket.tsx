@@ -1,11 +1,20 @@
-import { Paket, paketRepository } from '#/repository/paket'
-import { formatRupiah, formatSpeed } from '#/utils/formatter'
+import { Paket } from '#/repository/paket'
+import { formatRupiah } from '#/utils/formatter'
 import { Form, Radio, Skeleton } from 'antd'
 import Image from 'next/image'
+import { Dispatch, SetStateAction } from 'react'
 
-const StepPaket = () => {
-  const { data, isLoading } = paketRepository.hooks.useGetPaket()
-  const pakets: Paket[] = data?.data
+interface StepPaketProps {
+  pakets: Paket[]
+  isLoading: boolean
+  setSelectedPaket: Dispatch<SetStateAction<Paket | null>>
+}
+
+const StepPaket = ({ pakets, isLoading, setSelectedPaket }: StepPaketProps) => {
+  const handlePaketChange = (paketId: string) => {
+    const selected = pakets?.find((p: Paket) => p.id === paketId)
+    setSelectedPaket(selected || null)
+  }
 
   if (isLoading) {
     return (
@@ -31,6 +40,7 @@ const StepPaket = () => {
       <Radio.Group
         className='paket-register-radio'
         name='paket'
+        onChange={(e) => handlePaketChange(e.target.value)}
         options={pakets?.map((val: Paket) => ({
           label: (
             <div className='flex items-center gap-6'>
@@ -44,7 +54,7 @@ const StepPaket = () => {
               </div>
             </div>
           ),
-          value: formatSpeed(val.speed)
+          value: val.id
         }))}
       />
     </Form.Item>
