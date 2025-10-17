@@ -25,8 +25,7 @@ const StepInformasi = () => {
           { required: true, message: 'Nomor Ponsel wajib diisi' },
           {
             pattern: /^8\d{8,11}$/,
-            message:
-              'Silakan masukkan nomor ponsel yang valid (contoh: 8123456789)'
+            message: 'Silakan masukkan nomor ponsel yang valid'
           }
         ]}
       >

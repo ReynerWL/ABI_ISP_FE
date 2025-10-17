@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import BaseModal from '../reusable/BaseModal'
-import { Button, Spin } from 'antd'
-import { HiCheck, HiInformationCircle, HiQrCode } from 'react-icons/hi2'
 import { qrRepository } from '#/repository/qr'
+import { Button, Spin } from 'antd'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { HiCheck, HiInformationCircle, HiQrCode } from 'react-icons/hi2'
 import { toast } from 'sonner'
+import BaseModal from '../reusable/BaseModal'
 
 const ModalQr = () => {
   const [open, setOpen] = useState(false)
@@ -37,7 +37,7 @@ const ModalQr = () => {
       refetchQrStatus()
       refetchQr()
     }
-  }, [open])
+  }, [open, refetchQrStatus, refetchQr])
 
   const handleLogout = async () => {
     try {

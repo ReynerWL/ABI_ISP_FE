@@ -1,5 +1,6 @@
 'use client'
 
+import { useUser } from '#/context/UserContext'
 import { Paket } from '#/repository/paket'
 import { formatRupiah } from '#/utils/formatter'
 import { Button, Skeleton } from 'antd'
@@ -16,6 +17,7 @@ interface props {
 export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { user } = useUser()
 
   const onClickPaket = (val: string) => {
     const queryParams = new URLSearchParams(searchParams?.toString() || '')
@@ -92,8 +94,9 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
 
               <Button
                 className={
-                  '!rounded-xl !border-none !bg-blue-50 !px-8 !py-5 !text-sm !font-semibold !text-primary xl:!text-base'
+                  '!rounded-xl !border-none !bg-blue-50 !px-8 !py-5 !text-sm !font-semibold !text-primary hover:!bg-blue-100 xl:!text-base'
                 }
+                disabled={user?.role.toLowerCase() !== 'user'}
                 onClick={() => onClickPaket(value.id)}
               >
                 Langganan Sekarang

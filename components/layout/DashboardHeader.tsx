@@ -40,7 +40,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
       onClick: () => {
         TokenUtil.clearTokens()
         TokenUtil.persistToken()
-        window.location.href = '/login'
+        window.location.href = '/beranda'
       }
     }
   ]

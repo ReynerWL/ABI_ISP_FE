@@ -38,7 +38,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         pathname !== '/beranda' &&
         pathname !== '/register'
       ) {
-        router.push('/login')
+        router.push('/beranda')
         return
       }
 

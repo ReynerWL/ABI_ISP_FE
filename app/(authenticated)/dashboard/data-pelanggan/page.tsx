@@ -87,7 +87,8 @@ const DataPelanggan = () => {
             Edit
           </Button>
           <Link
-            href={`/dashboard/data-pelanggan/${record?.customerId}`}
+            scroll={false}
+            href={`/dashboard/data-pelanggan/${record?.id}`}
             className='flex items-center gap-2 !rounded-lg border !border-slate-100 px-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
           >
             <HiEye className='text-lg' />
@@ -108,7 +109,7 @@ const DataPelanggan = () => {
     <div className='flex flex-col gap-8'>
       <div className='flex items-center justify-between'>
         <Title>Data Pelanggan</Title>
-        <div className='hidden md:block'>
+        <div className='hidden xl:block'>
           <Segmented
             options={[
               'Semua',

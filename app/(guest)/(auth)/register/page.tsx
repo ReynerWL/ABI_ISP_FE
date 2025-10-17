@@ -117,7 +117,7 @@ const Register = () => {
         provinsi: 'Jawa Barat',
         kota: 'Kabupaten Bekasi',
         kecamatan: 'Babelan',
-        payment: { buktiPembayaran, paketsId: selectedPaket?.id }
+        payment: { buktiPembayaran, paketId: selectedPaket?.id }
       }
 
       const { error } = await authRepository.api.register(data)

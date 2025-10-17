@@ -1,31 +1,27 @@
 'use client'
 
 import { useUser } from '#/context/UserContext'
-import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, UserPayload } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import { Spin } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const HistoryLayout = ({ children }: { children: React.ReactNode }) => {
   TokenUtil.loadToken()
   const router = useRouter()
 
   const [isRedirecting, setIsRedirecting] = useState(true)
 
-  usePageTitle('Dashboard')
-
-  const { isValidating, setUser } = useUser()
+  const { isValidating } = useUser()
   const { data, isLoading } = authRepository.hooks.useValidateToken()
   const user: UserPayload = data?.data
 
   useEffect(() => {
     if (!isLoading && !isValidating) {
-      setUser(user)
-      if (user?.role.toLowerCase() !== 'admin') {
+      if (user?.role.toLowerCase() === 'admin') {
         setIsRedirecting(true)
-        router.replace('/beranda')
+        router.replace('/dashboard')
       } else {
         setIsRedirecting(false)
       }
@@ -43,4 +39,4 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
-export default DashboardLayout
+export default HistoryLayout

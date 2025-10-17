@@ -51,7 +51,6 @@ const items: MenuProps['items'] = [
 ]
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  toast.dismiss()
   const { setUser } = useUser()
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
@@ -61,6 +60,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    toast.dismiss()
     const handleScroll = () => {
       const scrollY = window.scrollY
 
@@ -93,14 +93,16 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
     const fetchUser = async () => {
       try {
-        const result = await fetch(`${config.baseUrl}/auth/validate-token`, {
-          method: 'GET',
-          headers: { Authorization: `Bearer ${TokenUtil.accessToken}` }
-        })
+        if (pathname !== '/dashboard' || history) {
+          const result = await fetch(`${config.baseUrl}/auth/validate-token`, {
+            method: 'GET',
+            headers: { Authorization: `Bearer ${TokenUtil.accessToken}` }
+          })
 
-        const response = await result.json()
+          const response = await result.json()
 
-        setUser(response.data)
+          setUser(response.data)
+        }
       } catch (error) {
         console.error(error)
       } finally {

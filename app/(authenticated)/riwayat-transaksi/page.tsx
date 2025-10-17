@@ -10,6 +10,7 @@ import { Heading } from '#/components/riwayat/Heading'
 import usePageTitle from '#/hooks/usePageTitle'
 import { DetailUser, ListPayment, userRepository } from '#/repository/user'
 import { formatRupiah } from '#/utils/formatter'
+import { TokenUtil } from '#/utils/token'
 import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { UploadChangeParam } from 'antd/es/upload'
@@ -42,6 +43,7 @@ const listMenu: MenuItem[] = [
   }
 ]
 const Detail = () => {
+  TokenUtil.loadToken()
   usePageTitle('Detail')
   const router = useRouter()
   const [form] = useForm()
@@ -156,7 +158,7 @@ const Detail = () => {
   //       alamat: values.alamat,
   //       photo_ktp: values.photo_ktp,
   //       payment: {
-  //         paketsId: values.paket,
+  //         paketId: values.paket,
   //         banksId: values.banksId,
   //         buktiPembayaran: values.bukti_pembayaran
   //       }

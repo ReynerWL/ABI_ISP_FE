@@ -22,7 +22,7 @@ export interface RegisterPayload {
 }
 
 export interface PaymentPayload {
-  paketsId?: string | null
+  paketId?: string | null
   banksId?: string | null
   buktiPembayaran?: string | null
 }

@@ -40,7 +40,7 @@ const StepNavigation = ({
       setStepCurrent(stepCurrent - 1)
     }
     if (stepCurrent === 0) {
-      router.back()
+      router.push('/beranda')
     }
   }
 
@@ -51,7 +51,7 @@ const StepNavigation = ({
         type='primary'
         onClick={handlePrev}
       >
-        Kembali
+        {stepCurrent === 0 ? 'Beranda' : 'Kembali'}
       </Button>
       <Button
         className='!mt-9 !h-fit !w-full !rounded-full !bg-secondary !py-3 !text-sm !font-semibold !shadow-none hover:!bg-secondary/85 sm:!w-fit sm:!px-16'

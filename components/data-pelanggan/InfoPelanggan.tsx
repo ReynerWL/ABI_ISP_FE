@@ -7,7 +7,7 @@ interface InfoPelangganProps {
   email: string
   noTelp: string
   alamat: string
-  status: 'Baru' | 'Aktif' | 'Pra-Aktif' | 'Nonaktif'
+  status: string
 }
 
 const InfoPelanggan = ({
@@ -25,8 +25,10 @@ const InfoPelanggan = ({
         <div className='flex items-center gap-2'>
           <div className='h-full w-2 rounded-sm bg-secondary'></div>
           <div className='flex flex-col gap-1 font-semibold'>
-            <h1 className='text-xl text-slate-700'>Informasi Pelanggan</h1>
-            <h2 className='text-base text-slate-500'>
+            <h1 className='text-xl font-semibold text-slate-700'>
+              Informasi Pelanggan
+            </h1>
+            <h2 className='text-base font-semibold text-slate-500'>
               ID Pelanggan : <span className='text-primary'>{id}</span>
             </h2>
           </div>
@@ -40,33 +42,31 @@ const InfoPelanggan = ({
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             Tanggal Berlangganan
           </p>
-          <h3 className='font-semibold text-slate-700'>
-            {tanggalBerlangganan}
-          </h3>
+          <h3 className='font-bold text-slate-700'>{tanggalBerlangganan}</h3>
         </div>
         <div className='flex flex-col gap-1'>
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             Nama Pelanggan
           </p>
-          <h3 className='font-semibold text-slate-700'>{namaPelanggan}</h3>
+          <h3 className='font-bold text-slate-700'>{namaPelanggan}</h3>
         </div>
         <div className='flex flex-col gap-1'>
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             Email
           </p>
-          <h3 className='font-semibold text-slate-700'>{email}</h3>
+          <h3 className='font-bold text-slate-700'>{email}</h3>
         </div>
         <div className='flex flex-col gap-1'>
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             No. Telp
           </p>
-          <h3 className='font-semibold text-slate-700'>{noTelp}</h3>
+          <h3 className='font-bold text-slate-700'>{noTelp}</h3>
         </div>
         <div className='flex flex-col gap-1'>
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             Alamat
           </p>
-          <h3 className='font-semibold text-slate-700'>{alamat}</h3>
+          <h3 className='font-bold text-slate-700'>{alamat}</h3>
         </div>
       </div>
     </div>

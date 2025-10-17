@@ -86,8 +86,8 @@ const url = {
   getDetailUser() {
     return `/user/detail`
   },
-  getEditUser(id: string) {
-    return `/users/${id}`
+  getUserById(id: string) {
+    return `/user/${id}`
   }
 }
 
@@ -97,12 +97,15 @@ const hooks = {
   },
   useGetDetailUser() {
     return useSWR(url.getDetailUser(), http.fetcher)
+  },
+  useGetUserById(id: string) {
+    return useSWR(url.getUserById(id), http.fetcher)
   }
 }
 
 const api = {
   updateUser(id: string, data: User) {
-    return http.put(url.getEditUser(id)).send(data)
+    return http.put(url.getUserById(id)).send(data)
   }
 }
 

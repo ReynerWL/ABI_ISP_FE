@@ -89,7 +89,7 @@ const ModalPelanggan = ({
         alamat: values.alamat,
         photo_ktp: values.photo_ktp,
         payment: {
-          paketsId: values.paket,
+          paketId: values.paket,
           banksId: values.banksId,
           buktiPembayaran: values.bukti_pembayaran
         }
@@ -98,7 +98,7 @@ const ModalPelanggan = ({
       const { error } = await authRepository.api.register(data)
 
       if (!error) {
-        toast.success('Berhasil menambahkan data pelanggan!', { duration: 800 })
+        toast.success('Berhasil menambahkan data pelanggan!')
 
         onClose()
         mutate()

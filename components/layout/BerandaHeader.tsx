@@ -261,7 +261,7 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
               onClick={() => {
                 TokenUtil.clearTokens()
                 TokenUtil.persistToken()
-                router.push('/login', { scroll: false })
+                window.location.reload()
               }}
             >
               <TbLogout className='text-lg' />
