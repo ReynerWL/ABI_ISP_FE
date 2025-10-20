@@ -1,4 +1,4 @@
-import { Image, Upload, UploadFile, UploadProps } from 'antd'
+import { Image, Skeleton, Upload, UploadFile, UploadProps } from 'antd'
 import { UploadChangeParam } from 'antd/es/upload'
 import Dragger from 'antd/es/upload/Dragger'
 import { useState } from 'react'
@@ -7,9 +7,10 @@ import { toast } from 'sonner'
 
 interface InstalasiPreviewProps {
   imageUrl?: string
+  isLoading?: boolean
 }
 
-const InstalasiPreview = ({ imageUrl }: InstalasiPreviewProps) => {
+const InstalasiPreview = ({ imageUrl, isLoading }: InstalasiPreviewProps) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
@@ -38,6 +39,10 @@ const InstalasiPreview = ({ imageUrl }: InstalasiPreviewProps) => {
     }
   }
 
+  if (isLoading) {
+    return <Skeleton.Image active className='!h-[200px] !w-full !rounded-lg' />
+  }
+
   return (
     <>
       {imageUrl ? (
@@ -53,10 +58,12 @@ const InstalasiPreview = ({ imageUrl }: InstalasiPreviewProps) => {
             className={'ktp-upload group'}
             style={{ display: fileList.length ? 'none' : 'block' }}
           >
-            <AiFillCamera className='size-16 text-blue-200' />
-            <h1 className='text-base font-semibold text-primary underline underline-offset-2'>
-              Klik untuk unggah foto
-            </h1>
+            <div className='flex flex-col items-center justify-center xl:py-4'>
+              <AiFillCamera className='size-16 text-blue-200' />
+              <h1 className='text-base font-semibold text-primary underline underline-offset-2'>
+                Klik untuk unggah foto
+              </h1>
+            </div>
           </Dragger>
           {fileList.length > 0 && (
             <div className='flex flex-col gap-4'>

@@ -1,12 +1,14 @@
 'use client'
 import chipColor from '#/constant/chipColor'
+import { Skeleton } from 'antd'
 import { GiPlainCircle } from 'react-icons/gi'
 
 interface ChipProps {
   text: string
+  isLoading?: boolean
 }
 
-const Chip = ({ text }: ChipProps) => {
+const Chip = ({ text, isLoading }: ChipProps) => {
   const lowerText = text.toLowerCase().replace('-', '_')
   const displayText = text
     .split('-')
@@ -16,6 +18,12 @@ const Chip = ({ text }: ChipProps) => {
   const { bgColor, textColor } = chipColor[lowerText] || {
     bgColor: '#6B728033',
     textColor: '#6b7280'
+  }
+
+  if (isLoading) {
+    return (
+      <Skeleton.Node active className='!h-[28px] !w-[100px] !rounded-full' />
+    )
   }
 
   return (

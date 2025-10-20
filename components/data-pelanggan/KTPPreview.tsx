@@ -1,3 +1,4 @@
+import { Skeleton } from 'antd'
 import Image from 'next/image'
 import { useState } from 'react'
 import { PiImageFill } from 'react-icons/pi'
@@ -5,14 +6,20 @@ import BaseModal from '../reusable/BaseModal'
 
 interface KTPPreviewProps {
   imageUrl: string
+  isLoading?: boolean
 }
 
-const KTPPreview = ({ imageUrl }: KTPPreviewProps) => {
+const KTPPreview = ({ imageUrl, isLoading }: KTPPreviewProps) => {
   const [open, setOpen] = useState(false)
+
+  if (isLoading) {
+    return <Skeleton.Image active className='!h-[200px] !w-full !rounded-lg' />
+  }
+
   return (
     <>
       <div
-        className='group flex h-[210px] w-full cursor-pointer flex-col items-center justify-center gap-7 rounded-2xl bg-slate-50 p-6 transition-colors duration-300 hover:bg-slate-100'
+        className='group flex h-[200px] w-full cursor-pointer flex-col items-center justify-center gap-7 rounded-lg bg-slate-50 p-6 transition-colors duration-300 hover:bg-slate-100'
         onClick={() => setOpen(true)}
       >
         <PiImageFill className='transform text-[75px] text-blue-200 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110 group-hover:text-blue-400' />
@@ -27,7 +34,7 @@ const KTPPreview = ({ imageUrl }: KTPPreviewProps) => {
           width={0}
           height={400}
           layout='responsive'
-          className='rounded-2xl'
+          className='rounded-lg'
         />
       </BaseModal>
     </>

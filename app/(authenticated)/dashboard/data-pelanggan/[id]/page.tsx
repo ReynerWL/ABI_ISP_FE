@@ -7,18 +7,37 @@ import KTPPreview from '#/components/data-pelanggan/KTPPreview'
 import Title from '#/components/reusable/Title'
 import usePageTitle from '#/hooks/usePageTitle'
 import { User, userRepository } from '#/repository/user'
-import { Button } from 'antd'
+import { Button, Spin } from 'antd'
+import Link from 'next/link'
 import { use } from 'react'
+import { HiArrowLeft } from 'react-icons/hi2'
 
 const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
-  usePageTitle('Detail Pelanggan')
   const { id } = use(params)
-  const { data } = userRepository.hooks.useGetUserById(id)
+
+  usePageTitle('Detail Pelanggan')
+  const { data, isLoading } = userRepository.hooks.useGetUserById(id)
   const user: User = data?.data
+
+  if (isLoading) {
+    return (
+      <div className='flex h-[calc(100vh-140px)] items-center justify-center'>
+        <Spin size='large' />
+      </div>
+    )
+  }
 
   return (
     <div className='space-y-8'>
-      <Title>Detail Pelanggan</Title>
+      <div className='flex items-center gap-4'>
+        <Link
+          href={'/dashboard/data-pelanggan'}
+          className='rounded-full border border-slate-200 p-2 hover:bg-slate-100'
+        >
+          <HiArrowLeft className='text-2xl text-slate-800' />
+        </Link>
+        <Title>Detail Pelanggan</Title>
+      </div>
       <div className='flex w-full flex-col gap-6 md:flex-row'>
         <div className='flex w-full flex-col gap-6 2xl:w-full'>
           <InfoPelanggan
@@ -29,50 +48,56 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
             email={user?.email}
             noTelp={user?.phone_number}
             alamat={user?.alamat}
+            isLoading={isLoading}
           />
           <div className='grid w-full gap-6 rounded-2xl bg-white p-6 xl:grid-cols-2'>
             <div className='flex flex-col gap-4'>
               <h1 className='text-xl font-semibold text-slate-700'>Foto KTP</h1>
-              <KTPPreview imageUrl={user?.photo_ktp} />
+              <KTPPreview imageUrl={user?.photo_ktp} isLoading={isLoading} />
             </div>
             <div className='flex flex-col gap-4'>
               <div className='flex items-center justify-between font-semibold'>
-                <h1 className='text-xl text-slate-700'>Foto Instalasi</h1>
+                <h1 className='text-xl font-semibold text-slate-700'>
+                  Foto Instalasi
+                </h1>
                 <h2 className='text-slate-500'>01-08-2025</h2>
               </div>
-              <InstalasiPreview />
+              <InstalasiPreview isLoading={isLoading} />
             </div>
           </div>
         </div>
-        <InfoPaketCard />
+        <InfoPaketCard paket={user?.paket} isLoading={isLoading} />
       </div>
-      <div className='flex w-full justify-end gap-4'>
-        <Button
-          type='primary'
-          className={`!h-full w-fit !rounded-lg !bg-white !px-5 !py-2 !font-semibold !text-slate-500 !shadow-none hover:!bg-opacity-70`}
-        >
-          Kembali
-        </Button>
-        {}
-        <Button
-          type='primary'
-          className={`!h-full w-fit !rounded-lg !bg-red-50 !px-5 !py-2 !font-semibold !text-red-500 !shadow-none hover:!bg-red-100`}
-        >
-          Menolak
-        </Button>
-        <Button
-          type='primary'
-          className={`!h-full w-fit !rounded-lg !px-5 !py-2 !font-semibold !shadow-none`}
-        >
-          Setujui
-        </Button>
-        <Button
-          type='primary'
-          className={`!h-full w-fit !rounded-lg !px-5 !py-2 !font-semibold !shadow-none`}
-        >
-          Aktifkan
-        </Button>
-      </div>
+      {!isLoading && (
+        // TODO: Apply the button based on the user status
+        <div className='flex w-full justify-end gap-4'>
+          <Button
+            type='primary'
+            className={`!h-full w-fit !rounded-lg !bg-white !px-5 !py-2 !font-semibold !text-slate-500 !shadow-none hover:!bg-opacity-70`}
+          >
+            Kembali
+          </Button>
+          {}
+          <Button
+            type='primary'
+            className={`!h-full w-fit !rounded-lg !bg-red-50 !px-5 !py-2 !font-semibold !text-red-500 !shadow-none hover:!bg-red-100`}
+          >
+            Menolak
+          </Button>
+          <Button
+            type='primary'
+            className={`!h-full w-fit !rounded-lg !px-5 !py-2 !font-semibold !shadow-none`}
+          >
+            Setujui
+          </Button>
+          <Button
+            type='primary'
+            className={`!h-full w-fit !rounded-lg !px-5 !py-2 !font-semibold !shadow-none`}
+          >
+            Aktifkan
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
