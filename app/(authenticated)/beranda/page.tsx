@@ -20,29 +20,19 @@ import {
 const listAbout = [
   {
     icon: (
-      <HiWrenchScrewdriver
-        className={'text-6xl text-primary sm:text-4xl xl:text-5xl 2xl:text-6xl'}
-      />
+      <HiWrenchScrewdriver className={'text-4xl text-primary xl:text-5xl'} />
     ),
     title: '1. Dukungan Teknis Handal',
     desc: 'Tim profesional kami siap memastikan koneksi Anda selalu optimal - dari instalasi hingga Pemeliharaan'
   },
   {
-    icon: (
-      <HiPhone
-        className={'text-5xl text-primary sm:text-3xl xl:text-4xl 2xl:text-6xl'}
-      />
-    ),
-    title: '2. Dukungan Teknis Handal',
+    icon: <HiPhone className={'text-4xl text-primary xl:text-5xl'} />,
+    title: '2. Layanan Pelanggan Responsive',
     desc: 'Kami Hadir 24/7 untuk menjawab setiap pertanyaan dan membantu Anda kapan saja'
   },
   {
-    icon: (
-      <HiRocketLaunch
-        className={'text-6xl text-primary sm:text-4xl xl:text-5xl 2xl:text-6xl'}
-      />
-    ),
-    title: '3. Dukungan Teknis Handal',
+    icon: <HiRocketLaunch className={'text-4xl text-primary xl:text-5xl'} />,
+    title: '3. Jaringan Cepat & Stabil',
     desc: 'Dengan teknologi terkini dan pemantauan berkala, kami pastikan pengalaman internet Anda lancar tanpa gangguan'
   }
 ]

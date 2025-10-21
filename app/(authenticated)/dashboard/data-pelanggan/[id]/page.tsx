@@ -8,6 +8,7 @@ import Title from '#/components/reusable/Title'
 import usePageTitle from '#/hooks/usePageTitle'
 import { User, userRepository } from '#/repository/user'
 import { Button, Spin } from 'antd'
+import Image from 'next/image'
 import Link from 'next/link'
 import { use } from 'react'
 import { HiArrowLeft } from 'react-icons/hi2'
@@ -16,13 +17,38 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   usePageTitle('Detail Pelanggan')
-  const { data, isLoading } = userRepository.hooks.useGetUserById(id)
+  const { data, isLoading, error } = userRepository.hooks.useGetUserById(id)
   const user: User = data?.data
 
   if (isLoading) {
     return (
       <div className='flex h-[calc(100vh-140px)] items-center justify-center'>
         <Spin size='large' />
+      </div>
+    )
+  }
+
+  if (error?.status === 404) {
+    return (
+      <div className='flex h-[calc(100vh-140px)] w-full flex-col items-center justify-center py-10'>
+        <Image
+          src={'/empty-data.svg'}
+          width={240}
+          height={240}
+          alt={'empty'}
+          className='h-auto w-36 sm:w-40 md:w-48 lg:w-60'
+        />
+        <h1 className='text-base font-bold'>Data pelanggan tidak ditemukan</h1>
+        <p className='font-normal text-slate-400'>
+          Data pelanggan yang Kamu cari tidak ditemukan
+        </p>
+        <Link
+          href={'/dashboard/data-pelanggan'}
+          className='mt-4 flex items-center gap-4 rounded-full border border-slate-200 p-2 px-4 text-slate-800 hover:bg-slate-100 hover:text-slate-900'
+        >
+          <HiArrowLeft className='text-2xl text-slate-800' />
+          Kembali
+        </Link>
       </div>
     )
   }

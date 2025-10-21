@@ -50,7 +50,7 @@ export const SectionAbout = ({ data }: props) => {
         </motion.div>
 
         {/* Cards Animation */}
-        <div className={'flex flex-col gap-6 xl:flex-row xl:gap-12'}>
+        <div className={'grid grid-cols-1 gap-6 xl:grid-cols-3 xl:gap-12'}>
           {data.map((value, index) => (
             <motion.div
               key={index}

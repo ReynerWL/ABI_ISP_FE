@@ -8,7 +8,9 @@ import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import WAButton from '#/components/reusable/WAButton'
 import usePageTitle from '#/hooks/usePageTitle'
+import { Paket, paketRepository } from '#/repository/paket'
 import { User, userRepository } from '#/repository/user'
+import { formatSpeed } from '#/utils/formatter'
 import { Button, Segmented, TableProps } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
@@ -27,15 +29,23 @@ const DataPelanggan = () => {
   const limit = searchParams?.get('limit') || 10
   const startDate = searchParams?.get('start_date') || null
   const endDate = searchParams?.get('end_date') || null
+  const paketParam = searchParams?.get('paket')
+  const paketSpeedParam = searchParams?.get('paket_speed')
+
   const [initialValues, setInitialValues] = useState<User | null>(null)
+
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
     search,
     page: Number(page),
     limit: Number(limit),
     start_date: startDate,
     end_date: endDate,
-    status: status === 'Semua' ? null : status
+    status: status === 'Semua' ? null : status,
+    paket: paketParam || null,
+    paket_speed: paketSpeedParam || null
   })
+
+  const { data: pakets } = paketRepository.hooks.useGetPaket()
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -57,12 +67,29 @@ const DataPelanggan = () => {
       width: 190,
       render: (text) => <WAButton phoneNumber={text} />
     },
-    { title: 'Paket', dataIndex: 'paket', key: 'paket' },
+    {
+      title: 'Paket',
+      dataIndex: 'paket',
+      key: 'paket',
+      width: 130,
+      render: (_, record) => formatSpeed(record?.paket?.speed),
+      sorter: true,
+      sortDirections: ['ascend', 'descend'],
+      filters:
+        pakets?.data?.map((paket: Paket) => ({
+          text: formatSpeed(paket.speed),
+          value: paket.speed
+        })) || [],
+      filterMultiple: true,
+      onFilter: () => true
+    },
     {
       title: 'Tanggal Berlangganan',
       dataIndex: 'tanggal_berlangganan',
       key: 'tanggal_berlangganan',
-      render: (text) => dayjs(text).format('DD/MM/YYYY')
+      sorter: true,
+      sortDirections: ['ascend', 'descend'],
+      render: (_, record) => dayjs(record?.createdAt).format('DD/MM/YYYY')
     },
     {
       title: 'Status',

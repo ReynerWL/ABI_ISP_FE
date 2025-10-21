@@ -1,4 +1,5 @@
 import { Paket } from '#/repository/paket'
+import { formatRupiah } from '#/utils/formatter'
 import { Skeleton } from 'antd'
 import Image from 'next/image'
 import BuktiPembayaran from './BuktiPembayaran'
@@ -30,8 +31,10 @@ const InfoPaketCard = ({ paket, isLoading }: InfoPaketCardProps) => {
           <p className='font-semibold text-slate-700'>
             {isLoading ? (
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
+            ) : paket?.price ? (
+              formatRupiah(paket?.price, { withPrefix: true })
             ) : (
-              paket?.price || '-'
+              '-'
             )}
           </p>
         </div>

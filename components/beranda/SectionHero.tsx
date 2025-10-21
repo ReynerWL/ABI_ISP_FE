@@ -15,7 +15,6 @@ export const SectionHero = ({ widthImage }: props) => {
   const fullText = 'Internet Cepat & Stabil untuk Semua Kebutuhan'
 
   useEffect(() => {
-    // Start typing after initial animation (0.8s)
     const timeout = setTimeout(() => {
       let index = 0
       const interval = setInterval(() => {
@@ -26,13 +25,30 @@ export const SectionHero = ({ widthImage }: props) => {
           setIsTypingComplete(true)
           clearInterval(interval)
         }
-      }, 50) // 50ms per character for smooth but not slow typing
-
+      }, 50)
       return () => clearInterval(interval)
     }, 800)
 
     return () => clearTimeout(timeout)
   }, [])
+
+  const renderGradientInTyping = (text: string) => {
+    const gradientPart = 'Cepat & Stabil'
+    const gradientStart = text.indexOf(gradientPart)
+    const gradientEnd = gradientStart + gradientPart.length
+
+    if (gradientStart === -1) return text
+
+    return (
+      <>
+        {text.slice(0, gradientStart)}
+        <span className='bg-gradient-to-r from-secondary to-yellow-400 bg-clip-text text-transparent'>
+          {text.slice(gradientStart, Math.min(text.length, gradientEnd))}
+        </span>
+        {text.slice(Math.min(text.length, gradientEnd))}
+      </>
+    )
+  }
 
   return (
     <div
@@ -49,9 +65,10 @@ export const SectionHero = ({ widthImage }: props) => {
       >
         <div className='flex w-full flex-col gap-y-1 text-base font-normal text-slate-500 md:w-[350px] md:gap-y-3 md:text-sm lg:w-[460px] xl:w-[600px] 2xl:w-[800px] 2xl:gap-y-6 2xl:text-xl'>
           <div className='flex flex-col gap-y-2 md:gap-y-1 2xl:gap-y-3'>
-            <p>Halo Sobat,</p>
+            <p className='hidden md:block'>Halo Sobat,</p>
             <p className='text-3xl font-extrabold leading-snug text-slate-800 md:text-2xl lg:text-3xl 2xl:text-5xl'>
-              <span className='hidden lg:inline'>Nikmati</span> {displayedText}
+              <span className='hidden lg:inline'>Nikmati</span>{' '}
+              {renderGradientInTyping(displayedText)}
               {!isTypingComplete && <span className='animate-pulse'>|</span>}
             </p>
           </div>
@@ -69,7 +86,7 @@ export const SectionHero = ({ widthImage }: props) => {
         </div>
         <div className='flex w-full justify-center md:justify-start'>
           <Link
-            className='!h-fit w-fit !rounded-full !border-none !bg-secondary !px-4 !py-4 !text-base !font-semibold !text-white md:!py-4 md:!text-xs lg:!py-4 lg:!text-base'
+            className='!h-fit w-fit !rounded-full !border-none !bg-secondary !px-4 !py-4 !text-base !font-semibold !text-white transition-all duration-1000 ease-in-out hover:bg-gradient-to-r hover:from-secondary hover:to-yellow-400 md:!py-4 md:!text-xs lg:!py-4 lg:!text-base'
             href={'#Produk'}
           >
             Berlangganan Sekarang

@@ -15,6 +15,7 @@ interface DataTableProps {
   totalPage?: number
   totalData?: number
   isLoading?: boolean
+  setSort?: (value: string | null) => void
 }
 
 const DataTable = ({
@@ -24,11 +25,11 @@ const DataTable = ({
   limit = 10,
   totalPage = 1,
   totalData = 0,
-  isLoading = false
+  isLoading = false,
+  setSort
 }: DataTableProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  console.log('limit:', limit)
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams?.toString())
@@ -130,6 +131,54 @@ const DataTable = ({
           </div>
         </div>
       )}
+      onChange={(_, filters, sorter) => {
+        const params = new URLSearchParams(searchParams?.toString())
+
+        // Clear old sort params (only for known sortable columns)
+        if (columns) {
+          columns.forEach((col) => {
+            if (col.key) params.delete(col.key.toString())
+          })
+        }
+
+        // Handle multi or single sort
+        if (Array.isArray(sorter)) {
+          sorter.forEach((s) => {
+            if (s.order && s.columnKey) {
+              params.set(
+                s.columnKey.toString(),
+                s.order === 'ascend' ? 'asc' : 'desc'
+              )
+            }
+          })
+        } else if (sorter && sorter.order && sorter.columnKey) {
+          params.set(
+            sorter.columnKey.toString(),
+            sorter.order === 'ascend' ? 'asc' : 'desc'
+          )
+        }
+
+        // Handle Paket Filter
+        const paketFilter = filters.paket as string[] | null
+        if (paketFilter && paketFilter.length > 0) {
+          params.set('paket_speed', paketFilter.join(','))
+        } else {
+          params.delete('paket_speed')
+        }
+
+        router.push(`?${params.toString()}`)
+
+        // Optional: trigger callback for sorting changes
+        if (setSort) {
+          const sortEntries: Record<string, string> = {}
+          params.forEach((value, key) => {
+            if (['asc', 'desc'].includes(value)) {
+              sortEntries[key] = value
+            }
+          })
+          setSort(JSON.stringify(sortEntries))
+        }
+      }}
     />
   )
 }

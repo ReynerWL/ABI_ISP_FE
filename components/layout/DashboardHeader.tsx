@@ -21,8 +21,8 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
       key: 1,
       label: (
         <div className='flex flex-col text-slate-900'>
-          <h1 className='font-semibold'>Test</h1>
-          <p className='text-xs font-medium text-slate-500'>test@gmail.com</p>
+          <h1 className='font-semibold'>{user?.name}</h1>
+          <p className='text-xs font-medium text-slate-500'>{user?.email}</p>
         </div>
       ),
       disabled: true
@@ -55,7 +55,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
           <Button type='text' className='!h-fit !p-1 lg:!hidden'>
             <HiBars3BottomLeft className='!text-3xl' />
           </Button>
-          <p className='hidden text-sm font-medium text-slate-700 sm:flex'>
+          <p className='hidden text-sm font-semibold text-slate-700 sm:flex'>
             {dayjs().format('dddd, DD MMMM YYYY')}
           </p>
         </div>

@@ -71,6 +71,8 @@ export interface GetUserParams {
   end_date?: string | null
   page?: number
   limit?: number
+  paket?: string | null
+  paket_speed?: string | null
 }
 
 export interface UserDetail {
@@ -99,7 +101,7 @@ const hooks = {
     return useSWR(url.getDetailUser(), http.fetcher)
   },
   useGetUserById(id: string) {
-    return useSWR(url.getUserById(id), http.fetcher)
+    return useSWR(url.getUserById(id), http.fetcher, { errorRetryCount: 1 })
   }
 }
 
