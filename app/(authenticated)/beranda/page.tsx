@@ -75,7 +75,7 @@ const Home = () => {
       <SectionAbout data={listAbout} />
       <SectionBenefit
         data={listBenefit}
-        widthImage={isXL ? 549 : isLG ? 380 : isMD ? 320 : 649}
+        widthImage={isXL ? 720 : isLG ? 620 : isMD ? 480 : 920}
       />
       <SectionProduk
         data={data?.data}
