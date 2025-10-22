@@ -83,7 +83,7 @@ const Home = () => {
         loading={isLoading}
       />
       <SectionFooter
-        widthLogo={isXL ? 180 : isLG || isMD || isMobile ? 200 : 280}
+        widthLogo={isXL ? 180 : isLG || isMD || isMobile ? 200 : 200}
         widthIcon={isXL ? 20 : 18}
       />
     </div>

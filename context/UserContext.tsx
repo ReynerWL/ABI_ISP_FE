@@ -32,12 +32,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const sessionAccessToken = sessionStorage?.getItem('access_token')
       const token = localAccessToken || sessionAccessToken
 
-      if (
-        !token &&
-        pathname !== '/login' &&
-        pathname !== '/beranda' &&
-        pathname !== '/register'
-      ) {
+      const excludedPaths = new Set([
+        '/login',
+        '/beranda',
+        '/register',
+        '/lupa-password'
+      ])
+      if (!token && !excludedPaths.has(pathname as string)) {
         router.push('/beranda')
         return
       }

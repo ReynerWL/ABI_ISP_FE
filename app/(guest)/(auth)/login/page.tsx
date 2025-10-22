@@ -162,8 +162,8 @@ const Login = () => {
                 Ingat akun saya
               </Checkbox>
               <Link
-                href={'/forgot-password'}
-                className='font-medium text-slate-500'
+                href={'/lupa-password'}
+                className='font-medium text-slate-500 hover:text-primary'
               >
                 Lupa password?
               </Link>
