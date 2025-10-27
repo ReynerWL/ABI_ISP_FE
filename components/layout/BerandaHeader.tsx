@@ -40,7 +40,8 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
       disabled: true
     },
     { type: 'divider' },
-    ...(user?.role.toLowerCase() !== 'admin'
+    ...(user?.role.toLowerCase() !== 'admin' &&
+    user?.role.toLowerCase() !== 'superadmin'
       ? [
           {
             key: 2,

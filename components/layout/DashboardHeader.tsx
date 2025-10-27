@@ -1,4 +1,5 @@
 import { useUser } from '#/context/UserContext'
+import { toProperCase } from '#/utils/formatter'
 import { TokenUtil } from '#/utils/token'
 import { Avatar, Button, Dropdown, MenuProps, Skeleton } from 'antd'
 import { Header } from 'antd/es/layout/layout'
@@ -113,7 +114,7 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
                         {user?.name}
                       </h1>
                       <p className='text-sm font-medium capitalize text-slate-400'>
-                        {user?.role}
+                        {toProperCase(user?.role ?? '')}
                       </p>
                     </div>
                   </div>

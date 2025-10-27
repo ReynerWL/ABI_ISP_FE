@@ -14,11 +14,11 @@ import {
 
 const StepInformasi = ({
   isEditMode,
-  isDetailMode,
+  isHistoryMode,
   alamat
 }: {
-  isEditMode: boolean
-  isDetailMode?: boolean
+  isEditMode?: boolean
+  isHistoryMode?: boolean
   alamat?: string
 }) => {
   const { data, isLoading } = generalRepository.hooks.useGetKelurahanBabelan()
@@ -35,16 +35,17 @@ const StepInformasi = ({
   return (
     <>
       <div className='grid grid-cols-1 gap-x-4 gap-y-0 md:grid-cols-2'>
-        {isEditMode && (
-          <Form.Item
-            name={'customerId'}
-            label='ID Pelanggan'
-            preserve={true}
-            className='col-span-1 md:col-span-2'
-          >
-            <Input disabled />
-          </Form.Item>
-        )}
+        {isEditMode ||
+          (isHistoryMode && (
+            <Form.Item
+              name={'customerId'}
+              label='ID Pelanggan'
+              preserve={true}
+              className='col-span-1 md:col-span-2'
+            >
+              <Input disabled={!isHistoryMode} readOnly={isHistoryMode} />
+            </Form.Item>
+          ))}
 
         {/* Nama Pelanggan */}
         <Form.Item
@@ -54,7 +55,10 @@ const StepInformasi = ({
           preserve={true}
           rules={[{ required: true, message: 'Nama pelanggan wajib diisi' }]}
         >
-          <Input placeholder='Masukkan nama pelanggan' />
+          <Input
+            placeholder='Masukkan nama pelanggan'
+            readOnly={isHistoryMode}
+          />
         </Form.Item>
 
         {/* Email */}
@@ -67,7 +71,11 @@ const StepInformasi = ({
             { required: true, message: 'Email wajib diisi', type: 'email' }
           ]}
         >
-          <Input placeholder='Masukkan email' type='email' />
+          <Input
+            placeholder='Masukkan email'
+            type='email'
+            readOnly={isHistoryMode}
+          />
         </Form.Item>
 
         {/* Nomor Telepon */}
@@ -89,10 +97,20 @@ const StepInformasi = ({
                   }
                 ]}
               >
-                <Input placeholder='8xxxxxxxxxx' autoComplete='off' />
+                <Input
+                  placeholder='8xxxxxxxxxx'
+                  autoComplete='off'
+                  readOnly={isHistoryMode}
+                />
               </Form.Item>
             </div>
-            <p className='m-0 text-[10px] font-medium italic text-slate-400'>
+            <p
+              className={
+                isHistoryMode
+                  ? 'hidden'
+                  : 'm-0 text-[10px] font-medium italic text-slate-400'
+              }
+            >
               *Pastikan nomor ponsel masih aktif.
             </p>
           </div>
@@ -105,6 +123,7 @@ const StepInformasi = ({
           validateDebounce={1000}
           preserve={true}
           rules={[{ required: true, message: 'Tanggal lahir wajib diisi' }]}
+          className={isHistoryMode ? 'pointer-events-none' : ''}
         >
           <DatePicker
             placeholder='Masukkan Tanggal Lahir'
@@ -128,7 +147,7 @@ const StepInformasi = ({
         </Form.Item>
 
         {/* Password (only if not edit mode) */}
-        {!isEditMode && (
+        {!isEditMode && !isHistoryMode && (
           <Form.Item
             label='Password'
             name='password'
@@ -171,6 +190,7 @@ const StepInformasi = ({
           rules={[
             { required: true, message: 'Tanggal berlangganan wajib diisi' }
           ]}
+          className={isHistoryMode ? 'pointer-events-none' : ''}
         >
           <DatePicker
             placeholder='Masukkan Tanggal Berlangganan'
@@ -189,6 +209,7 @@ const StepInformasi = ({
                 />
               )
             }}
+            readOnly={isHistoryMode}
           />
         </Form.Item>
 
@@ -198,7 +219,7 @@ const StepInformasi = ({
           label='Kelurahan'
           validateDebounce={1000}
           preserve={true}
-          className={`${isDetailMode ? 'col-span-1' : 'col-span-1 md:col-span-2'}`}
+          className={`${isHistoryMode ? 'pointer-events-none col-span-1' : 'col-span-1 md:col-span-2'}`}
           rules={[{ required: true, message: 'Kelurahan wajib diisi' }]}
         >
           <Select
@@ -238,8 +259,15 @@ const StepInformasi = ({
               placeholder='Masukkan alamat'
               autoSize={{ minRows: 3, maxRows: 5 }}
               value={alamat}
+              readOnly={isHistoryMode}
             />
-            <p className='m-0 text-[10px] italic text-slate-400'>
+            <p
+              className={
+                isHistoryMode
+                  ? 'hidden'
+                  : 'm-0 text-[10px] italic text-slate-400'
+              }
+            >
               * Mohon pastikan alamat yang Anda masukkan berada di wilayah
               Babelan.
             </p>

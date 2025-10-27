@@ -96,7 +96,10 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                 className={
                   '!rounded-xl !border-none !bg-blue-50 !px-8 !py-5 !text-sm !font-semibold !text-primary hover:!bg-blue-100 xl:!text-base'
                 }
-                disabled={user?.role.toLowerCase() === 'admin'}
+                disabled={
+                  user?.role.toLowerCase() === 'admin' ||
+                  user?.role.toLowerCase() === 'superadmin'
+                }
                 onClick={() => onClickPaket(value.id)}
               >
                 Langganan Sekarang

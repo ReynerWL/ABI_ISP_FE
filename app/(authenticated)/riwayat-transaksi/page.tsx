@@ -51,10 +51,13 @@ const Detail = () => {
   const [initialValues, setInitialValues] = useState<DetailUser | null>(null)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
 
   const { data: detailUser, isLoading } =
     userRepository.hooks.useGetDetailUser()
+
+  // const { data: transaksiUser } =
+  //   transakasiRepository.hooks.useGetAllTransaksiByUser()
 
   const PaymentsUser: ListPayment[] = detailUser?.data.payments.data
 
@@ -139,51 +142,14 @@ const Detail = () => {
     }
   }
 
-  // const handleFinish = async (values: any) => {
-  //   if (loading) return
+  // const handleUploadImage = async (file: any) => {
+  //   const data = new FormData()
+  //   data.append('file', file)
+  //   data.append('type', 'buktiPembayaran')
 
-  //   try {
-  //     setLoading(true)
+  //   const { body } = await generalRepository.api.uploadFile(data)
 
-  //     const data = {
-  //       email: values.email,
-  //       name: values.name,
-  //       phone_number: values.phone_number,
-  //       birth_date: values.birth_date,
-  //       password: values.password,
-  //       provinsi: 'Jawa Barat',
-  //       kota: 'Kabupaten Bekasi',
-  //       kecamatan: 'Babelan',
-  //       kelurahan: values.kelurahan,
-  //       alamat: values.alamat,
-  //       photo_ktp: values.photo_ktp,
-  //       payment: {
-  //         paketId: values.paket,
-  //         banksId: values.banksId,
-  //         buktiPembayaran: values.bukti_pembayaran
-  //       }
-  //     }
-
-  //     // const { error } = await userRepository.api.updateUser('',data)
-
-  //     // if (!error) {
-  //     //   toast.success('Berhasil menambahkan data pelanggan!', { duration: 800 })
-
-  //     //   onClose()
-  //     //   mutate()
-  //     // }
-  //   } catch (error: any) {
-  //     const message = error?.response?.body?.message
-
-  //     console.log(message)
-
-  //     if (message) {
-  //       toast.error(message)
-  //       return
-  //     }
-  //   } finally {
-  //     setLoading(false)
-  //   }
+  //   setBuktiPembayaran(body?.data?.url)
   // }
 
   const columns: TableProps['columns'] = [
@@ -219,7 +185,7 @@ const Detail = () => {
               '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
             }
             onClick={() => {
-              setSelectedImage(value)
+              setBuktiPembayaran(value)
               setOpenModal(true)
             }}
           >
@@ -272,7 +238,7 @@ const Detail = () => {
           }
         >
           <Heading val={'Informasi Paket'} />
-          <div className={'flex flex-col gap-2'}>
+          <div className={'flex flex-col gap-2 px-2'}>
             <div
               className={
                 'flex flex-row items-center gap-6 rounded-xl border border-slate-200 px-6 py-3'
@@ -309,7 +275,6 @@ const Detail = () => {
             layout='vertical'
             className='auth-form'
             form={form}
-            // onFinish={handleFinish}
             initialValues={{
               provinsi: 'Jawa Barat',
               kota_kabupaten: 'Kabupaten Bekasi',
@@ -324,51 +289,51 @@ const Detail = () => {
               rules={[
                 { required: true, message: 'Bukti pembayaran wajib diisi' }
               ]}
+              className={'!px-2'}
             >
-              <div>
-                <Dragger
-                  {...draggerProps}
-                  className={'ktp-upload group'}
-                  style={{ display: fileList.length ? 'none' : 'block' }}
-                >
-                  <div className='flex flex-col items-center py-[26px]'>
-                    <AiFillCamera className='size-16 text-blue-200' />
-                    <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
-                      Klik untuk ambil foto
-                    </h1>
-                  </div>
-                </Dragger>
-                {fileList.length > 0 && (
-                  <div className='flex flex-col gap-4'>
-                    <Image
-                      src={
-                        fileList[0].url ||
-                        URL.createObjectURL(fileList[0].originFileObj as File)
-                      }
-                      alt={'bukti pembayaran'}
-                      className='min-h-40 w-full max-w-full rounded-lg object-contain'
-                    />
-                    <Button
-                      onClick={() => {
-                        setFileList([])
-                        form.setFieldsValue({ buktiPembayaran: null })
-                      }}
-                      className='!h-full !rounded-lg !border-slate-200 !py-2 !font-semibold !text-red-500 !shadow-none hover:!border-red-500 hover:!bg-red-100 hover:!text-red-500'
-                    >
-                      <PiTrash className='size-5' strokeWidth={3} />
-                      Hapus foto
-                    </Button>
-                  </div>
-                )}
-              </div>
+              <Dragger
+                {...draggerProps}
+                className={'ktp-upload group'}
+                style={{ display: fileList.length ? 'none' : 'block' }}
+              >
+                <div className='flex flex-col items-center py-[26px]'>
+                  <AiFillCamera className='size-16 text-blue-200' />
+                  <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
+                    Klik untuk ambil foto
+                  </h1>
+                </div>
+              </Dragger>
+              {fileList.length > 0 && (
+                <div className='flex flex-col gap-4'>
+                  <Image
+                    src={
+                      fileList[0].url ||
+                      URL.createObjectURL(fileList[0].originFileObj as File)
+                    }
+                    alt={'bukti pembayaran'}
+                    className='min-h-40 w-full max-w-full rounded-lg object-contain'
+                  />
+                  <Button
+                    onClick={() => {
+                      setFileList([])
+                      form.setFieldsValue({ buktiPembayaran: null })
+                    }}
+                    className='!h-full !rounded-lg !border-slate-200 !py-2 !font-semibold !text-red-500 !shadow-none hover:!border-red-500 hover:!bg-red-100 hover:!text-red-500'
+                  >
+                    <PiTrash className='size-5' strokeWidth={3} />
+                    Hapus foto
+                  </Button>
+                </div>
+              )}
             </Form.Item>
             <Heading val={'Data Pribadi'} className={'mb-4'} />
-            <StepInformasi
-              key={0}
-              isEditMode
-              alamat={initialValues?.data?.alamat}
-              isDetailMode
-            />
+            <div className={'px-2'}>
+              <StepInformasi
+                key={0}
+                alamat={initialValues?.data?.alamat}
+                isHistoryMode
+              />
+            </div>
           </Form>
           <Heading val={'History Transaksi'} />
           <DataTable
@@ -383,13 +348,13 @@ const Detail = () => {
             open={openModal}
             onClose={() => {
               setOpenModal(false)
-              setSelectedImage(null)
+              setBuktiPembayaran(null)
             }}
           >
             <div className='flex items-center justify-center'>
-              {selectedImage ? (
+              {buktiPembayaran ? (
                 <Image
-                  src={selectedImage}
+                  src={buktiPembayaran}
                   alt='Bukti Pembayaran'
                   width={472}
                   height={472}

@@ -56,7 +56,7 @@ const ModalPelanggan = ({
   const formContent = [
     <StepInformasi
       key={0}
-      isEditMode={initialValues}
+      isEditMode={!!initialValues}
       alamat={initialValues?.alamat}
     />,
     <StepKTP key={1} form={form} />,

@@ -42,12 +42,15 @@ const Login = () => {
       }
 
       toast.success(
-        `Berhasil masuk! Mengarahkan ke ${userRole === 'admin' ? 'dashboard' : 'beranda'}...`
+        `Berhasil masuk! Mengarahkan ke ${userRole === 'admin' || userRole === 'superadmin' ? 'dashboard' : 'beranda'}...`
       )
 
       setTimeout(() => {
         switch (userRole) {
           case 'admin':
+            router.push('/dashboard')
+            break
+          case 'superadmin':
             router.push('/dashboard')
             break
           case 'user':

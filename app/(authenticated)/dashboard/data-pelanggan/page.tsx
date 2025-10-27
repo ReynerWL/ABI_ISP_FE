@@ -36,6 +36,7 @@ const DataPelanggan = () => {
 
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
     search,
+    role: 'User',
     page: Number(page),
     limit: Number(limit),
     start_date: startDate,

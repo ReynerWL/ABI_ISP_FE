@@ -73,10 +73,19 @@ export interface GetUserParams {
   limit?: number
   paket?: string | null
   paket_speed?: string | null
+  role: string
 }
 
 export interface UserDetail {
   data: User
+}
+
+export interface CreatePayload {
+  name: string
+  email: string
+  password: string
+  phone_number: string
+  status: string
 }
 
 const url = {
@@ -88,8 +97,14 @@ const url = {
   getDetailUser() {
     return `/user/detail`
   },
+  create() {
+    return `/user/create-admin`
+  },
   getUserById(id: string) {
     return `/user/${id}`
+  },
+  getUserByIdAdmin(id: string) {
+    return `/user/${id}/status`
   }
 }
 
@@ -108,7 +123,11 @@ const hooks = {
 const api = {
   updateUser(id: string, data: User) {
     return http.put(url.getUserById(id)).send(data)
-  }
+  },
+  updateStatus(id: string) {
+    return http.put(url.getUserByIdAdmin(id))
+  },
+  createAdmin: (data: CreatePayload) => http.post(url.create()).send(data)
 }
 
 export const userRepository = { url, hooks, api }

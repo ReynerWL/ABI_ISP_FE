@@ -24,8 +24,8 @@ const colorPalette = [
 ]
 
 function formatSpeed(speed: string) {
-  const match = speed.match(/(\d+)([a-zA-Z]+)/) // contoh "10mbps"
-  if (!match) return speed.toUpperCase()
+  const match = speed?.match(/(\d+)([a-zA-Z]+)/) // contoh "10mbps"
+  if (!match) return speed?.toUpperCase()
   const [, num, unit] = match
   return `${num} ${unit.toUpperCase()}`
 }

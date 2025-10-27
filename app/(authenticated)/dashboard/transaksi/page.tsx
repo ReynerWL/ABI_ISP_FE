@@ -141,9 +141,7 @@ const Transaksi = () => {
 
   return (
     <div className='flex flex-col gap-8'>
-      <div className='flex items-center justify-between'>
-        <Title>Transaksi</Title>
-      </div>
+      <Title>Transaksi</Title>
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
         <div className='grid h-fit grid-cols-10 gap-4 lg:gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
           <InputSearch className={'order-1 !col-span-8'} />

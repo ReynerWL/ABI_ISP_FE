@@ -23,10 +23,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!isLoading && !isValidating) {
       setUser(user)
-      if (
-        user?.role.toLowerCase() !== 'admin' &&
-        user?.role.toLowerCase() !== 'superadmin'
-      ) {
+      if (user?.role.toLowerCase() !== 'superadmin') {
         setIsRedirecting(true)
         router.replace('/beranda')
       } else {

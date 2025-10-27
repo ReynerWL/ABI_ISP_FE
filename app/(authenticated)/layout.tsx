@@ -14,7 +14,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { HiDocumentMagnifyingGlass, HiInboxArrowDown } from 'react-icons/hi2'
+import {
+  HiDocumentMagnifyingGlass,
+  HiInboxArrowDown,
+  HiUserGroup
+} from 'react-icons/hi2'
 import { TbLayoutDashboardFilled } from 'react-icons/tb'
 import { toast } from 'sonner'
 
@@ -32,26 +36,8 @@ const listMenu: MenuItem[] = [
   { name: 'Produk', isActive: false, id: 'Produk' }
 ]
 
-const items: MenuProps['items'] = [
-  {
-    key: 'dashboard',
-    label: <Link href={'/dashboard'}>Dashboard</Link>,
-    icon: <TbLayoutDashboardFilled className='!text-xl' />
-  },
-  {
-    key: 'data-pelanggan',
-    label: <Link href={'/dashboard/data-pelanggan'}>Data Pelanggan</Link>,
-    icon: <HiInboxArrowDown className='!text-xl' />
-  },
-  {
-    key: 'transaksi',
-    label: <Link href={'/dashboard/transaksi'}>Transaksi</Link>,
-    icon: <HiDocumentMagnifyingGlass className='!text-xl' />
-  }
-]
-
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { setUser } = useUser()
+  const { user, setUser } = useUser()
   const pathname = usePathname()
   const selectedKey = pathname?.split('/')[2] || 'dashboard'
   const beranda = pathname === '/beranda'
@@ -111,6 +97,35 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     }
     fetchUser()
   }, [setUser])
+
+  const items: MenuProps['items'] = [
+    {
+      key: 'dashboard',
+      label: <Link href={'/dashboard'}>Dashboard</Link>,
+      icon: <TbLayoutDashboardFilled className='!text-xl' />
+    },
+    {
+      key: 'data-pelanggan',
+      label: <Link href={'/dashboard/data-pelanggan'}>Data Pelanggan</Link>,
+      icon: <HiInboxArrowDown className='!text-xl' />
+    },
+    {
+      key: 'transaksi',
+      label: <Link href={'/dashboard/transaksi'}>Transaksi</Link>,
+      icon: <HiDocumentMagnifyingGlass className='!text-xl' />
+    },
+    ...(user?.role.toLowerCase() === 'superadmin'
+      ? [
+          {
+            key: 'manajemen-admin',
+            label: (
+              <Link href={'/dashboard/manajemen-admin'}>Manajemen Admin</Link>
+            ),
+            icon: <HiUserGroup className='!text-xl' />
+          }
+        ]
+      : [])
+  ]
 
   return (
     <Layout style={{ minHeight: '100vh' }}>

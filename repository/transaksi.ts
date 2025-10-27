@@ -26,17 +26,31 @@ export interface GetTransakasiParams {
   page?: number
   limit?: number
 }
+export interface GetTransakasiByUserParams {
+  search: string | null
+  bank?: string | null
+  month?: string | null
+  page?: number
+  limit?: number
+}
 
 const url = {
   getAllTransaksi: (params: GetTransakasiParams) => {
     const query = buildQueryParams(params)
     return `/payment?${query}`
+  },
+  getAllTransaksiByUser: (params?: GetTransakasiByUserParams) => {
+    const query = buildQueryParams(params)
+    return `/payment/user?${query}`
   }
 }
 
 const hooks = {
   useGetAllTransaksi: (params: GetTransakasiParams) => {
     return useSWR(url.getAllTransaksi(params), http.fetcher)
+  },
+  useGetAllTransaksiByUser: (params?: GetTransakasiByUserParams) => {
+    return useSWR(url.getAllTransaksiByUser(params), http.fetcher)
   }
 }
 

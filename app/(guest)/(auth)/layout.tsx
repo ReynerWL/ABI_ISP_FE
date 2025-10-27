@@ -37,7 +37,10 @@ const GuestLayout: React.FC<GuestLayoutProps> = ({ children }) => {
         const response = await result.json()
         const user: UserPayload = response.data
 
-        if (user?.role.toLowerCase() === 'admin') {
+        if (
+          user?.role.toLowerCase() === 'admin' ||
+          user?.role.toLowerCase() === 'superadmin'
+        ) {
           router.replace('/dashboard')
         } else {
           router.replace('/beranda')

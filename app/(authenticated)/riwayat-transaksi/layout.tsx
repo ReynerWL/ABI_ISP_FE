@@ -19,7 +19,10 @@ const HistoryLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!isLoading && !isValidating) {
-      if (user?.role.toLowerCase() === 'admin') {
+      if (
+        user?.role.toLowerCase() === 'admin' ||
+        user?.role.toLowerCase() === 'superadmin'
+      ) {
         setIsRedirecting(true)
         router.replace('/dashboard')
       } else {
