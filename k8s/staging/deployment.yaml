@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gna-fe
+  namespace: gna-staging
+spec:
+  selector:
+    matchLabels:
+      app: gna-fe
+  replicas: 1
+  template:
+    metadata:
+      labels: 
+        app: gna-fe
+    spec:
+      containers:
+        - name: gna-fe
+          image: git.empatnusabangsa.com/empatnusabangsa/gna-fe:<VERSION>
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
