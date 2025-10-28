@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         setIsRedirecting(false)
       }
     }
-  }, [isLoading, isValidating, user, router])
+  }, [isLoading, isValidating, user, router, setUser])
 
   if (isLoading || isValidating || isRedirecting) {
     return (

@@ -37,7 +37,10 @@ export interface UserPayload {
 const url = {
   login: () => '/auth/login',
   validateToken: () => '/auth/validate-token',
-  register: () => '/user/register'
+  register: () => '/user/register',
+  sendForgetPassword: () => '/auth/forget-password/send-token',
+  validatePasswordToken: () => '/auth/forget-password/validate',
+  resetPassword: () => '/auth/forget-password'
 }
 
 const hooks = {
@@ -46,7 +49,13 @@ const hooks = {
 
 const api = {
   login: (data: LoginPayload) => http.post(url.login()).send(data),
-  register: (data: RegisterPayload) => http.post(url.register()).send(data)
+  register: (data: RegisterPayload) => http.post(url.register()).send(data),
+  sendForgetPassword: (email: string) =>
+    http.post(url.sendForgetPassword()).send({ email }),
+  validatePasswordToken: (token: string) =>
+    http.post(url.validatePasswordToken()).send({ token }),
+  resetPassword: (token: string, new_password: string) =>
+    http.post(url.resetPassword()).send({ token, new_password })
 }
 
 export const authRepository = { url, hooks, api }

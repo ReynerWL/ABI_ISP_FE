@@ -76,7 +76,9 @@ const Login = () => {
         return
       }
 
-      toast.error('Terjadi kesalahan tak terduga. Silakan coba lagi.')
+      toast.error(
+        'Maaf terjadi kesalahan di server. Mohon coba beberapa saat lagi.'
+      )
     }
   }
 
@@ -90,7 +92,7 @@ const Login = () => {
       >
         <div className='flex flex-col gap-6 py-10 md:w-full md:px-20 2xl:py-0'>
           <div className='space-y-3'>
-            <Link href={'/'}>
+            <Link href={'/'} className='flex w-fit'>
               <Image
                 src={'/logo.png'}
                 alt={'logo'}

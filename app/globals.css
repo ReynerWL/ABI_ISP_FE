@@ -355,6 +355,15 @@ html {
       }
     }
 
+    /* ----------------------------------- OTP ---------------------------------- */
+    & .ant-otp {
+      @apply grid grid-flow-col gap-2 md:gap-3 !important;
+
+      & .ant-otp-input-wrapper .ant-input {
+        @apply p-3.5 text-base font-bold md:text-lg lg:text-xl !important;
+      }
+    }
+
     & .ant-input-password {
       @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
 

@@ -96,7 +96,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       }
     }
     fetchUser()
-  }, [setUser])
+  }, [setUser, pathname, history])
 
   const items: MenuProps['items'] = [
     {

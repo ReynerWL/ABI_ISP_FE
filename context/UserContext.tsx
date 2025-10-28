@@ -7,6 +7,8 @@ interface UserState {
   isValidating: boolean
   user: UserPayload | null
   setUser: (user: UserPayload | null) => void
+  resetPasswordToken: string
+  setResetPasswordToken: (token: string) => void
 }
 
 const UserContext = createContext<UserState | undefined>(undefined)
@@ -24,6 +26,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname()
   const [validating, setValidating] = useState(true)
   const [user, setUser] = useState<UserPayload | null>(null)
+  const [resetPasswordToken, setResetPasswordToken] = useState('')
 
   useEffect(() => {
     TokenUtil.loadToken()
@@ -36,7 +39,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         '/login',
         '/beranda',
         '/register',
-        '/lupa-password'
+        '/lupa-password',
+        '/verify-otp',
+        '/reset-password'
       ])
       if (!token && !excludedPaths.has(pathname as string)) {
         router.push('/beranda')
@@ -49,7 +54,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     validateToken()
   }, [router, pathname])
 
-  const value: UserState = { user, setUser, isValidating: validating }
+  const value: UserState = {
+    user,
+    setUser,
+    isValidating: validating,
+    resetPasswordToken,
+    setResetPasswordToken
+  }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
