@@ -111,6 +111,7 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                   user?.role.toLowerCase() === 'superadmin'
                 }
                 onClick={() => onClickPaket(value.id)}
+                loading={loading}
               >
                 Langganan Sekarang
               </Button>

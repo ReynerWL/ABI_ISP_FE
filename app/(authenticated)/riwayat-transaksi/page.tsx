@@ -1,6 +1,5 @@
 'use client'
 
-import StepInformasi from '#/components/data-pelanggan/form/StepInformasi'
 import BaseModal from '#/components/reusable/BaseModal'
 import Chip from '#/components/reusable/Chip'
 import DataTable from '#/components/reusable/DataTable'
@@ -20,13 +19,16 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
 import { HiChevronDoubleLeft } from 'react-icons/hi'
 import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
 import { PiTrash } from 'react-icons/pi'
 import { toast } from 'sonner'
 import { MenuItem } from '../layout'
+import InfoPelanggan, {
+  DataPelanggan
+} from '#/components/transaksi/InfoPelanggan'
 
 const listMenu: MenuItem[] = [
   {
@@ -56,32 +58,44 @@ const Detail = () => {
   const { data: detailUser, isLoading } =
     userRepository.hooks.useGetDetailUser()
 
+  const { data } = detailUser ?? {}
+
   // const { data: transaksiUser } =
   //   transakasiRepository.hooks.useGetAllTransaksiByUser()
 
   const PaymentsUser: ListPayment[] = detailUser?.data.payments.data
 
-  const setFormFieldsValue = useCallback(() => {
-    const { data } = detailUser ?? {}
+  const DataPelanggan: DataPelanggan | null = {
+    idPelanggan: data?.customerId,
+    alamat: data?.alamat,
+    email: data?.email,
+    kelurahan: data?.kelurahan,
+    namaPelanggan: data?.name,
+    noTelp: data?.phone_number,
+    tanggalBerlangganan: data?.createdAt,
+    tanggalLahir: data?.birth_date
+  }
 
-    form.setFieldsValue({
-      alamat: data?.alamat,
-      birth_date: dayjs(data?.birth_date),
-      customerId: data?.customerId,
-      email: data?.email,
-      kelurahan: data?.kelurahan,
-      name: data?.name,
-      phone_number: data?.phone_number,
-      tanggal_berlangganan: dayjs(data?.createdAt)
-    })
-  }, [detailUser, form])
+  // const setFormFieldsValue = useCallback(() => {
+  //   const { data } = detailUser ?? {}
+
+  //   form.setFieldsValue({
+  //     alamat: data?.alamat,
+  //     birth_date: dayjs(data?.birth_date),
+  //     customerId: data?.customerId,
+  //     email: data?.email,
+  //     kelurahan: data?.kelurahan,
+  //     name: data?.name,
+  //     phone_number: data?.phone_number,
+  //     tanggal_berlangganan: dayjs(data?.createdAt)
+  //   })
+  // }, [detailUser, form])
 
   useEffect(() => {
     if (detailUser !== undefined) {
-      setFormFieldsValue()
       setInitialValues(detailUser)
     }
-  }, [detailUser, setFormFieldsValue])
+  }, [detailUser])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -198,16 +212,16 @@ const Detail = () => {
   ]
 
   return (
-    <div className='mt-10 flex min-h-dvh w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
+    <div className='mt-10 flex h-screen w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex h-lvh !w-fit flex-row gap-6 rounded-3xl bg-white p-6 sm:w-[770px] md:shadow-[4px_4px_48px_0px_#0068FF0D] xl:w-[940px]'
+        className='flex h-full !w-fit flex-row gap-6 rounded-3xl bg-white p-6 sm:w-[770px] md:shadow-[4px_4px_48px_0px_#0068FF0D] xl:w-[940px]'
       >
         <div
           className={
-            'flex h-fit w-64 flex-col items-center gap-3 border-r border-slate-200 p-6'
+            'h-fill flex w-64 flex-col items-center gap-3 border-r border-slate-200 p-6'
           }
         >
           <Button
@@ -326,15 +340,11 @@ const Detail = () => {
                 </div>
               )}
             </Form.Item>
-            <Heading val={'Data Pribadi'} className={'mb-4'} />
-            <div className={'px-2'}>
-              <StepInformasi
-                key={0}
-                alamat={initialValues?.data?.alamat}
-                isHistoryMode
-              />
-            </div>
           </Form>
+          <Heading val={'Data Pribadi'} />
+          <div className={'rounded-lg bg-slate-50 p-6'}>
+            <InfoPelanggan data={DataPelanggan} />
+          </div>
           <Heading val={'History Transaksi'} />
           <DataTable
             dataSource={PaymentsUser}
