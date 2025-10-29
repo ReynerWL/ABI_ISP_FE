@@ -64,7 +64,7 @@ export const SectionAbout = ({ data }: props) => {
               viewport={{ once: true }}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className={
-                'flex flex-row items-center gap-8 rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md xl:flex-col xl:items-start xl:p-6'
+                'flex flex-row items-center gap-8 rounded-2xl bg-white p-8 transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(59,130,246,0.35)] xl:flex-col xl:items-start xl:p-6'
               }
             >
               <motion.div

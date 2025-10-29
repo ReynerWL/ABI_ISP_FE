@@ -7,19 +7,19 @@ import StepInformasi from '#/components/register/form/StepInformasi'
 import StepKTP from '#/components/register/form/StepKTP'
 import StepNavigation from '#/components/register/form/StepNavigation'
 import StepPaket from '#/components/register/form/StepPaket'
+import RegisterSuccess from '#/components/register/RegisterSuccess'
 import usePageTitle from '#/hooks/usePageTitle'
 import { authRepository, RegisterPayload } from '#/repository/auth'
 import { Paket, paketRepository } from '#/repository/paket'
 import { Form, StepProps, Steps, UploadFile } from 'antd'
 import { useForm, useWatch } from 'antd/es/form/Form'
 import { motion } from 'framer-motion'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 const Register = () => {
   usePageTitle('Register')
-  const router = useRouter()
   const [form] = useForm()
 
   const searchParams = useSearchParams()
@@ -28,6 +28,7 @@ const Register = () => {
 
   const [stepCurrent, setStepCurrent] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const [selectedPaket, setSelectedPaket] = useState<Paket | null>(null)
   const [fileList, setFileList] = useState<UploadFile[]>([])
@@ -123,11 +124,7 @@ const Register = () => {
       const { error } = await authRepository.api.register(data)
 
       if (!error) {
-        toast.success('Register berhasil! Silakan login...')
-        setTimeout(() => {
-          toast.dismiss()
-          router.push('/login')
-        }, 1000)
+        setSuccess(true)
       }
     } catch (error: any) {
       const message = error?.response?.body?.message
@@ -174,63 +171,73 @@ const Register = () => {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`grid w-full rounded-3xl bg-white sm:w-[770px] md:min-w-[800px] md:justify-center md:p-16 md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-auto xl:w-auto xl:min-w-[940px] ${stepCurrent === 3 && paketValue ? 'grid-cols-[700px_auto] items-start gap-6' : 'grid-cols-1 md:items-center'}`}
+        className={`grid w-full rounded-3xl bg-white sm:w-[770px] md:min-w-[800px] md:justify-center md:p-16 md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-auto xl:w-auto ${success ? 'lg:min-w-[600px]' : 'xl:min-w-[940px]'} ${stepCurrent === 3 && paketValue ? 'grid-cols-[700px_auto] items-start gap-6' : 'grid-cols-1 md:items-center'}`}
       >
-        <div
-          className={`m-0 flex flex-col gap-6 md:w-full lg:gap-9 ${stepCurrent === 3 && paketValue && 'w-[600px] border-r border-slate-200 pr-6'}`}
-        >
-          <div className='space-y-6'>
-            <div className='space-y-2'>
-              <h1 className='m-0 text-3xl font-bold sm:text-4xl'>Data Diri</h1>
-              <p className='text-sm font-medium text-slate-400 md:text-base'>
-                Semua data ini wajib di isi untuk kebutuhan proses pemesanan
-                Kamu.
-              </p>
-            </div>
-            <Steps
-              size='small'
-              current={stepCurrent}
-              items={stepItems}
-              className='steps-register'
-            />
-          </div>
-          <Form
-            requiredMark={false}
-            layout='vertical'
-            className='auth-form'
-            form={form}
-            onFinish={handleFinish}
-            initialValues={{
-              provinsi: 'Jawa Barat',
-              kota_kabupaten: 'Kabupaten Bekasi',
-              kecamatan: 'Babelan'
-            }}
-          >
-            {formContent.map((content, index) => (
-              <div
-                key={index}
-                style={{ display: index === stepCurrent ? 'block' : 'none' }}
-              >
-                {content}
+        {success ? (
+          <RegisterSuccess />
+        ) : (
+          <>
+            <div
+              className={`m-0 flex flex-col gap-6 md:w-full lg:gap-9 ${stepCurrent === 3 && paketValue && 'w-[600px] border-r border-slate-200 pr-6'}`}
+            >
+              <div className='space-y-6'>
+                <div className='space-y-2'>
+                  <h1 className='m-0 text-3xl font-bold sm:text-4xl'>
+                    Data Diri
+                  </h1>
+                  <p className='text-sm font-medium text-slate-400 md:text-base'>
+                    Semua data ini wajib di isi untuk kebutuhan proses pemesanan
+                    Kamu.
+                  </p>
+                </div>
+                <Steps
+                  size='small'
+                  current={stepCurrent}
+                  items={stepItems}
+                  className='steps-register'
+                />
               </div>
-            ))}
-            <StepNavigation
-              form={form}
-              stepCurrent={stepCurrent}
-              formContent={formContent}
-              stepFields={stepFields}
-              loading={loading}
-              setStepCurrent={setStepCurrent}
-            />
-          </Form>
-        </div>
-        {stepCurrent === 3 && paketValue && (
-          <FieldPembayaran
-            selectedPaket={selectedPaket}
-            fileList={fileList}
-            setFileList={setFileList}
-            setBuktiPembayaran={setBuktiPembayaran}
-          />
+              <Form
+                requiredMark={false}
+                layout='vertical'
+                className='auth-form'
+                form={form}
+                onFinish={handleFinish}
+                initialValues={{
+                  provinsi: 'Jawa Barat',
+                  kota_kabupaten: 'Kabupaten Bekasi',
+                  kecamatan: 'Babelan'
+                }}
+              >
+                {formContent.map((content, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: index === stepCurrent ? 'block' : 'none'
+                    }}
+                  >
+                    {content}
+                  </div>
+                ))}
+                <StepNavigation
+                  form={form}
+                  stepCurrent={stepCurrent}
+                  formContent={formContent}
+                  stepFields={stepFields}
+                  loading={loading}
+                  setStepCurrent={setStepCurrent}
+                />
+              </Form>
+            </div>
+            {stepCurrent === 3 && paketValue && (
+              <FieldPembayaran
+                selectedPaket={selectedPaket}
+                fileList={fileList}
+                setFileList={setFileList}
+                setBuktiPembayaran={setBuktiPembayaran}
+              />
+            )}
+          </>
         )}
       </motion.div>
     </div>

@@ -48,7 +48,8 @@ const hooks = {
 }
 
 const api = {
-  login: (data: LoginPayload) => http.post(url.login()).send(data),
+  login: (data: LoginPayload) =>
+    http.post(url.login(), { skipAuthIntercept: true }).send(data),
   register: (data: RegisterPayload) => http.post(url.register()).send(data),
   sendForgetPassword: (email: string) =>
     http.post(url.sendForgetPassword()).send({ email }),

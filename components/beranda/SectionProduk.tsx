@@ -31,33 +31,43 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
       id='Produk'
       className='flex scroll-mt-28 flex-col justify-center gap-y-8 px-4 md:px-10 xl:px-16 2xl:px-20'
     >
-      <Skeleton active loading={loading} round paragraph={{ rows: 6 }}>
-        {/* Header Animation */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          viewport={{ once: true, amount: 0.4 }}
-          className='grid grid-flow-row justify-items-center gap-y-1 xl:gap-y-3'
-        >
-          <h2 className='text-2xl font-bold text-slate-800 xl:text-3xl 2xl:text-4xl'>
-            Produk Kami
-          </h2>
-          <p className='w-80 text-center text-base font-medium text-slate-500 sm:w-[400px] md:text-sm xl:text-base 2xl:w-[533px] 2xl:text-xl'>
-            Kami menyediakan berbagai pilihan produk internet yang cepat,
-            stabil, dan sesuai kebutuhan Anda
-          </p>
-        </motion.div>
+      {/* Header Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 0.4 }}
+        className='grid grid-flow-row justify-items-center gap-y-1 xl:gap-y-3'
+      >
+        <h2 className='text-2xl font-bold text-slate-800 xl:text-3xl 2xl:text-4xl'>
+          Produk Kami
+        </h2>
+        <p className='w-80 text-center text-base font-medium text-slate-500 sm:w-[400px] md:text-sm xl:text-base 2xl:w-[533px] 2xl:text-xl'>
+          Kami menyediakan berbagai pilihan produk internet yang cepat, stabil,
+          dan sesuai kebutuhan Anda
+        </p>
+      </motion.div>
 
-        {/* Product Cards Animation */}
-        <motion.div
-          className='produk-scrollbar flex w-full flex-row gap-x-6 overflow-x-auto overflow-y-hidden p-3'
-          initial='hidden'
-          whileInView='visible'
-          viewport={{ once: true, amount: 0.3 }}
-          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
-        >
-          {data?.map((value, index) => (
+      {/* Product Cards Animation */}
+      <motion.div
+        className='produk-scrollbar flex w-full flex-row gap-x-6 overflow-x-auto overflow-y-hidden p-3'
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true, amount: 0.3 }}
+        variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+      >
+        {loading ? (
+          <div className='scrollbar-hide grid w-full grid-flow-col gap-6 overflow-x-hidden'>
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <Skeleton.Node
+                key={idx}
+                active
+                className='!min-h-[380px] !w-[250px] flex-shrink-0 !rounded-2xl md:!min-h-[420px] md:!w-full md:!min-w-[270px]'
+              />
+            ))}
+          </div>
+        ) : (
+          data?.map((value, index) => (
             <motion.div
               key={index}
               variants={{
@@ -105,9 +115,9 @@ export const SectionProduk = ({ data = [], widthImage, loading }: props) => {
                 Langganan Sekarang
               </Button>
             </motion.div>
-          ))}
-        </motion.div>
-      </Skeleton>
+          ))
+        )}
+      </motion.div>
     </div>
   )
 }

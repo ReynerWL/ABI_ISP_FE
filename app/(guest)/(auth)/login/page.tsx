@@ -42,7 +42,7 @@ const Login = () => {
       }
 
       toast.success(
-        `Berhasil masuk! Mengarahkan ke ${userRole === 'admin' || userRole === 'superadmin' ? 'dashboard' : 'beranda'}...`
+        `Login berhasil! Mengarahkan ke ${userRole === 'admin' || userRole === 'superadmin' ? 'dashboard' : 'beranda'}...`
       )
 
       setTimeout(() => {
@@ -71,8 +71,15 @@ const Login = () => {
         return
       }
 
-      if (statusCode === 400 || statusCode === 401) {
+      if (statusCode === 400) {
         toast.error('Email atau password salah. Silakan coba lagi.')
+        return
+      }
+
+      if (statusCode === 401) {
+        toast.error(
+          'Mohon maaf saat ini akun Anda sedang ditangguhkan sementara.'
+        )
         return
       }
 

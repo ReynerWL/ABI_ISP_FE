@@ -181,38 +181,6 @@ const StepInformasi = ({
           </Form.Item>
         )}
 
-        {/* Tanggal Berlangganan */}
-        <Form.Item
-          name={'tanggal_berlangganan'}
-          label='Tanggal Berlangganan'
-          validateDebounce={1000}
-          preserve={true}
-          rules={[
-            { required: true, message: 'Tanggal berlangganan wajib diisi' }
-          ]}
-          className={isHistoryMode ? 'pointer-events-none' : ''}
-        >
-          <DatePicker
-            placeholder='Masukkan Tanggal Berlangganan'
-            format={'DD-MM-YYYY'}
-            suffixIcon={
-              <HiOutlineCalendar
-                className='text-lg text-slate-400'
-                strokeWidth={1.8}
-              />
-            }
-            allowClear={{
-              clearIcon: (
-                <HiXMark
-                  className='size-[18px] text-slate-400 transition duration-200 hover:brightness-50'
-                  strokeWidth={0.4}
-                />
-              )
-            }}
-            readOnly={isHistoryMode}
-          />
-        </Form.Item>
-
         {/* Kelurahan */}
         <Form.Item
           name={'kelurahan'}
