@@ -74,6 +74,7 @@ export interface GetUserParams {
   paket?: string | null
   paket_speed?: string | null
   role: string
+  created_at?: string
 }
 
 export interface UserDetail {

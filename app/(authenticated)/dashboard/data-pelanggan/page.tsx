@@ -7,6 +7,7 @@ import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import WAButton from '#/components/reusable/WAButton'
+import { useUser } from '#/context/UserContext'
 import usePageTitle from '#/hooks/usePageTitle'
 import { Paket, paketRepository } from '#/repository/paket'
 import { User, userRepository } from '#/repository/user'
@@ -23,6 +24,7 @@ const DataPelanggan = () => {
   usePageTitle('Data Pelanggan')
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { user } = useUser()
   const search = searchParams?.get('search') || null
   const status = searchParams?.get('status') || 'Semua'
   const page = searchParams?.get('page') || 1
@@ -105,7 +107,11 @@ const DataPelanggan = () => {
       render: (_, record) => (
         <div className='flex gap-2'>
           <Button
-            className='!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
+                : '!hidden'
+            }
             onClick={() => {
               setOpenModal(true)
               setInitialValues(record as User)
@@ -117,7 +123,7 @@ const DataPelanggan = () => {
           <Link
             scroll={false}
             href={`/dashboard/data-pelanggan/${record?.id}`}
-            className='flex items-center gap-2 !rounded-lg border !border-slate-100 px-2 !font-semibold !text-primary !shadow-none hover:!bg-slate-50'
+            className={`flex items-center gap-2 !rounded-lg border !border-slate-100 ${user?.role.toLowerCase() === 'superadmin' ? 'px-2' : 'px-2 py-1'} !font-semibold !text-primary !shadow-none hover:!bg-slate-50`}
           >
             <HiEye className='text-lg' />
             Detail

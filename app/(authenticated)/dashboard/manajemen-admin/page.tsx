@@ -31,7 +31,8 @@ const ManajemenAdmin = () => {
     search,
     role: 'Admin',
     page: Number(page),
-    limit: Number(limit)
+    limit: Number(limit),
+    created_at: 'ASC'
   })
 
   const users: User[] = data?.data

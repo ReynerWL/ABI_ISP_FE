@@ -6,7 +6,11 @@ import { HiCheck, HiInformationCircle, HiQrCode } from 'react-icons/hi2'
 import { toast } from 'sonner'
 import BaseModal from '../reusable/BaseModal'
 
-const ModalQr = () => {
+interface props {
+  access: boolean
+}
+
+const ModalQr = ({ access }: props) => {
   const [open, setOpen] = useState(false)
   const [refresh, setRefresh] = useState(false)
   const {
@@ -72,7 +76,11 @@ const ModalQr = () => {
   return (
     <>
       <Button
-        className='!h-full !w-fit !rounded-lg !bg-blue-50 !p-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 md:!w-fit'
+        className={
+          access
+            ? '!h-full !w-fit !rounded-lg !bg-blue-50 !p-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 md:!w-fit'
+            : '!hidden'
+        }
         type='text'
         onClick={() => setOpen(true)}
       >

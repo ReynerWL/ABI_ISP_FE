@@ -7,6 +7,7 @@ import PaketChart from '#/components/dashboard/PaketChart'
 import TotalPelangganCard from '#/components/dashboard/TotalPelangganCard'
 import TransactionChart from '#/components/dashboard/TransactionChart'
 import Title from '#/components/reusable/Title'
+import { useUser } from '#/context/UserContext'
 import {
   Dashboard as DashboardData,
   dashboardRepository
@@ -14,6 +15,7 @@ import {
 import { HiArchiveBox, HiClock, HiSignal, HiSignalSlash } from 'react-icons/hi2'
 
 const Dashboard = () => {
+  const { user } = useUser()
   const { isLoading, data } = dashboardRepository.hooks.useGetDashboard()
   const summary: DashboardData = data?.data
 
@@ -21,7 +23,7 @@ const Dashboard = () => {
     <div className='w-full'>
       <div className='flex flex-row items-center justify-between'>
         <Title>Dashboard</Title>
-        <ModalQr />
+        <ModalQr access={user?.role.toLowerCase() === 'superadmin'} />
       </div>
       <div className='mt-6 flex w-full flex-col gap-4 md:gap-6'>
         <div className='flex w-full flex-col gap-4 md:gap-6 xl:h-[320px] xl:flex-row'>
