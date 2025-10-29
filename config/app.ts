@@ -4,5 +4,5 @@ export const config = {
       ? (window as any).serverEnv?.DYNAMIC_ENV_BASE_URL
       : '') ||
     process.env.NEXT_PUBLIC_BASE_URL ||
-    'https://official-joke-api.appspot.com'
+    'https://abi-isp-be.k3s.bangun-kreatif.com'
 }

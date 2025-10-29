@@ -1,12 +1,14 @@
 'use client'
 
 import { authRepository } from '#/repository/auth'
+import { userRepository } from '#/repository/user'
 import { Form, StepProps, Steps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import BaseModal from '../reusable/BaseModal'
+import EditForm from './form/EditForm'
 import StepInformasi from './form/StepInformasi'
 import StepKTP from './form/StepKTP'
 import StepNavigation from './form/StepNavigation'
@@ -37,7 +39,7 @@ const ModalPelanggan = ({
     { title: 'Pembayaran' }
   ]
 
-  const stepFields: string[][] = [
+  const tambahFields: string[][] = [
     [
       'name',
       'email',
@@ -52,16 +54,26 @@ const ModalPelanggan = ({
     ['banksId', 'bukti_pembayaran']
   ]
 
-  const formContent = [
-    <StepInformasi
-      key={0}
-      isEditMode={!!initialValues}
-      alamat={initialValues?.alamat}
-    />,
-    <StepKTP key={1} form={form} />,
-    <StepPaket key={2} />,
-    <StepPayment key={3} form={form} />
-  ]
+  const editFields: string[][] = [['email', 'phone_number', 'status', 'paket']]
+
+  const formContent = initialValues
+    ? [
+        <EditForm
+          key={0}
+          form={form}
+          initialPaketId={initialValues.paket?.id}
+        />
+      ]
+    : [
+        <StepInformasi
+          key={0}
+          isEditMode={!!initialValues}
+          alamat={initialValues?.alamat}
+        />,
+        <StepKTP key={1} form={form} />,
+        <StepPaket key={2} />,
+        <StepPayment key={3} form={form} />
+      ]
 
   const handleClose = () => {
     form.resetFields()
@@ -75,33 +87,48 @@ const ModalPelanggan = ({
     try {
       setLoading(true)
 
-      const data = {
-        email: values.email,
-        name: values.name,
-        phone_number: values.phone_number,
-        birth_date: values.birth_date,
-        password: values.password,
-        provinsi: 'Jawa Barat',
-        kota: 'Kabupaten Bekasi',
-        kecamatan: 'Babelan',
-        kelurahan: values.kelurahan,
-        alamat: values.alamat,
-        photo_ktp: values.photo_ktp,
-        payment: {
-          paketId: values.paket,
+      let data
+
+      if (initialValues) {
+        data = {
+          email: values.email,
+          phone_number: values.phone_number,
+          status: values.status,
+          paketsId: values.paket,
           banksId: values.banksId,
           buktiPembayaran: values.bukti_pembayaran
         }
-      }
 
-      const { error } = await authRepository.api.register(data)
+        await userRepository.api.updateUser(initialValues.id, data)
 
-      if (!error) {
+        toast.success('Berhasil edit data pelanggan!')
+      } else {
+        data = {
+          email: values.email,
+          name: values.name,
+          phone_number: values.phone_number,
+          birth_date: values.birth_date,
+          password: values.password,
+          provinsi: 'Jawa Barat',
+          kota: 'Kabupaten Bekasi',
+          kecamatan: 'Babelan',
+          kelurahan: values.kelurahan,
+          alamat: values.alamat,
+          photo_ktp: values.photo_ktp,
+          payment: {
+            paketId: values.paket,
+            banksId: values.banksId,
+            buktiPembayaran: values.bukti_pembayaran
+          }
+        }
+
+        await authRepository.api.register(data)
+
         toast.success('Berhasil menambahkan data pelanggan!')
-
-        onClose()
-        mutate()
       }
+
+      onClose()
+      mutate()
     } catch (error: any) {
       const message = error?.response?.body?.message
 
@@ -121,7 +148,8 @@ const ModalPelanggan = ({
       form.setFieldsValue({
         ...initialValues,
         birth_date: dayjs(initialValues.birth_date),
-        kelurahan: initialValues.kelurahan
+        kelurahan: initialValues.kelurahan,
+        paket: initialValues.paket?.id
       })
     }
   }, [initialValues, form])
@@ -129,18 +157,20 @@ const ModalPelanggan = ({
   return (
     <BaseModal
       open={open}
-      title='Tambah Data'
+      title={initialValues ? 'Edit Pelanggan' : 'Tambah Pelanggan'}
       onClose={handleClose}
       titleBorder={false}
       width={stepCurrent === 0 ? 600 : 520}
     >
       <div className='flex flex-col gap-4'>
-        <Steps
-          size='small'
-          current={stepCurrent}
-          items={stepItems}
-          className='tambah-pengguna-steps'
-        />
+        {!initialValues && (
+          <Steps
+            size='small'
+            current={stepCurrent}
+            items={stepItems}
+            className='tambah-pengguna-steps'
+          />
+        )}
         <Form
           form={form}
           layout='vertical'
@@ -159,7 +189,7 @@ const ModalPelanggan = ({
             form={form}
             stepCurrent={stepCurrent}
             formContent={formContent}
-            stepFields={stepFields}
+            stepFields={initialValues ? editFields : tambahFields}
             setStepCurrent={setStepCurrent}
             handleClose={handleClose}
           />

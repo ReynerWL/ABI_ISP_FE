@@ -74,6 +74,16 @@ export interface GetUserParams {
   paket?: string | null
   paket_speed?: string | null
   role: string
+  created_at?: string
+}
+
+export interface UpdateUserPayload {
+  email: string
+  phone_number: string
+  status: string
+  paketsId: string
+  banksId?: string
+  buktiPembayaran?: string
 }
 
 export interface UserDetail {
@@ -121,7 +131,7 @@ const hooks = {
 }
 
 const api = {
-  updateUser(id: string, data: User) {
+  updateUser(id: string, data: UpdateUserPayload) {
     return http.put(url.getUserById(id)).send(data)
   },
   updateStatus(id: string) {

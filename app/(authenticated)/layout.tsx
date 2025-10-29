@@ -159,13 +159,17 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           className='dashboard-menu !mt-6'
         />
       </Sider>
-      <Layout className={`h-full ${beranda || history ? '' : 'lg:ml-[288px]'}`}>
+      <Layout className={`h-full ${beranda || history ? '' : 'xl:ml-[288px]'}`}>
         {beranda || history ? (
           /* ----------------------------- BERANDA HEADER ----------------------------- */
           <BerandaHeader activeSection={activeSection} isLoading={loading} />
         ) : (
           /* ---------------------------- DASHBOARD HEADER ---------------------------- */
-          <DashboardHeader isLoading={loading} />
+          <DashboardHeader
+            isLoading={loading}
+            selectedKey={selectedKey}
+            items={items}
+          />
         )}
         <Content
           className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white sm:mt-20 md:mt-24' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
