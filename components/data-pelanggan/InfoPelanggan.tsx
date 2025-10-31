@@ -47,7 +47,7 @@ const InfoPelanggan = ({
       </div>
       <div className='grid grid-cols-2 gap-y-6'>
         <div className='flex flex-col gap-1'>
-          <p className='text-xs font-medium leading-[14px] text-slate-500'>
+          <p className='font-medium leading-[14px] text-slate-500'>
             Tanggal Berlangganan
           </p>
           <h3 className='font-bold text-slate-700'>
@@ -59,7 +59,7 @@ const InfoPelanggan = ({
           </h3>
         </div>
         <div className='flex flex-col gap-1'>
-          <p className='text-xs font-medium leading-[14px] text-slate-500'>
+          <p className='font-medium leading-[14px] text-slate-500'>
             Nama Pelanggan
           </p>
           <h3 className='font-bold text-slate-700'>
@@ -71,9 +71,7 @@ const InfoPelanggan = ({
           </h3>
         </div>
         <div className='flex flex-col gap-1'>
-          <p className='text-xs font-medium leading-[14px] text-slate-500'>
-            Email
-          </p>
+          <p className='font-medium leading-[14px] text-slate-500'>Email</p>
           <h3 className='font-bold text-slate-700'>
             {isLoading ? (
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
@@ -83,9 +81,7 @@ const InfoPelanggan = ({
           </h3>
         </div>
         <div className='flex flex-col gap-1'>
-          <p className='text-xs font-medium leading-[14px] text-slate-500'>
-            No. Telp
-          </p>
+          <p className='font-medium leading-[14px] text-slate-500'>No. Telp</p>
           <h3 className='font-bold text-slate-700'>
             {isLoading ? (
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
@@ -95,9 +91,7 @@ const InfoPelanggan = ({
           </h3>
         </div>
         <div className='flex flex-col gap-1'>
-          <p className='text-xs font-medium leading-[14px] text-slate-500'>
-            Alamat
-          </p>
+          <p className='font-medium leading-[14px] text-slate-500'>Alamat</p>
           <h3 className='font-bold text-slate-700'>
             {isLoading ? (
               <Skeleton.Node active style={{ width: 100, height: 21 }} />

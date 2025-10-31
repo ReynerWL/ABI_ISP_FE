@@ -18,9 +18,11 @@ const CustomDateRangePicker = () => {
     if (dates) {
       const startDate = dayjs(dates[0]).format('YYYY-MM-DD')
       const endDate = dayjs(dates[1]).format('YYYY-MM-DD')
-      queryParams.set('dateRange', `${startDate},${endDate}`)
+      queryParams.set('start_date', startDate)
+      queryParams.set('end_date', endDate)
     } else {
-      queryParams.delete('dateRange')
+      queryParams.delete('start_date')
+      queryParams.delete('end_date')
     }
 
     router.push(`?${queryParams.toString()}`)

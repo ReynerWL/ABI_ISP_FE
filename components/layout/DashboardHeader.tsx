@@ -1,21 +1,45 @@
+import { useUIState } from '#/context/UIStateContext'
 import { useUser } from '#/context/UserContext'
 import { toProperCase } from '#/utils/formatter'
 import { TokenUtil } from '#/utils/token'
-import { Avatar, Button, Dropdown, MenuProps, Skeleton } from 'antd'
+import {
+  Avatar,
+  Button,
+  Drawer,
+  Dropdown,
+  Menu,
+  MenuProps,
+  Skeleton
+} from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import dayjs from 'dayjs'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
-import { HiBars3BottomLeft, HiChevronDown, HiChevronUp } from 'react-icons/hi2'
+import {
+  HiBars3BottomLeft,
+  HiChevronDown,
+  HiChevronUp,
+  HiXMark
+} from 'react-icons/hi2'
 import { TbLogout } from 'react-icons/tb'
 
 interface DashboardHeaderProps {
   isLoading?: boolean
+  selectedKey: string
+  items: MenuProps['items']
 }
 
-const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
+const DashboardHeader = ({
+  isLoading,
+  selectedKey,
+  items
+}: DashboardHeaderProps) => {
   const { user } = useUser()
   const [open, setOpen] = useState<boolean>(false)
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const { isMobile } = useUIState()
 
   const dropdownItems: MenuProps['items'] = [
     {
@@ -51,9 +75,13 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
       style={{ position: 'fixed', top: 0, right: 0, left: 288, height: 64 }}
       className='dashboard-header'
     >
-      <div className='ml-0 flex w-full items-center justify-between gap-4 lg:ml-[288px] lg:justify-between'>
+      <div className='ml-0 flex w-full items-center justify-between gap-4 lg:justify-between xl:ml-[288px]'>
         <div className='flex items-center gap-6'>
-          <Button type='text' className='!h-fit !p-1 lg:!hidden'>
+          <Button
+            type='text'
+            className='!h-fit !p-1 xl:!hidden'
+            onClick={() => setOpenDrawer(!openDrawer)}
+          >
             <HiBars3BottomLeft className='!text-3xl' />
           </Button>
           <p className='hidden text-sm font-semibold text-slate-700 sm:flex'>
@@ -139,6 +167,46 @@ const DashboardHeader = ({ isLoading }: DashboardHeaderProps) => {
           )}
         </div>
       </div>
+      <Drawer
+        title={
+          <div className='flex w-full items-center justify-between'>
+            <Link href={'/'}>
+              <Image
+                src={'/logo.png'}
+                alt={'logo'}
+                priority
+                width={92}
+                height={48}
+                unoptimized
+                className={'sm:h-[60px] sm:w-[110px]'}
+              />
+            </Link>
+            <Button
+              type='text'
+              className='!h-fit !p-1'
+              onClick={() => setOpenDrawer(!openDrawer)}
+            >
+              <HiXMark
+                strokeWidth={0.3}
+                className='h-[26px] w-[26px] text-slate-500 group-hover:brightness-75'
+              />
+            </Button>
+          </div>
+        }
+        closable={false}
+        open={openDrawer}
+        mask={false}
+        placement='left'
+        size={isMobile ? 'large' : 'default'}
+        classNames={{ wrapper: 'xl:!hidden' }}
+      >
+        <Menu
+          mode='inline'
+          selectedKeys={[selectedKey]}
+          items={items}
+          className='dashboard-menu'
+        />
+      </Drawer>
     </Header>
   )
 }

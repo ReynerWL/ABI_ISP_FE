@@ -63,7 +63,7 @@ html {
 
 /* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
 .dashboard-sider.ant-layout-sider {
-  @apply z-20 hidden bg-white p-6 pt-2 lg:block !important;
+  @apply z-20 hidden bg-white p-6 pt-2 xl:block !important;
 }
 
 /* ----------------------------- DASHBOARD MENU ----------------------------- */
