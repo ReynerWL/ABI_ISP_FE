@@ -9,7 +9,7 @@ interface props {
 }
 
 const Desc = ({ text, dueDate }: props) => {
-  const lowerText = text.toLowerCase().replace('-', '_')
+  const lowerText = text?.toLowerCase().replace('-', '_')
   const dueDateFormated = dueDate ? dayjs(dueDate).format('DD/MM/YYYY') : ''
 
   const { desc } = descText[lowerText] || { desc: 'Terjadi kesalahan' }

@@ -10,6 +10,8 @@ import {
 interface DataTableProps {
   dataSource: TableProps['dataSource']
   columns: TableProps['columns']
+  id?: string
+  className?: string
   page?: number
   limit?: number
   totalPage?: number
@@ -21,6 +23,8 @@ interface DataTableProps {
 const DataTable = ({
   dataSource,
   columns,
+  id,
+  className,
   page = 1,
   limit = 10,
   totalPage = 1,
@@ -58,10 +62,11 @@ const DataTable = ({
 
   return (
     <Table
+      id={id}
       dataSource={dataSource}
       loading={{ spinning: isLoading, size: 'large' }}
       columns={columns}
-      className='data-table custom-scrollbar'
+      className={`data-table custom-scrollbar ${className}`}
       pagination={false}
       rowHoverable={false}
       scroll={{ x: 'max-content' }}

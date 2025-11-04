@@ -7,36 +7,41 @@ import { EmptyImg } from '#/components/reusable/EmptyImg'
 import Desc from '#/components/riwayat/DescStatus'
 import { Heading } from '#/components/riwayat/Heading'
 import usePageTitle from '#/hooks/usePageTitle'
-import { DetailUser, ListPayment, userRepository } from '#/repository/user'
 import { formatRupiah } from '#/utils/formatter'
 import { TokenUtil } from '#/utils/token'
-import { Button, Form, TableProps, Upload, UploadFile, UploadProps } from 'antd'
+import {
+  Button,
+  Form,
+  Image,
+  TableProps,
+  Upload,
+  UploadFile,
+  UploadProps
+} from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { UploadChangeParam } from 'antd/es/upload'
 import Dragger from 'antd/es/upload/Dragger'
 import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
 import { HiChevronDoubleLeft } from 'react-icons/hi'
-import { HiDocumentMagnifyingGlass, HiPhoto, HiServer } from 'react-icons/hi2'
+import {
+  HiCheckCircle,
+  HiDocumentMagnifyingGlass,
+  HiPhoto
+} from 'react-icons/hi2'
 import { PiTrash } from 'react-icons/pi'
 import { toast } from 'sonner'
 import { MenuItem } from '../layout'
 import InfoPelanggan, {
   DataPelanggan
 } from '#/components/transaksi/InfoPelanggan'
+import { transakasiRepository } from '#/repository/transaksi'
+import { generalRepository } from '#/repository/general'
 
 const listMenu: MenuItem[] = [
-  {
-    name: 'Informasi Paket',
-    isActive: true,
-    id: 'Informasi_Paket',
-    icon: <HiServer className={'text-xl'} />
-  },
   {
     name: 'Transaksi',
     isActive: false,
@@ -50,54 +55,31 @@ const Detail = () => {
   const router = useRouter()
   const [form] = useForm()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
-  const [initialValues, setInitialValues] = useState<DetailUser | null>(null)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
   const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
+  const [isloading, setIsLoading] = useState<boolean>(false)
 
-  const { data: detailUser, isLoading } =
-    userRepository.hooks.useGetDetailUser()
+  const { data, mutate, isLoading } =
+    transakasiRepository.hooks.useGetAllTransaksiByUser({})
 
-  const { data } = detailUser ?? {}
-
-  // const { data: transaksiUser } =
-  //   transakasiRepository.hooks.useGetAllTransaksiByUser()
-
-  const PaymentsUser: ListPayment[] = detailUser?.data.payments.data
-
-  const DataPelanggan: DataPelanggan | null = {
-    idPelanggan: data?.customerId,
-    alamat: data?.alamat,
-    email: data?.email,
-    kelurahan: data?.kelurahan,
-    namaPelanggan: data?.name,
-    noTelp: data?.phone_number,
-    tanggalBerlangganan: data?.createdAt,
-    tanggalLahir: data?.birth_date
-  }
-
-  // const setFormFieldsValue = useCallback(() => {
-  //   const { data } = detailUser ?? {}
-
-  //   form.setFieldsValue({
-  //     alamat: data?.alamat,
-  //     birth_date: dayjs(data?.birth_date),
-  //     customerId: data?.customerId,
-  //     email: data?.email,
-  //     kelurahan: data?.kelurahan,
-  //     name: data?.name,
-  //     phone_number: data?.phone_number,
-  //     tanggal_berlangganan: dayjs(data?.createdAt)
-  //   })
-  // }, [detailUser, form])
+  const transaksiUser = data?.data?.[0]
 
   useEffect(() => {
-    if (detailUser !== undefined) {
-      setInitialValues(detailUser)
+    if (transaksiUser?.buktiPembayaran) {
+      setFileList([
+        {
+          uid: '-1',
+          name: 'buktiPembayaran.png',
+          status: 'done',
+          url: transaksiUser?.buktiPembayaran
+        }
+      ])
     }
-  }, [detailUser])
+  }, [transaksiUser?.buktiPembayaran])
 
   useEffect(() => {
+    toast.dismiss()
     const handleScroll = () => {
       const scrollY = window.scrollY
 
@@ -109,8 +91,8 @@ const Detail = () => {
             const offsetHeight = el.offsetHeight
 
             if (
-              scrollY >= offsetTop - 100 &&
-              scrollY < offsetTop + offsetHeight - 100
+              scrollY >= offsetTop - 150 &&
+              scrollY < offsetTop + offsetHeight - 150
             ) {
               return { ...item, isActive: true }
             }
@@ -125,12 +107,62 @@ const Detail = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleUpload = (file: UploadFile) => {
-    form.setFieldsValue({ buktiPembayaran: file })
+  const DataPelanggan: DataPelanggan | null = {
+    idPelanggan: transaksiUser?.user?.customerId,
+    alamat: transaksiUser?.user?.alamat,
+    email: transaksiUser?.user?.email,
+    kelurahan: transaksiUser?.user?.kelurahan,
+    namaPelanggan: transaksiUser?.user?.name,
+    noTelp: transaksiUser?.user?.phone_number,
+    tanggalBerlangganan: transaksiUser?.user?.createdAt,
+    tanggalLahir: transaksiUser?.user?.birth_date
   }
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  const handleUpload = async (file: File) => {
+    if (isloading) return
+    setIsLoading(true)
+
+    try {
+      const data = new FormData()
+      data.append('file', file)
+      data.append('type', 'buktiPembayaran')
+
+      const { body } = await generalRepository.api.uploadFile(data)
+
+      const uploadURL = body?.data?.url
+
+      setBuktiPembayaran(uploadURL)
+
+      const { error } = await transakasiRepository.api.updateTransaksi(
+        transaksiUser?.id,
+        { buktiPembayaran: uploadURL }
+      )
+      if (!error) {
+        toast.success('Bukti Pembayaran berhasil diunggah!')
+        mutate()
+      }
+    } catch (error) {
+      if (error) {
+        toast.error('Terjadi kesalahan saat upload bukti pembayaran!')
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleChange: UploadProps['onChange'] = async ({
+    file,
+    fileList: newFileList
+  }) => {
     setFileList(newFileList)
+
+    if (file.status === 'done') {
+      const latestUpload = newFileList?.[0]?.originFileObj
+      if (latestUpload) {
+        await handleUpload(latestUpload)
+      }
+    }
+  }
 
   const draggerProps: UploadProps = {
     name: 'buktiPembayaran',
@@ -144,27 +176,10 @@ const Detail = () => {
         toast.error('Ukuran file maksimal 15MB')
         return Upload.LIST_IGNORE
       }
-      return false
+      return true
     },
-    onChange: (info: UploadChangeParam<UploadFile>) => {
-      const { file } = info
-      handleChange(info)
-      handleUpload(file)
-      if (file.status !== 'done') {
-        toast.success('Bukti Pembayaran berhasil diunggah!')
-      }
-    }
+    onChange: handleChange
   }
-
-  // const handleUploadImage = async (file: any) => {
-  //   const data = new FormData()
-  //   data.append('file', file)
-  //   data.append('type', 'buktiPembayaran')
-
-  //   const { body } = await generalRepository.api.uploadFile(data)
-
-  //   setBuktiPembayaran(body?.data?.url)
-  // }
 
   const columns: TableProps['columns'] = [
     {
@@ -182,11 +197,17 @@ const Detail = () => {
     },
     {
       title: 'Tanggal Bayar',
-      dataIndex: 'confirmAt',
-      key: 'confirmAt',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (value) =>
         value ? dayjs(value).format('DD/MM/YYYY, HH:mm') : '-',
-      sorter: (a, b) => dayjs(a?.confirmAt).unix() - dayjs(b?.confirmAt).unix()
+      sorter: (a, b) => dayjs(a?.updatedAt).unix() - dayjs(b?.updatedAt).unix()
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => <Chip text={status} />
     },
     {
       title: 'Bukti Pembayaran',
@@ -259,99 +280,120 @@ const Detail = () => {
               }
             >
               <Image
-                src={initialValues?.data?.paket?.photo ?? '/emptyImg.svg'}
+                src={transaksiUser?.paket?.photo ?? '/emptyImg.svg'}
                 alt={'Paket'}
-                width={64}
-                height={64}
+                preview={false}
+                className={'!w-44'}
               />
               <div className={'flex w-full flex-col gap-1'}>
                 <p className={'text-xs font-medium text-slate-500'}>
-                  {initialValues?.data?.paket?.name}
+                  {transaksiUser?.paket?.name}
                 </p>{' '}
                 <p className={'text-base font-bold text-primary'}>
-                  {formatRupiah(initialValues?.data?.paket?.price ?? 0, {
+                  {formatRupiah(transaksiUser?.paket?.price ?? 0, {
                     withPrefix: true
                   })}
                   /Bulan
                 </p>
               </div>
               <div className={'flex w-full justify-end'}>
-                <Chip text={initialValues?.data?.status ?? ''} />
+                <Chip text={transaksiUser?.user?.status ?? ''} />
               </div>
             </div>
             <Desc
-              text={initialValues?.data?.status ?? ''}
-              dueDate={initialValues?.data?.subscription?.due_date}
+              text={transaksiUser?.status}
+              dueDate={transaksiUser?.due_date}
             />
           </div>
-          <Form
-            requiredMark={false}
-            layout='vertical'
-            className='auth-form'
-            form={form}
-            initialValues={{
-              provinsi: 'Jawa Barat',
-              kota_kabupaten: 'Kabupaten Bekasi',
-              kecamatan: 'Babelan'
-            }}
-          >
-            <Form.Item
-              label={'Upload Bukti Pembayaran'}
-              name={'buktiPembayaran'}
-              preserve={true}
-              validateDebounce={500}
-              rules={[
-                { required: true, message: 'Bukti pembayaran wajib diisi' }
-              ]}
-              className={'!px-2'}
+          <div className='flex flex-col gap-2'>
+            <Heading val={'Bukti Pembayaran'} />
+            <p
+              className={
+                transaksiUser?.status.toLowerCase() === 'reject'
+                  ? 'flex text-xs font-normal text-red-500'
+                  : 'hidden'
+              }
             >
-              <Dragger
-                {...draggerProps}
-                className={'ktp-upload group'}
-                style={{ display: fileList.length ? 'none' : 'block' }}
+              Bukti pembayaran Anda tidak valid atau tidak dapat diverifikasi,
+              dengan alasan {transaksiUser?.reason}. Mohon unggah ulang bukti
+              pembayaran yang sesuai.
+            </p>
+          </div>
+          {transaksiUser?.status.toLowerCase() === 'confirm' ? (
+            <div className='flex flex-col items-center justify-center gap-3 rounded-lg bg-blue-50 p-10 text-primary'>
+              <HiCheckCircle className={'text-6xl'} />
+              <h1 className='text-base font-semibold'>
+                Pembayaran Anda telah kami verifikasi.
+              </h1>
+            </div>
+          ) : (
+            <Form
+              requiredMark={false}
+              layout='vertical'
+              className='auth-form'
+              form={form}
+            >
+              <Form.Item
+                name={'buktiPembayaran'}
+                preserve={true}
+                validateDebounce={500}
+                rules={[
+                  { required: true, message: 'Bukti pembayaran wajib diisi' }
+                ]}
+                className={'!px-2'}
               >
-                <div className='flex flex-col items-center py-[26px]'>
-                  <AiFillCamera className='size-16 text-blue-200' />
-                  <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
-                    Klik untuk ambil foto
-                  </h1>
-                </div>
-              </Dragger>
-              {fileList.length > 0 && (
-                <div className='flex flex-col gap-4'>
-                  <Image
-                    src={
-                      fileList[0].url ||
-                      URL.createObjectURL(fileList[0].originFileObj as File)
-                    }
-                    alt={'bukti pembayaran'}
-                    className='min-h-40 w-full max-w-full rounded-lg object-contain'
-                  />
-                  <Button
-                    onClick={() => {
-                      setFileList([])
-                      form.setFieldsValue({ buktiPembayaran: null })
-                    }}
-                    className='!h-full !rounded-lg !border-slate-200 !py-2 !font-semibold !text-red-500 !shadow-none hover:!border-red-500 hover:!bg-red-100 hover:!text-red-500'
+                <div>
+                  <Dragger
+                    {...draggerProps}
+                    className={'ktp-upload group'}
+                    style={{ display: fileList.length ? 'none' : 'block' }}
                   >
-                    <PiTrash className='size-5' strokeWidth={3} />
-                    Hapus foto
-                  </Button>
+                    <div className='flex flex-col items-center py-[26px]'>
+                      <AiFillCamera className='size-16 text-blue-200' />
+                      <h1 className='text-base font-semibold text-primary underline-offset-2 group-hover:underline'>
+                        Klik untuk ambil foto
+                      </h1>
+                    </div>
+                  </Dragger>
+                  {fileList.length > 0 && (
+                    <div className='flex flex-col gap-4'>
+                      <Image
+                        src={
+                          fileList[0].url ||
+                          URL.createObjectURL(fileList[0].originFileObj as File)
+                        }
+                        alt={'bukti pembayaran'}
+                        className='max-h-80 min-h-40 w-full max-w-full rounded-lg object-contain'
+                      />
+                      <Button
+                        onClick={() => {
+                          setFileList([])
+                          form.setFieldsValue({ buktiPembayaran: null })
+                        }}
+                        className='!h-full !rounded-lg !border-slate-200 !py-2 !font-semibold !text-red-500 !shadow-none hover:!border-red-500 hover:!bg-red-100 hover:!text-red-500'
+                      >
+                        <PiTrash className='size-5' strokeWidth={3} />
+                        Hapus foto
+                      </Button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </Form.Item>
-          </Form>
+              </Form.Item>
+            </Form>
+          )}
           <Heading val={'Data Pribadi'} />
           <div className={'rounded-lg bg-slate-50 p-6'}>
             <InfoPelanggan data={DataPelanggan} />
           </div>
           <Heading val={'History Transaksi'} />
           <DataTable
-            dataSource={PaymentsUser}
+            id='History_Transaksi'
+            dataSource={data?.data}
             columns={columns}
             limit={10}
             isLoading={isLoading}
-            totalData={detailUser?.data.payments.count}
+            totalData={data?.total}
+            className={'!-scroll-mt-28'}
           />
           <BaseModal
             title='Bukti Pembayaran'
@@ -366,8 +408,6 @@ const Detail = () => {
                 <Image
                   src={buktiPembayaran}
                   alt='Bukti Pembayaran'
-                  width={472}
-                  height={472}
                   className='rounded-lg object-contain'
                 />
               ) : (
