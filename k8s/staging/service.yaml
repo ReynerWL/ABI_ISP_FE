@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: abi-isp-fe
+  namespace: abi-isp-staging
+  labels:
+    run: abi-isp-fe
+spec:
+  ports:
+    - port: 3000
+      protocol: TCP
+  selector:
+    app: abi-isp-fe

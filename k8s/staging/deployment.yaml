@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abi-isp-fe
+  namespace: abi-isp-staging
+spec:
+  selector:
+    matchLabels:
+      app: abi-isp-fe
+  replicas: 1
+  template:
+    metadata:
+      labels: 
+        app: abi-isp-fe
+    spec:
+      containers:
+        - name: abi-isp-fe
+          image: registry.empatnusabangsa.com/empatnusabangsa/abi-isp-be:<VERSION>
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: abi-isp-fe-env
+      imagePullSecrets:
+        - name: regcred

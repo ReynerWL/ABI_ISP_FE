@@ -1,4 +1,353 @@
-/*@tailwind base;*/
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------ SHADCN STYLE ------------------------------ */
+@layer base {
+  :root {
+    --chart-1: #0049ac;
+    --chart-2: #1976d2;
+    --chart-3: #63a4ff;
+    --chart-4: #90caf9;
+    --chart-5: #bbdefb;
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------------------------------- SCROLLBAR ------------------------------- */
+.custom-scrollbar::-webkit-scrollbar {
+  @apply w-2.5 rounded-full bg-slate-100 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-primary !important;
+}
+
+/* ---------------------------- DASHBOARD SIDEBAR --------------------------- */
+.dashboard-sider.ant-layout-sider {
+  @apply z-20 hidden bg-white p-6 lg:block !important;
+}
+
+/* ----------------------------- DASHBOARD MENU ----------------------------- */
+.ant-menu-light.ant-menu-root.ant-menu-inline {
+  border-inline-end: 0 !important;
+}
+
+.dashboard-menu.ant-menu {
+  & .ant-menu-item {
+    @apply m-0 mb-3 h-fit w-full px-4 py-1.5 font-semibold text-slate-400 !important;
+
+    &.ant-menu-item-selected {
+      @apply bg-blue-50 text-primary !important;
+    }
+
+    &.ant-menu-item-active {
+      @apply bg-blue-50 text-primary !important;
+    }
+  }
+}
+
+/* ---------------------------- DASHBOARD HEADER ---------------------------- */
+.dashboard-header.ant-layout-header {
+  @apply fixed left-0 top-0 z-10 flex h-fit w-full cursor-pointer items-center !bg-white !p-4 md:!px-10 md:!py-5 !important;
+}
+
+/* ------------------------------ SEARCH INPUT ------------------------------ */
+.search-input {
+  @apply w-full rounded-full border-slate-200 px-3 py-2.5 font-semibold text-slate-600 hover:border-slate-300 !important;
+
+  & .ant-input {
+    @apply font-medium text-slate-600 !important;
+  }
+
+  & .ant-input::placeholder {
+    @apply text-slate-400 !important;
+  }
+
+  &.ant-input-outlined:focus-within {
+    @apply shadow-none !important;
+  }
+}
+
+/* ---------------------------- DATE RANGE PICKER --------------------------- */
+.custom-date-range-picker.ant-picker-range,
+.custom-date-range-picker.ant-picker {
+  @apply rounded-lg border-slate-200 px-4 py-2.5 font-medium shadow-none hover:border-slate-300 !important;
+
+  & .ant-picker-input input {
+    @apply w-fit font-semibold text-slate-600 !important;
+  }
+
+  & .ant-picker-input input::placeholder {
+    @apply font-normal tracking-wide text-slate-300 !important;
+  }
+
+  & .ant-picker-range-separator {
+    @apply pl-0 !important;
+
+    & .ant-picker-separator {
+      @apply pr-2 font-bold text-slate-400 !important;
+    }
+  }
+
+  & .ant-picker-active-bar {
+    @apply w-[100px] bg-secondary !important;
+  }
+
+  & .ant-picker-clear {
+    inset-inline-end: 16px !important;
+  }
+}
+
+/* ------------------------------- DATA TABLE ------------------------------- */
+.data-table .ant-table-container .ant-table-content {
+  scrollbar-width: none;
+  & table .ant-table-thead {
+    & tr th {
+      @apply border-slate-200 bg-transparent p-0 px-2 pb-3.5 leading-5 text-slate-900 !important;
+
+      &::before {
+        @apply top-0.5 h-4 translate-y-0 bg-slate-200 !important;
+      }
+    }
+  }
+
+  & table .ant-table-tbody {
+    & tr td {
+      @apply border-slate-200 px-2 font-semibold text-slate-500 !important;
+    }
+  }
+}
+
+.data-table .ant-table-footer {
+  @apply bg-transparent px-0 py-6 !important;
+}
+
+/* ---------------------------- PAGE LIMIT SELECT --------------------------- */
+.page-limit-select {
+  &.ant-select {
+    @apply h-fit !important;
+    & .ant-select-selector {
+      @apply rounded-full border-slate-200 px-5 py-[3px] text-slate-400 !important;
+    }
+
+    & .ant-select-selection-item {
+      @apply font-semibold !important;
+    }
+  }
+
+  &.ant-select-focused .ant-select-selector {
+    @apply shadow-[0_0_4px_#0049AC] !important;
+  }
+}
+
+/* ----------------------------- SEGMENTED / TAB ---------------------------- */
+.ant-segmented {
+  @apply rounded-full bg-white p-0 !important;
+
+  & .ant-segmented-group .ant-segmented-item {
+    @apply rounded-full px-5 py-2 font-medium text-slate-500 shadow-none !important;
+
+    &.ant-segmented-item-selected {
+      @apply bg-primary text-white !important;
+    }
+  }
+}
+
+/* ------------------------------- ANTD MODAL ------------------------------- */
+.ant-modal-content {
+  @apply rounded-2xl p-6 shadow-none !important;
+}
+
+.ant-modal-root .ant-modal-mask {
+  @apply bg-[#2F2F2F33] !important;
+}
+
+/* -------------------------- TAMBAH PENGGUNA STEPS ------------------------- */
+.tambah-pengguna-steps {
+  &.ant-steps {
+    @apply border-b border-slate-200 pb-2 md:pb-4 !important;
+    & .ant-steps-item-title {
+      @apply text-sm font-semibold md:text-xs !important;
+
+      &::after {
+        @apply top-2 !important;
+      }
+    }
+    & .ant-steps-item-process .ant-steps-item-title {
+      @apply text-primary !important;
+    }
+
+    &.ant-steps-vertical > .ant-steps-item .ant-steps-item-content {
+      @apply min-h-[28px] !important;
+    }
+
+    & .ant-steps-item-icon {
+      @apply size-5 md:h-[17px] md:w-[17px] !important;
+    }
+
+    & .ant-steps-icon {
+      @apply top-[-3px] text-[10px] font-semibold md:top-[-5px] !important;
+    }
+
+    & .ant-steps-item-wait {
+      & .ant-steps-item-icon {
+        @apply bg-slate-400 !important;
+
+        & .ant-steps-icon {
+          @apply text-white !important;
+        }
+      }
+    }
+
+    & .ant-steps-item.ant-steps-item-finish {
+      & .ant-steps-item-icon {
+        @apply size-[22px] bg-green-700 md:size-5 !important;
+        & .ant-steps-icon {
+          @apply top-[-2px] font-bold text-white md:top-[-3px] !important;
+        }
+      }
+
+      & .ant-steps-item-title {
+        @apply text-green-700 !important;
+
+        &::after {
+          @apply bg-green-700 !important;
+        }
+      }
+    }
+  }
+}
+
+/* -------------------------------- ANTD FORM ------------------------------- */
+.ant-form {
+  & .ant-form-item {
+    @apply mb-4 !important;
+
+    & .ant-form-item-label {
+      @apply pb-1.5 !important;
+    }
+    & .ant-form-item-label > label {
+      @apply font-semibold text-slate-500 !important;
+    }
+
+    & .ant-form-item-control-input {
+      & .ant-form-item-control-input-content {
+        @apply min-h-9 !important;
+      }
+    }
+
+    & .ant-form-item-explain-error {
+      @apply mb-1 mt-0.5 text-xs font-medium text-red-400 !important;
+    }
+
+    /* ---------------------------------- INPUT --------------------------------- */
+    & .ant-input {
+      @apply h-fit rounded-lg border-slate-200 px-2.5 py-1.5 font-semibold tracking-wide text-slate-500 !important;
+      &::placeholder {
+        @apply font-normal text-slate-300 !important;
+      }
+      &.ant-input-disabled {
+        @apply bg-slate-50 text-slate-500 !important;
+      }
+    }
+
+    /* ------------------------------- DATEPICKER ------------------------------- */
+    & .ant-picker {
+      @apply h-full min-h-9 w-full rounded-lg border-slate-200 !important;
+
+      & .ant-picker-input input {
+        @apply font-semibold text-slate-500 !important;
+      }
+
+      & .ant-picker-input input::placeholder {
+        @apply font-normal tracking-wide text-slate-300 !important;
+      }
+    }
+
+    /* ---------------------------- PAKET RADIO GROUP --------------------------- */
+    & .paket-radio-group.ant-radio-group {
+      @apply flex flex-col gap-4 !important;
+
+      & .ant-radio-wrapper {
+        margin-inline-end: 0px !important;
+        @apply rounded-lg bg-slate-50 p-4 hover:bg-slate-100 !important;
+
+        & .ant-radio-label {
+          @apply font-bold text-slate-500 !important;
+        }
+
+        & .ant-radio-inner {
+          @apply size-[18px] bg-slate-50 !important;
+        }
+
+        &.ant-radio-wrapper-checked {
+          & .ant-radio-inner {
+            @apply bg-primary !important;
+
+            &::after {
+              content: '\2713' !important;
+              margin-inline-start: -9px !important;
+              @apply top-1 bg-transparent text-3xl font-medium text-white !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* --------------------------- KTP UPLOAD DRAGGER --------------------------- */
+.ktp-upload .ant-upload-drag {
+  @apply rounded-lg border-dashed border-slate-200 bg-transparent px-6 py-10 hover:border-primary hover:bg-slate-50 !important;
+
+  & .ant-upload-drag-container {
+    @apply flex flex-col items-center justify-center gap-2 !important;
+  }
+}
+
+.ant-image-mask {
+  @apply rounded-lg !important;
+}
+
+/* -------------------------------- AUHT FORM ------------------------------- */
+.auth-form.ant-form {
+  & .ant-form-item {
+    @apply mb-4 !important;
+
+    & .ant-form-item-label {
+      @apply pb-2 !important;
+    }
+
+    & .ant-form-item-explain-error {
+      @apply mb-1 mt-0.5 text-xs font-semibold text-red-400 !important;
+    }
+
+    & .ant-input {
+      @apply h-fit rounded-lg border-slate-200 px-3 py-2 font-semibold text-slate-500 !important;
+      &::placeholder {
+        @apply font-normal text-slate-400 !important;
+      }
+    }
+
+    & .ant-input-password {
+      @apply h-fit rounded-lg border-slate-200 p-0 pr-3 !important;
+    }
+  }
+}

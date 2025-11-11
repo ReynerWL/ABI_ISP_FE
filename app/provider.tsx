@@ -1,23 +1,26 @@
-"use client";
+'use client'
 
-import React, {useEffect} from "react";
-import {ConfigProvider} from "antd";
-import {TokenUtil} from "#/utils/token";
+import { TokenUtil } from '#/utils/token'
+import { AntdRegistry } from '@ant-design/nextjs-registry'
+import { App, ConfigProvider } from 'antd'
 
-TokenUtil.loadToken();
-export const Provider = ({children}: any) => {
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   document.documentElement.style.opacity = 1
-  // }, []);
-
-  return <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: '#00b96b',
-      },
-    }}
-  >
-    {children}
-  </ConfigProvider>
+TokenUtil.loadToken()
+export const Provider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#0049AC',
+          fontFamily: 'var(--font-plus-jakarta-sans), sans-serif'
+        },
+        components: {
+          Segmented: { itemSelectedBg: '#0049AC', itemSelectedColor: '#fff' }
+        }
+      }}
+    >
+      <AntdRegistry>
+        <App>{children}</App>
+      </AntdRegistry>
+    </ConfigProvider>
+  )
 }

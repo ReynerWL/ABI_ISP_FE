@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: abi-isp-fe
+  namespace: abi-isp-staging
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: abi-isp-staging-redirect-https@kubernetescrd
+spec:
+  rules:
+    - host: "abi-isp-frontend.k3s.bangun-kreatif.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: abi-isp-fe
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - "abi-isp-frontend.k3s.bangun-kreatif.com"
+      secretName: abi-isp-frontend-k3s-bangun-kreatif-com-tls
