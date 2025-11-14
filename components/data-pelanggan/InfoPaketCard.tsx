@@ -6,10 +6,17 @@ import BuktiPembayaran from './BuktiPembayaran'
 
 interface InfoPaketCardProps {
   paket: Paket | undefined
+  dueDate: string
+  payDate: string
   isLoading: boolean
 }
 
-const InfoPaketCard = ({ paket, isLoading }: InfoPaketCardProps) => {
+const InfoPaketCard = ({
+  paket,
+  dueDate,
+  payDate,
+  isLoading
+}: InfoPaketCardProps) => {
   return (
     <div className='flex h-fit flex-col gap-6 rounded-2xl bg-white p-6 2xl:min-w-[400px]'>
       <h1 className='text-xl font-semibold text-slate-700'>Informasi Paket</h1>
@@ -47,7 +54,7 @@ const InfoPaketCard = ({ paket, isLoading }: InfoPaketCardProps) => {
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
             ) : (
               // TODO: replace with actual date
-              '30-07-2025'
+              dueDate
             )}
           </p>
         </div>
@@ -60,7 +67,7 @@ const InfoPaketCard = ({ paket, isLoading }: InfoPaketCardProps) => {
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
             ) : (
               // TODO: replace with actual date
-              '30-07-2025'
+              payDate
             )}
           </p>
         </div>

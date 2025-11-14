@@ -126,7 +126,7 @@ const DashboardHeader = ({
                 open={open}
                 onOpenChange={(value) => setOpen(value)}
               >
-                <div className='flex items-center gap-6'>
+                <div className='flex items-center gap-2 sm:gap-6'>
                   <div className='flex items-center gap-4'>
                     <Avatar
                       size={45}
@@ -138,7 +138,7 @@ const DashboardHeader = ({
                         .join('') || 'NUll'}
                     </Avatar>
                     <div>
-                      <h1 className='text-lg font-bold text-primary'>
+                      <h1 className='w-24 truncate text-lg font-bold text-primary sm:w-fit'>
                         {user?.name}
                       </h1>
                       <p className='text-sm font-medium capitalize text-slate-400'>
@@ -205,6 +205,7 @@ const DashboardHeader = ({
           selectedKeys={[selectedKey]}
           items={items}
           className='dashboard-menu'
+          onClick={() => setOpenDrawer(!openDrawer)}
         />
       </Drawer>
     </Header>

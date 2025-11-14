@@ -7,6 +7,7 @@ interface UIState {
   isMD: boolean
   isSM: boolean
   isMobile: boolean
+  isMiniMobile: boolean
 }
 
 const UIStateContext = createContext<UIState | undefined>(undefined)
@@ -30,6 +31,7 @@ export const UIStateProvider = ({
   const [isMD, setIsMD] = useState(false)
   const [isSM, setIsSM] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isMiniMobile, setIsMiniMobile] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,6 +43,7 @@ export const UIStateProvider = ({
       setIsMD(width >= 768 && width < 1024)
       setIsSM(width >= 640 && width < 768)
       setIsMobile(width < 640)
+      setIsMiniMobile(width < 440)
     }
 
     handleResize()
@@ -48,7 +51,7 @@ export const UIStateProvider = ({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const value = { is2XL, isXL, isLG, isMD, isSM, isMobile }
+  const value = { is2XL, isXL, isLG, isMD, isSM, isMobile, isMiniMobile }
 
   return (
     <UIStateContext.Provider value={value}>{children}</UIStateContext.Provider>

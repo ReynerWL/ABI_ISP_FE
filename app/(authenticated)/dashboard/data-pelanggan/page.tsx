@@ -35,6 +35,7 @@ const DataPelanggan = () => {
   const paketSpeedParam = searchParams?.get('paket_speed')
 
   const [initialValues, setInitialValues] = useState<User | null>(null)
+  const [openModal, setOpenModal] = useState(false)
 
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
     search,
@@ -49,8 +50,6 @@ const DataPelanggan = () => {
   })
 
   const { data: pakets } = paketRepository.hooks.useGetPaket()
-
-  const [openModal, setOpenModal] = useState(false)
 
   const users: User[] = data?.data
 
@@ -67,8 +66,7 @@ const DataPelanggan = () => {
       title: 'No. Telp',
       dataIndex: 'phone_number',
       key: 'phone_number',
-      width: 190,
-      render: (text) => <WAButton phoneNumber={text} />
+      render: (text) => <WAButton phoneNumber={text} className={'!w-48'} />
     },
     {
       title: 'Paket',
@@ -141,9 +139,9 @@ const DataPelanggan = () => {
 
   return (
     <div className='flex flex-col gap-8'>
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-col items-start justify-between gap-6 xl:flex-row xl:items-center'>
         <Title>Data Pelanggan</Title>
-        <div className='hidden xl:block'>
+        <div className='block w-full md:w-fit'>
           <Segmented
             options={[
               'Semua',
@@ -156,7 +154,7 @@ const DataPelanggan = () => {
             shape='round'
             defaultValue='Semua'
             value={status}
-            className='tab-filter'
+            className='tab-filter no-scrollbar sm:overflow-x-none overflow-x-auto'
             onChange={handleStatusChange}
           />
         </div>

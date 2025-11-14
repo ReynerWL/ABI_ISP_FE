@@ -39,7 +39,10 @@ const InfoPelanggan = ({ data, isLoading }: Props) => {
   return (
     <div className='grid grid-cols-2 gap-y-3'>
       {field.map((val, index) => (
-        <div key={index} className='flex flex-col gap-1'>
+        <div
+          key={index}
+          className='col-span-2 flex flex-col gap-1 sm:col-span-1'
+        >
           <p className='text-xs font-medium leading-[14px] text-slate-500'>
             {val.label}
           </p>

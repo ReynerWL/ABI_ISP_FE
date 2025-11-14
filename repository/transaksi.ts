@@ -29,6 +29,9 @@ export interface GetTransakasiParams {
 export interface UpdateTransaksi {
   buktiPembayaran: string | null
 }
+export interface RejectedTransaksi {
+  reason: string | null
+}
 
 const url = {
   getAllTransaksi: (params: GetTransakasiParams) => {
@@ -41,6 +44,12 @@ const url = {
   },
   updateTransaksi: (id: string) => {
     return `/payment/${id}`
+  },
+  confirmTransaksi: (id: string) => {
+    return `/payment/confirmed/${id}`
+  },
+  rejectedTransaksi: (id: string) => {
+    return `/payment/rejected/${id}`
   }
 }
 
@@ -56,6 +65,12 @@ const hooks = {
 const api = {
   updateTransaksi: (id: string, data: UpdateTransaksi) => {
     return http.put(url.updateTransaksi(id)).send(data)
+  },
+  confirmTransaksi: (id: string) => {
+    return http.put(url.confirmTransaksi(id))
+  },
+  rejectedTransaksi: (id: string, data: RejectedTransaksi) => {
+    return http.put(url.rejectedTransaksi(id)).send(data)
   }
 }
 

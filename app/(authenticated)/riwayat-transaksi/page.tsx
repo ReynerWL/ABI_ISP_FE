@@ -40,6 +40,7 @@ import InfoPelanggan, {
 } from '#/components/transaksi/InfoPelanggan'
 import { transakasiRepository } from '#/repository/transaksi'
 import { generalRepository } from '#/repository/general'
+import { useUIState } from '#/context/UIStateContext'
 
 const listMenu: MenuItem[] = [
   {
@@ -54,6 +55,7 @@ const Detail = () => {
   usePageTitle('Detail')
   const router = useRouter()
   const [form] = useForm()
+  const { isMiniMobile } = useUIState()
   const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
@@ -197,11 +199,11 @@ const Detail = () => {
     },
     {
       title: 'Tanggal Bayar',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
+      dataIndex: 'paidAt',
+      key: 'paidAt',
       render: (value) =>
         value ? dayjs(value).format('DD/MM/YYYY, HH:mm') : '-',
-      sorter: (a, b) => dayjs(a?.updatedAt).unix() - dayjs(b?.updatedAt).unix()
+      sorter: (a, b) => dayjs(a?.paidAt).unix() - dayjs(b?.paidAt).unix()
     },
     {
       title: 'Status',
@@ -233,33 +235,35 @@ const Detail = () => {
   ]
 
   return (
-    <div className='mt-10 flex h-screen w-full items-center justify-center bg-white px-4 md:bg-slate-50'>
+    <div className='flex h-screen w-full items-center justify-center bg-slate-50 lg:mt-10'>
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex h-full !w-fit flex-row gap-6 rounded-3xl bg-white p-6 sm:w-[770px] md:shadow-[4px_4px_48px_0px_#0068FF0D] xl:w-[940px]'
+        className='flex h-fit w-full flex-col-reverse gap-6 rounded-3xl bg-white p-4 sm:h-full sm:flex-row md:p-6 md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-[1040px]'
       >
         <div
           className={
-            'h-fill flex w-64 flex-col items-center gap-3 border-r border-slate-200 p-6'
+            'h-fill flex w-full flex-row items-center gap-3 sm:w-64 sm:flex-col sm:border-r sm:border-slate-200 sm:py-6 sm:pr-6 md:pl-2'
           }
         >
           <Button
-            className={`!flex !w-full !flex-row !justify-start !gap-2 !rounded-lg !border-none !bg-blue-50 !p-6 !text-base !font-semibold !text-primary`}
+            className={`!flex !w-full !flex-row !justify-center !gap-2 !rounded-lg !border-none !bg-blue-50 !p-6 !text-base !font-semibold !text-primary sm:!justify-start`}
             onClick={() => router.push('/beranda')}
           >
             <HiChevronDoubleLeft className={'text-xl'} />
-            Beranda
+            Kembali
           </Button>
           {activeSection.map((value, index) => (
             <div
               key={index}
-              className={'flex w-full flex-row text-base font-medium'}
+              className={
+                'hidden w-full flex-row justify-center text-base font-medium sm:flex'
+              }
             >
               <Link
                 href={`#${value.id}`}
-                className={`${value.isActive ? 'text-secondary' : 'text-slate-400'} flex flex-row items-center gap-x-2 p-4 hover:text-secondary`}
+                className={`flex flex-row items-center gap-x-2 p-4 text-slate-400 hover:text-secondary`}
               >
                 {value.icon}
                 <p>{value.name}</p>
@@ -268,40 +272,38 @@ const Detail = () => {
           ))}
         </div>
         <div
-          className={
-            'no-scrollbar flex h-auto w-[812px] flex-col gap-4 overflow-y-auto'
-          }
+          className={`no-scrollbar ${isMiniMobile ? 'mt-[550px]' : 'mt-[450px] sm:mt-0'} flex h-auto w-full flex-col gap-4 sm:overflow-y-auto`}
         >
           <Heading val={'Informasi Paket'} />
           <div className={'flex flex-col gap-2 px-2'}>
             <div
-              className={
-                'flex flex-row items-center gap-6 rounded-xl border border-slate-200 px-6 py-3'
-              }
+              className={`flex ${isMiniMobile ? 'flex-col' : 'flex-row'} items-center gap-6 rounded-xl border border-slate-200 px-6 py-3`}
             >
               <Image
                 src={transaksiUser?.paket?.photo ?? '/emptyImg.svg'}
                 alt={'Paket'}
                 preview={false}
-                className={'!w-44'}
+                className={isMiniMobile ? '!w-28' : '!w-28 sm:!w-24'}
               />
-              <div className={'flex w-full flex-col gap-1'}>
-                <p className={'text-xs font-medium text-slate-500'}>
-                  {transaksiUser?.paket?.name}
-                </p>{' '}
-                <p className={'text-base font-bold text-primary'}>
-                  {formatRupiah(transaksiUser?.paket?.price ?? 0, {
-                    withPrefix: true
-                  })}
-                  /Bulan
-                </p>
-              </div>
-              <div className={'flex w-full justify-end'}>
-                <Chip text={transaksiUser?.user?.status ?? ''} />
+              <div className={'flex w-full flex-row items-center'}>
+                <div className={'flex w-full flex-col gap-1'}>
+                  <p className={'text-xs font-medium text-slate-500'}>
+                    {transaksiUser?.paket?.name}
+                  </p>{' '}
+                  <p className={'text-base font-bold text-primary'}>
+                    {formatRupiah(transaksiUser?.paket?.price ?? 0, {
+                      withPrefix: true
+                    })}
+                    /Bulan
+                  </p>
+                </div>
+                <div className={'flex w-28 justify-end'}>
+                  <Chip text={transaksiUser?.user?.status ?? ''} />
+                </div>
               </div>
             </div>
             <Desc
-              text={transaksiUser?.status}
+              text={transaksiUser?.user?.status}
               dueDate={transaksiUser?.due_date}
             />
           </div>
@@ -319,10 +321,10 @@ const Detail = () => {
               pembayaran yang sesuai.
             </p>
           </div>
-          {transaksiUser?.status.toLowerCase() === 'confirm' ? (
+          {transaksiUser?.status.toLowerCase() === 'confirmed' ? (
             <div className='flex flex-col items-center justify-center gap-3 rounded-lg bg-blue-50 p-10 text-primary'>
               <HiCheckCircle className={'text-6xl'} />
-              <h1 className='text-base font-semibold'>
+              <h1 className='text-center text-base font-semibold'>
                 Pembayaran Anda telah kami verifikasi.
               </h1>
             </div>
