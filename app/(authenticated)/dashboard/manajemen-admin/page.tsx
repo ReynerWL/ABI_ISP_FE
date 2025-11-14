@@ -139,15 +139,15 @@ const ManajemenAdmin = () => {
     <div className='flex flex-col gap-8'>
       <Title>Manajemen Admin</Title>
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
-        <div className='grid h-fit grid-cols-10 gap-4 lg:gap-6 xl:flex xl:h-11 xl:flex-row'>
-          <InputSearch className={'!col-span-8'} />
+        <div className='flex h-fit flex-row gap-4 lg:gap-6 xl:flex xl:h-11 xl:flex-row'>
+          <InputSearch />
           <Button
-            className='!h-full !w-full !rounded-lg !px-4 !py-2 !text-base !font-medium !shadow-none md:!w-fit'
+            className='!h-full !rounded-lg !px-4 !py-2 !text-base !font-medium !shadow-none md:!w-fit'
             type='primary'
             onClick={() => setOpen(true)}
           >
             <HiPlus className='text-xl' />
-            Tambah
+            <span className={'hidden sm:flex'}>Tambah</span>
           </Button>
         </div>
         <DataTable

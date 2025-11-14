@@ -1,23 +1,53 @@
 import { Image, Skeleton, Upload, UploadFile, UploadProps } from 'antd'
-import { UploadChangeParam } from 'antd/es/upload'
 import Dragger from 'antd/es/upload/Dragger'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
 import { toast } from 'sonner'
 
 interface InstalasiPreviewProps {
   imageUrl?: string
+  buktiPemasangan: string
   isLoading?: boolean
+  handleUpload: (val: any) => void
 }
 
-const InstalasiPreview = ({ imageUrl, isLoading }: InstalasiPreviewProps) => {
+const InstalasiPreview = ({
+  imageUrl,
+  buktiPemasangan,
+  isLoading,
+  handleUpload
+}: InstalasiPreviewProps) => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  useEffect(() => {
+    if (buktiPemasangan) {
+      setFileList([
+        {
+          uid: '-1',
+          name: 'buktiPemasangan.png',
+          status: 'done',
+          url: buktiPemasangan
+        }
+      ])
+    }
+  }, [buktiPemasangan])
+
+  const handleChange: UploadProps['onChange'] = async ({
+    file,
+    fileList: newFileList
+  }) => {
     setFileList(newFileList)
 
+    if (file.status === 'done') {
+      const latestUpload = newFileList?.[0]?.originFileObj
+      if (latestUpload) {
+        await handleUpload(latestUpload)
+      }
+    }
+  }
+
   const draggerProps: UploadProps = {
-    name: 'photo_instalasi',
+    name: 'buktiPemasangan',
     multiple: false,
     maxCount: 1,
     accept: 'image/*',
@@ -28,15 +58,9 @@ const InstalasiPreview = ({ imageUrl, isLoading }: InstalasiPreviewProps) => {
         toast.error('Ukuran file maksimal 15MB')
         return Upload.LIST_IGNORE
       }
-      return false
+      return true
     },
-    onChange: (info: UploadChangeParam<UploadFile>) => {
-      const { file } = info
-      handleChange(info)
-      if (file.status !== 'done') {
-        toast.success('Foto Instalasi berhasil diunggah!')
-      }
-    }
+    onChange: handleChange
   }
 
   if (isLoading) {

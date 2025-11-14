@@ -172,7 +172,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           />
         )}
         <Content
-          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda ? 'mt-16 bg-white sm:mt-20 md:mt-24' : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
+          className={`h-full !min-h-[calc(100vh-88px)] overflow-auto ${beranda || history ? `mt-16 ${history ? 'bg-slate-50' : 'bg-white'} sm:mt-20 md:mt-24` : 'mt-[88px] !bg-slate-50 p-4 md:p-6'}`}
         >
           {children}
         </Content>

@@ -26,13 +26,6 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
           'flex flex-col gap-16 p-11 sm:flex-row sm:gap-24 xl:gap-40 xl:p-16 2xl:gap-72 2xl:p-20'
         }
       >
-        {/* <Image
-                src={'/spiral.png'}
-                alt={'logo'}
-                width={2590}
-                height={2000}
-                className={'absolute w-[1800px] overflow-hidden'}
-              /> */}
         <div className={'flex w-full flex-col gap-y-5 lg:gap-y-6'}>
           <Image
             src={'/logo_light.png'}

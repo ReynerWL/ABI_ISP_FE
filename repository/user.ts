@@ -29,10 +29,11 @@ export interface User {
   createdAt: string
   updatedAt: string
   buktiPembayaran: string
+  buktiPemasangan: string
   deletedAt: any
   role: Role
   paket?: Paket
-  payment?: Payment[]
+  payments?: Payment[]
   tanggal_berlangganan?: string
   subscription: Subscription
 }
@@ -55,6 +56,7 @@ export interface Payment {
   reason: string
   status: string
   start_date?: string | null
+  updatedAt?: string | null
   due_date?: string | null
   confirmAt?: string | null
 }
@@ -78,12 +80,13 @@ export interface GetUserParams {
 }
 
 export interface UpdateUserPayload {
-  email: string
-  phone_number: string
-  status: string
-  paketsId: string
-  banksId?: string
+  email?: string
+  phone_number?: string
+  status?: string
+  paketsId?: string
+  bankId?: string
   buktiPembayaran?: string
+  buktiPemasangan?: string
 }
 
 export interface UserDetail {

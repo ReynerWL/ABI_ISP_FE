@@ -13,7 +13,8 @@ import {
   HiBars3BottomRight,
   HiChevronDown,
   HiChevronUp,
-  HiOutlineClock
+  HiOutlineClock,
+  HiXMark
 } from 'react-icons/hi2'
 import { TbLayoutDashboardFilled, TbLogout } from 'react-icons/tb'
 
@@ -187,45 +188,83 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
           ) : (
             <Link
               href={'/login'}
-              className={`!flex items-center gap-2 !rounded-full !border-none !bg-blue-50 px-6 py-2.5 !text-xs !font-semibold !text-primary hover:!bg-blue-100 md:!text-sm`}
+              className={`!flex items-center gap-2 !rounded-full !border-none !bg-blue-50 px-6 py-2.5 !text-sm !font-semibold !text-primary hover:!bg-blue-100`}
             >
               <AiOutlineUser className='hidden text-lg sm:block' />
               Masuk
             </Link>
           )}
 
-          <Button type='text' className='!h-fit !p-1 sm:!hidden'>
-            <HiBars3BottomRight
-              className={'text-3xl text-slate-800'}
-              onClick={() => setOpenDrawer(!openDrawer)}
-            />
-          </Button>
+          {token && (
+            <Button type='text' className='!h-fit !p-1 sm:!hidden'>
+              <HiBars3BottomRight
+                className={'text-3xl text-slate-800'}
+                onClick={() => setOpenDrawer(!openDrawer)}
+              />
+            </Button>
+          )}
         </div>
       </div>
 
       <Drawer
         title={
-          <div
-            className={
-              'items-center text-base font-semibold text-slate-800 md:text-sm'
-            }
-          >
-            Menu
+          <div className='flex w-full items-center justify-between'>
+            <div
+              className={'items-center text-base font-semibold text-slate-800'}
+            >
+              Menu
+            </div>
+            <Button
+              type='text'
+              className='!h-fit !p-1'
+              onClick={() => setOpenDrawer(!openDrawer)}
+            >
+              <HiXMark
+                strokeWidth={0.3}
+                className='h-[26px] w-[26px] text-slate-500 group-hover:brightness-75'
+              />
+            </Button>
           </div>
         }
-        closable={{ 'aria-label': 'Close Button' }}
-        onClose={() => setOpenDrawer(!openDrawer)}
+        closable={false}
         open={openDrawer}
-        width={200}
         mask={false}
-        classNames={{ wrapper: 'sm:!hidden' }}
+        placement='right'
+        width={200}
+        classNames={{ wrapper: 'xl:!hidden' }}
+        footer={
+          <div
+            className={`flex flex-col gap-3 text-base font-semibold md:text-sm`}
+          >
+            <Link
+              href={'/riwayat-transaksi'}
+              className='flex items-center gap-2 !px-3 !py-1 text-base !text-slate-500'
+              onClick={() => setOpenDrawer(!openDrawer)}
+            >
+              <HiOutlineClock className='text-lg' />
+              History
+            </Link>
+            <Button
+              type='text'
+              className='flex !h-fit !justify-start !p-0 !px-3 !py-1 !text-base !font-semibold !text-red-500 hover:!bg-red-500 hover:!text-white sm:!hidden'
+              onClick={() => {
+                TokenUtil.clearTokens()
+                TokenUtil.persistToken()
+                window.location.reload()
+              }}
+            >
+              <TbLogout className='text-lg' />
+              <span>Logout</span>
+            </Button>
+          </div>
+        }
       >
         <div className={'flex h-full flex-col justify-between'}>
           <div className={'flex flex-col gap-8'}>
             {activeSection.map((value, index) => (
               <div
                 key={index}
-                className={`items-center text-sm font-semibold md:text-sm`}
+                className={`items-center text-base font-semibold`}
               >
                 <Link
                   href={value.id === 'Hero' ? '#' : `#${value.id}`}
@@ -236,38 +275,6 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
                 </Link>
               </div>
             ))}
-          </div>
-
-          <div
-            className={`flex flex-col gap-3 text-base font-semibold md:text-sm`}
-          >
-            <div className='flex flex-col border-b border-slate-200 pb-4 text-slate-800'>
-              <h1 className='font-semibold'>{user?.name}</h1>
-              <p className='truncate text-sm font-medium text-slate-500'>
-                {user?.email}
-              </p>
-            </div>
-
-            <Link
-              href={'/riwayat-transaksi'}
-              className='flex items-center gap-2 text-sm !text-slate-500'
-              onClick={() => setOpenDrawer(!openDrawer)}
-            >
-              <HiOutlineClock className='text-lg' />
-              History
-            </Link>
-            <Button
-              type='text'
-              className='flex !h-fit !justify-start !p-0 !text-sm !font-semibold !text-red-500 sm:!hidden'
-              onClick={() => {
-                TokenUtil.clearTokens()
-                TokenUtil.persistToken()
-                window.location.reload()
-              }}
-            >
-              <TbLogout className='text-lg' />
-              <span>Logout</span>
-            </Button>
           </div>
         </div>
       </Drawer>

@@ -95,7 +95,7 @@ const ModalPelanggan = ({
           phone_number: values.phone_number,
           status: values.status,
           paketsId: values.paket,
-          banksId: values.banksId,
+          bankId: values.banksId,
           buktiPembayaran: values.bukti_pembayaran
         }
 

@@ -20,18 +20,17 @@ export interface ListTransaksiResponse {
 }
 
 export interface GetTransakasiParams {
-  search: string | null
+  search?: string | null
   bank?: string | null
   month?: string | null
   page?: number
   limit?: number
 }
-export interface GetTransakasiByUserParams {
-  search: string | null
-  bank?: string | null
-  month?: string | null
-  page?: number
-  limit?: number
+export interface UpdateTransaksi {
+  buktiPembayaran: string | null
+}
+export interface RejectedTransaksi {
+  reason: string | null
 }
 
 const url = {
@@ -39,9 +38,18 @@ const url = {
     const query = buildQueryParams(params)
     return `/payment?${query}`
   },
-  getAllTransaksiByUser: (params?: GetTransakasiByUserParams) => {
+  getAllTransaksiByUser: (params: GetTransakasiParams) => {
     const query = buildQueryParams(params)
     return `/payment/user?${query}`
+  },
+  updateTransaksi: (id: string) => {
+    return `/payment/${id}`
+  },
+  confirmTransaksi: (id: string) => {
+    return `/payment/confirmed/${id}`
+  },
+  rejectedTransaksi: (id: string) => {
+    return `/payment/rejected/${id}`
   }
 }
 
@@ -49,9 +57,21 @@ const hooks = {
   useGetAllTransaksi: (params: GetTransakasiParams) => {
     return useSWR(url.getAllTransaksi(params), http.fetcher)
   },
-  useGetAllTransaksiByUser: (params?: GetTransakasiByUserParams) => {
+  useGetAllTransaksiByUser: (params: GetTransakasiParams) => {
     return useSWR(url.getAllTransaksiByUser(params), http.fetcher)
   }
 }
 
-export const transakasiRepository = { url, hooks }
+const api = {
+  updateTransaksi: (id: string, data: UpdateTransaksi) => {
+    return http.put(url.updateTransaksi(id)).send(data)
+  },
+  confirmTransaksi: (id: string) => {
+    return http.put(url.confirmTransaksi(id))
+  },
+  rejectedTransaksi: (id: string, data: RejectedTransaksi) => {
+    return http.put(url.rejectedTransaksi(id)).send(data)
+  }
+}
+
+export const transakasiRepository = { url, hooks, api }
