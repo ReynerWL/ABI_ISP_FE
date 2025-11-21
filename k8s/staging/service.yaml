@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gna-fe
-  namespace: gna-staging
+  name: mbinet-service
+  namespace: mbinet-prod
   labels:
-    run: gna-fe
+    run: mbinet
 spec:
   ports:
     - port: 3000
       protocol: TCP
   selector:
-    app: gna-fe
+    app: mbinet
