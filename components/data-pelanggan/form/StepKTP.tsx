@@ -10,6 +10,7 @@ const StepKTP = ({ form }: StepKTPProps) => {
     <UploadField
       form={form}
       name='photo_ktp'
+      folder='KTP'
       label='Foto KTP'
       successMessage='Foto KTP berhasil diunggah!'
       requiredMessage='Foto KTP wajib diisi'

@@ -1,4 +1,5 @@
 import { http } from '#/utils/http'
+import { buildQueryParams } from '#/utils/params'
 import useSWR from 'swr'
 
 export interface Paket {
@@ -12,11 +13,38 @@ export interface Paket {
   deletedAt: any
 }
 
-const url = { getPaket: () => '/paket' }
-
-const hooks = {
-  useGetPaket: () =>
-    useSWR(url.getPaket(), http.fetcher, { revalidateOnFocus: false })
+export interface CreatePaketPayload {
+  name: string
+  price: number
+  speed: string
+  photo: any
 }
 
-export const paketRepository = { url, hooks }
+export interface GetPaketParams {
+  query?: string | null
+  page?: number
+  limit?: number
+}
+
+const url = {
+  getPaket: (params?: GetPaketParams) => {
+    const query = buildQueryParams(params)
+
+    return `/paket?${query}`
+  },
+  getPaketById: (id: string) => `/paket/${id}`
+}
+
+const hooks = {
+  useGetPaket: (params?: GetPaketParams) =>
+    useSWR(url.getPaket(params), http.fetcher, { revalidateOnFocus: false })
+}
+
+const api = {
+  createPaket: (data: CreatePaketPayload) =>
+    http.post(url.getPaket()).send(data),
+  updatePaket: (id: string, data: CreatePaketPayload) =>
+    http.put(url.getPaketById(id)).send(data)
+}
+
+export const paketRepository = { url, hooks, api }

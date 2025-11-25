@@ -7,6 +7,7 @@ import { Avatar, Button, Drawer, Dropdown, MenuProps, Skeleton } from 'antd'
 import { Header } from 'antd/es/layout/layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { AiOutlineUser } from 'react-icons/ai'
 import {
@@ -25,9 +26,11 @@ interface BerandaHeaderProps {
 
 const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
   const token = TokenUtil.accessToken
+  const pathname = usePathname()
   const { user, setUser } = useUser()
   const [openDrawer, setOpenDrawer] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(false)
+  const isBeranda = pathname === '/beranda'
 
   const dropdownItems: MenuProps['items'] = [
     {
@@ -120,7 +123,13 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
             {activeSection.map((value, index) => (
               <Link
                 key={index}
-                href={value.id === 'Hero' ? '#' : `#${value.id}`}
+                href={
+                  isBeranda
+                    ? value.id === 'Hero'
+                      ? '#'
+                      : `#${value.id}`
+                    : `/beranda#${value.id}`
+                }
                 className={`${value.isActive ? 'text-secondary' : 'text-slate-500'} text-xs font-semibold hover:text-secondary md:text-sm`}
               >
                 {value.name}

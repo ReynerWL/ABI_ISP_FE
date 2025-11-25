@@ -355,6 +355,19 @@ html {
       }
     }
 
+    & .ant-input-number {
+      @apply h-fit rounded-lg border-slate-200 py-0.5 font-semibold tracking-wide text-slate-500 !important;
+      & .ant-input-number-input {
+        @apply text-slate-500 !important;
+        &::placeholder {
+          @apply font-normal text-slate-300 !important;
+        }
+        &.ant-input-disabled {
+          @apply bg-slate-50 text-slate-500 !important;
+        }
+      }
+    }
+
     /* ----------------------------------- OTP ---------------------------------- */
     & .ant-otp {
       @apply grid grid-flow-col gap-2 md:gap-3 !important;

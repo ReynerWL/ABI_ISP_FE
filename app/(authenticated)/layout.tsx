@@ -19,7 +19,7 @@ import {
   HiInboxArrowDown,
   HiUserGroup
 } from 'react-icons/hi2'
-import { TbLayoutDashboardFilled } from 'react-icons/tb'
+import { TbGaugeFilled, TbLayoutDashboardFilled } from 'react-icons/tb'
 import { toast } from 'sonner'
 
 export interface MenuItem {
@@ -113,6 +113,11 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       key: 'transaksi',
       label: <Link href={'/dashboard/transaksi'}>Transaksi</Link>,
       icon: <HiDocumentMagnifyingGlass className='!text-xl' />
+    },
+    {
+      key: 'paket',
+      label: <Link href={'/dashboard/paket'}>Paket</Link>,
+      icon: <TbGaugeFilled className='!text-xl' />
     },
     ...(user?.role.toLowerCase() === 'superadmin'
       ? [

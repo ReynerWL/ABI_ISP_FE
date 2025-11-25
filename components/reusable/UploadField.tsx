@@ -18,8 +18,10 @@ import { toast } from 'sonner'
 interface UploadFieldProps {
   form: FormInstance
   name: string
+  folder: 'KTP' | 'Bukti_Pembayaran' | 'Paket'
   label?: string
   rules?: any[]
+  showPlaceholder?: boolean
   maxSizeMB?: number
   accept?: string
   successMessage?: string
@@ -29,8 +31,10 @@ interface UploadFieldProps {
 const UploadField = ({
   form,
   name,
+  folder,
   label,
   rules = [],
+  showPlaceholder = false,
   maxSizeMB = 15,
   accept = 'image/*',
   successMessage = 'File berhasil diunggah!',
@@ -42,6 +46,7 @@ const UploadField = ({
     const data = new FormData()
     data.append('file', file)
     data.append('type', name)
+    data.append('folder', folder)
 
     const { body } = await generalRepository.api.uploadFile(data)
 
@@ -85,6 +90,7 @@ const UploadField = ({
       name={name}
       preserve={true}
       validateDebounce={1000}
+      label={showPlaceholder ? label : undefined}
       rules={[{ required: true, message: requiredMessage }, ...rules]}
     >
       <div>

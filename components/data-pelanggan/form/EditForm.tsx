@@ -206,6 +206,7 @@ const EditForm = ({ form, initialPaketId }: EditFormProps) => {
           <UploadField
             form={form}
             name='bukti_pembayaran'
+            folder='Bukti_Pembayaran'
             label='Bukti Pembayaran'
             requiredMessage='Bukti Pembayaran wajib diisi'
             successMessage='Bukti Pembayaran berhasil diunggah!'
