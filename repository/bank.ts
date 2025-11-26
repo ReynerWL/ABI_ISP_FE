@@ -15,4 +15,8 @@ const hooks = {
     useSWR(url.getBanks(), http.fetcher, { revalidateOnFocus: false })
 }
 
-export const bankRepository = { url, hooks }
+const api = {
+  CreateBanks: (data: Bank) => http.post(url.getBanks()).send(data)
+}
+
+export const bankRepository = { url, hooks, api }

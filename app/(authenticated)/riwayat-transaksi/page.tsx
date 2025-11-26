@@ -22,50 +22,32 @@ import { useForm } from 'antd/es/form/Form'
 import Dragger from 'antd/es/upload/Dragger'
 import dayjs from 'dayjs'
 import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiFillCamera } from 'react-icons/ai'
-import { HiChevronDoubleLeft } from 'react-icons/hi'
-import {
-  HiCheckCircle,
-  HiDocumentMagnifyingGlass,
-  HiPhoto
-} from 'react-icons/hi2'
+import { HiCheckCircle, HiPhoto } from 'react-icons/hi2'
 import { PiTrash } from 'react-icons/pi'
 import { toast } from 'sonner'
-import { MenuItem } from '../layout'
 import InfoPelanggan, {
   DataPelanggan
 } from '#/components/transaksi/InfoPelanggan'
 import { transakasiRepository } from '#/repository/transaksi'
 import { generalRepository } from '#/repository/general'
 import { useUIState } from '#/context/UIStateContext'
+import { userRepository } from '#/repository/user'
 
-const listMenu: MenuItem[] = [
-  {
-    name: 'Transaksi',
-    isActive: false,
-    id: 'History_Transaksi',
-    icon: <HiDocumentMagnifyingGlass className={'text-xl'} />
-  }
-]
 const Detail = () => {
   TokenUtil.loadToken()
   usePageTitle('Detail')
-  const router = useRouter()
   const [form] = useForm()
   const { isMiniMobile } = useUIState()
-  const [activeSection, setActiveSection] = useState<MenuItem[]>(listMenu)
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [openModal, setOpenModal] = useState(false)
   const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
   const [isloading, setIsLoading] = useState<boolean>(false)
 
-  const { data, mutate, isLoading } =
-    transakasiRepository.hooks.useGetAllTransaksiByUser({})
+  const { data, mutate, isLoading } = userRepository.hooks.useGetDetailUser()
 
-  const transaksiUser = data?.data?.[0]
+  const transaksiUser = data?.payments?.data?.[0]
 
   useEffect(() => {
     if (transaksiUser?.buktiPembayaran) {
@@ -80,44 +62,15 @@ const Detail = () => {
     }
   }, [transaksiUser?.buktiPembayaran])
 
-  useEffect(() => {
-    toast.dismiss()
-    const handleScroll = () => {
-      const scrollY = window.scrollY
-
-      setActiveSection((prev) =>
-        prev.map((item) => {
-          const el = document.getElementById(item.id)
-          if (el) {
-            const offsetTop = el.offsetTop
-            const offsetHeight = el.offsetHeight
-
-            if (
-              scrollY >= offsetTop - 150 &&
-              scrollY < offsetTop + offsetHeight - 150
-            ) {
-              return { ...item, isActive: true }
-            }
-          }
-          return { ...item, isActive: false }
-        })
-      )
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   const DataPelanggan: DataPelanggan | null = {
-    idPelanggan: transaksiUser?.user?.customerId,
-    alamat: transaksiUser?.user?.alamat,
-    email: transaksiUser?.user?.email,
-    kelurahan: transaksiUser?.user?.kelurahan,
-    namaPelanggan: transaksiUser?.user?.name,
-    noTelp: transaksiUser?.user?.phone_number,
-    tanggalBerlangganan: transaksiUser?.user?.createdAt,
-    tanggalLahir: transaksiUser?.user?.birth_date
+    customerId: data?.data?.customerId,
+    alamat: data?.data?.alamat,
+    email: data?.data?.email,
+    kelurahan: data?.data?.kelurahan,
+    name: data?.data?.name,
+    phone_number: data?.data?.phone_number,
+    tanggalBerlangganan: data?.data?.createdAt,
+    tanggalLahir: data?.data?.birth_date
   }
 
   const handleUpload = async (file: File) => {
@@ -240,37 +193,8 @@ const Detail = () => {
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className='flex h-fit w-full flex-col-reverse gap-6 rounded-3xl bg-white p-4 sm:h-full sm:flex-row md:p-6 md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-[1040px]'
+        className='flex h-fit w-full gap-6 rounded-3xl bg-white px-8 py-6 sm:h-full md:shadow-[4px_4px_48px_0px_#0068FF0D] lg:w-[1040px]'
       >
-        <div
-          className={
-            'h-fill flex w-full flex-row items-center gap-3 sm:w-64 sm:flex-col sm:border-r sm:border-slate-200 sm:py-6 sm:pr-6 md:pl-2'
-          }
-        >
-          <Button
-            className={`!flex !w-full !flex-row !justify-center !gap-2 !rounded-lg !border-none !bg-blue-50 !p-6 !text-base !font-semibold !text-primary sm:!justify-start`}
-            onClick={() => router.push('/beranda')}
-          >
-            <HiChevronDoubleLeft className={'text-xl'} />
-            Kembali
-          </Button>
-          {activeSection.map((value, index) => (
-            <div
-              key={index}
-              className={
-                'hidden w-full flex-row justify-center text-base font-medium sm:flex'
-              }
-            >
-              <Link
-                href={`#${value.id}`}
-                className={`flex flex-row items-center gap-x-2 p-4 text-slate-400 hover:text-secondary`}
-              >
-                {value.icon}
-                <p>{value.name}</p>
-              </Link>
-            </div>
-          ))}
-        </div>
         <div
           className={`no-scrollbar ${isMiniMobile ? 'mt-[550px]' : 'mt-[450px] sm:mt-0'} flex h-auto w-full flex-col gap-4 sm:overflow-y-auto`}
         >
@@ -280,7 +204,7 @@ const Detail = () => {
               className={`flex ${isMiniMobile ? 'flex-col' : 'flex-row'} items-center gap-6 rounded-xl border border-slate-200 px-6 py-3`}
             >
               <Image
-                src={transaksiUser?.paket?.photo ?? '/emptyImg.svg'}
+                src={data?.data?.paket?.photo ?? '/emptyImg.svg'}
                 alt={'Paket'}
                 preview={false}
                 className={isMiniMobile ? '!w-28' : '!w-28 sm:!w-24'}
@@ -288,24 +212,21 @@ const Detail = () => {
               <div className={'flex w-full flex-row items-center'}>
                 <div className={'flex w-full flex-col gap-1'}>
                   <p className={'text-xs font-medium text-slate-500'}>
-                    {transaksiUser?.paket?.name}
+                    {data?.data?.paket?.name}
                   </p>{' '}
                   <p className={'text-base font-bold text-primary'}>
-                    {formatRupiah(transaksiUser?.paket?.price ?? 0, {
+                    {formatRupiah(data?.data?.paket?.price ?? 0, {
                       withPrefix: true
                     })}
                     /Bulan
                   </p>
                 </div>
                 <div className={'flex w-28 justify-end'}>
-                  <Chip text={transaksiUser?.user?.status ?? ''} />
+                  <Chip text={data?.data?.status ?? ''} />
                 </div>
               </div>
             </div>
-            <Desc
-              text={transaksiUser?.user?.status}
-              dueDate={transaksiUser?.due_date}
-            />
+            <Desc text={data?.data?.status} dueDate={transaksiUser?.due_date} />
           </div>
           <div className='flex flex-col gap-2'>
             <Heading val={'Bukti Pembayaran'} />
@@ -390,7 +311,7 @@ const Detail = () => {
           <Heading val={'History Transaksi'} />
           <DataTable
             id='History_Transaksi'
-            dataSource={data?.data}
+            dataSource={transaksiUser}
             columns={columns}
             limit={10}
             isLoading={isLoading}

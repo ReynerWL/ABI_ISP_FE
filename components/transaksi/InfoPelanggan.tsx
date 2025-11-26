@@ -3,12 +3,12 @@ import dayjs from 'dayjs'
 import React from 'react'
 
 export interface DataPelanggan {
-  idPelanggan: string
+  customerId: string
   tanggalBerlangganan: string
   tanggalLahir: string
-  namaPelanggan: string
+  name: string
   email: string
-  noTelp: string
+  phone_number: string
   alamat: string
   kelurahan: string
 }
@@ -20,14 +20,14 @@ interface Props {
 
 const InfoPelanggan = ({ data, isLoading }: Props) => {
   const field = [
-    { label: 'ID Pelanggan', value: data.idPelanggan, color: 'text-primary' },
+    { label: 'ID Pelanggan', value: data.customerId, color: 'text-primary' },
     {
       label: 'Tanggal Berlangganan',
       value: dayjs(data.tanggalBerlangganan).format('DD MMMM YYYY')
     },
-    { label: 'Nama', value: data.namaPelanggan },
+    { label: 'Nama', value: data.name },
     { label: 'Email', value: data.email },
-    { label: 'No. Telp', value: data.noTelp },
+    { label: 'No. Telp', value: data.phone_number },
     {
       label: 'Tanggal Lahir',
       value: dayjs(data.tanggalLahir).format('DD MMMM YYYY')
@@ -50,7 +50,7 @@ const InfoPelanggan = ({ data, isLoading }: Props) => {
             {isLoading ? (
               <Skeleton.Node active style={{ width: 100, height: 21 }} />
             ) : (
-              val.value
+              (val.value ?? '-')
             )}
           </h3>
         </div>
