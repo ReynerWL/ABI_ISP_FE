@@ -181,6 +181,49 @@ const StepInformasi = ({
           </Form.Item>
         )}
 
+        {/* Is Pelanggan Baru */}
+        <Form.Item
+          name={'is_pelanggan_lama'}
+          label='Jenis Pelanggan'
+          validateDebounce={1000}
+          preserve={true}
+          rules={[{ required: true, message: 'Jenis Pelanggan wajib diisi' }]}
+        >
+          <Select
+            loading={isLoading}
+            options={[
+              {
+                value: false,
+                label: (
+                  <p className='font-semibold text-slate-500'>Pelanggan Baru</p>
+                )
+              },
+              {
+                value: true,
+                label: (
+                  <p className='font-semibold text-slate-500'>Pelanggan Lama</p>
+                )
+              }
+            ]}
+            placeholder='Pilih Jenis Pelanggan'
+            allowClear={{
+              clearIcon: (
+                <HiXMark
+                  className='size-5 bg-white text-slate-400 transition duration-200 hover:text-slate-500'
+                  strokeWidth={0.5}
+                />
+              )
+            }}
+            suffixIcon={
+              <HiChevronDown
+                className='text-slate-300'
+                size={20}
+                strokeWidth={1}
+              />
+            }
+          />
+        </Form.Item>
+
         {/* Kelurahan */}
         <Form.Item
           name={'kelurahan'}

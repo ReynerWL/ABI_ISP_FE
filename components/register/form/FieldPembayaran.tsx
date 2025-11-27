@@ -1,5 +1,7 @@
 'use client'
 
+import { CardBank } from '#/components/transaksi/CardBank'
+import { Bank, bankRepository } from '#/repository/bank'
 import { generalRepository } from '#/repository/general'
 import { Paket } from '#/repository/paket'
 import { formatRupiah, formatSpeed } from '#/utils/formatter'
@@ -7,7 +9,6 @@ import {
   Button,
   Image,
   QRCode,
-  Segmented,
   Tooltip,
   Upload,
   UploadFile,
@@ -35,7 +36,9 @@ const FieldPembayaran = ({
   setBuktiPembayaran
 }: FieldPembayaranProps) => {
   const [copied, setCopied] = useState<string | null>(null)
-  const [paymentMethod, setPaymentMethod] = useState('qris')
+  const [paymentMethod, setPaymentMethod] = useState('transfer')
+  const { data, mutate } = bankRepository.hooks.useGetBanks()
+  const listBank = data?.data
 
   const paymentOptions = [
     { label: 'Qris', value: 'qris' },
@@ -94,12 +97,6 @@ const FieldPembayaran = ({
     }
   }
 
-  const bankInfo = {
-    bankName: 'Bank BCA',
-    accountName: 'Cecil Siregar',
-    accountNumber: '1670006749153'
-  }
-
   return (
     <div className='grid gap-8 p-6 pl-0'>
       {/* Header */}
@@ -115,7 +112,7 @@ const FieldPembayaran = ({
       </div>
 
       {/* Payment Method Switch */}
-      <Segmented options={paymentOptions} onChange={setPaymentMethod} />
+      {/* <Segmented options={paymentOptions} onChange={setPaymentMethod} /> */}
 
       {/* QRIS Section */}
       {paymentMethod === 'qris' && (
@@ -128,43 +125,18 @@ const FieldPembayaran = ({
       )}
 
       {/* Bank Transfer Section */}
-      {paymentMethod === 'transfer' && (
-        <div className='flex w-full min-w-[350px] flex-col items-center gap-6 rounded-lg bg-blue-50 p-6'>
-          <div className='flex w-full items-center justify-between'>
-            <div className='flex flex-col'>
-              <p className='font-medium text-slate-400'>{bankInfo.bankName}</p>
-              <p className='font-semibold text-slate-500'>
-                {bankInfo.accountName}
-              </p>
-            </div>
-            <div className='flex items-center gap-1'>
-              <p className='font-semibold text-slate-700'>
-                {bankInfo.accountNumber}
-              </p>
-              <Tooltip
-                title={
-                  copied === bankInfo.accountNumber
-                    ? 'Berhasil disalin!'
-                    : 'Salin nomor rekening'
-                }
-                color={copied === bankInfo.accountNumber ? 'green' : undefined}
-              >
-                <Button
-                  type='link'
-                  onClick={() => handleCopy(bankInfo.accountNumber)}
-                  icon={
-                    copied === bankInfo.accountNumber ? (
-                      <HiCheckCircle className='text-xl !text-green-500' />
-                    ) : (
-                      <HiDocumentDuplicate className='text-xl !text-primary hover:!text-blue-600' />
-                    )
-                  }
-                />
-              </Tooltip>
-            </div>
+      {paymentMethod === 'transfer' &&
+        listBank?.map((bank: Bank) => (
+          <div className='min-w-[350px]' key={bank?.id}>
+            <CardBank
+              bankName={bank?.bank_name}
+              owner={bank?.owner}
+              noRekening={bank?.no_rekening}
+              showDelete={false}
+              showCopy={true}
+            />
           </div>
-        </div>
-      )}
+        ))}
 
       {/* Harga */}
       <div className='flex items-center justify-between'>

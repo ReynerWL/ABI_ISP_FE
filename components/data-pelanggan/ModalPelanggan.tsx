@@ -47,7 +47,8 @@ const ModalPelanggan = ({
       'kelurahan',
       'alamat',
       'password',
-      'birth_date'
+      'birth_date',
+      'is_pelanggan_lama'
     ],
     ['photo_ktp'],
     ['paket'],
@@ -119,6 +120,12 @@ const ModalPelanggan = ({
             paketId: values.paket,
             banksId: values.banksId,
             buktiPembayaran: values.bukti_pembayaran
+          },
+          is_pelanggan_lama: values.is_pelanggan_lama,
+          pelanggan_lama: {
+            start_date: values.start_date,
+            end_date: values.end_date,
+            paid_at: values.paid_at
           }
         }
 

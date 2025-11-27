@@ -19,12 +19,20 @@ export interface RegisterPayload {
   alamat: string
   photo_ktp: string
   payment: PaymentPayload
+  is_pelanggan_lama: boolean
+  pelanggan_lama: PelangganLamaPayload
 }
 
 export interface PaymentPayload {
   paketId?: string | null
   banksId?: string | null
   buktiPembayaran?: string | null
+}
+
+export interface PelangganLamaPayload {
+  start_date: string
+  end_date: string
+  paid_at?: string
 }
 
 export interface UserPayload {
