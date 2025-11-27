@@ -34,7 +34,7 @@ const Register = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([])
   const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
 
-  const { data, isLoading } = paketRepository.hooks.useGetPaket()
+  const { data, isLoading } = paketRepository.hooks.useGetPaket({})
   const pakets: Paket[] = data?.data
 
   const formContent = [
