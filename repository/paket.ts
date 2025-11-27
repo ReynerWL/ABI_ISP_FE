@@ -28,15 +28,17 @@ export interface GetPaketParams {
 
 const url = {
   getPaket: (params?: GetPaketParams) => {
-    const query = buildQueryParams(params)
-
-    return `/paket?${query}`
+    if (params) {
+      const query = buildQueryParams(params)
+      return `/paket?${query}`
+    }
+    return `/paket`
   },
   getPaketById: (id: string) => `/paket/${id}`
 }
 
 const hooks = {
-  useGetPaket: (params?: GetPaketParams) =>
+  useGetPaket: (params: GetPaketParams) =>
     useSWR(url.getPaket(params), http.fetcher, { revalidateOnFocus: false })
 }
 

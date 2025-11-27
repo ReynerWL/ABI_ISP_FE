@@ -49,7 +49,7 @@ const DataPelanggan = () => {
     paket_speed: paketSpeedParam || null
   })
 
-  const { data: pakets } = paketRepository.hooks.useGetPaket()
+  const { data: pakets } = paketRepository.hooks.useGetPaket({})
 
   const users: User[] = data?.data
 

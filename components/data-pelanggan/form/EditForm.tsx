@@ -12,7 +12,7 @@ interface EditFormProps {
 
 const EditForm = ({ form, initialPaketId }: EditFormProps) => {
   const { data: paketResponse, isLoading: isLoadingPaket } =
-    paketRepository.hooks.useGetPaket()
+    paketRepository.hooks.useGetPaket({})
   const pakets: Paket[] = paketResponse?.data
 
   const { data: bankResponse, isLoading: isLoadingBank } =

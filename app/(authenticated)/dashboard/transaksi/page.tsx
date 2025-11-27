@@ -5,7 +5,6 @@ import DataTable from '#/components/reusable/DataTable'
 import { EmptyImg } from '#/components/reusable/EmptyImg'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
-import type { BankOption } from '#/components/transaksi/BankSelect'
 import CustomBankSelect from '#/components/transaksi/BankSelect'
 import CustomMonthPicker from '#/components/transaksi/DateMonth'
 import usePageTitle from '#/hooks/usePageTitle'
@@ -19,6 +18,7 @@ import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { HiOutlineDownload } from 'react-icons/hi'
 import { HiPhoto } from 'react-icons/hi2'
+import { toast } from 'sonner'
 
 const Transaksi = () => {
   usePageTitle('Transaksi')
@@ -26,19 +26,15 @@ const Transaksi = () => {
   const search = searchParams?.get('search') || null
   const bank = searchParams?.get('bank') || ''
   const month = searchParams?.get('month') || ''
+  const [loading, setLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
+  const [openModalAdd, setOpenModalAdd] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
-  const { data: listBank } = bankRepository.hooks.useGetBanks()
+  const { data: listBank, mutate } = bankRepository.hooks.useGetBanks()
 
   const { data: listTransaksi, isLoading: loadingTransaksi } =
     transakasiRepository.hooks.useGetAllTransaksi({ search, bank, month })
-
-  const convertDataBank = (data: Bank[]): BankOption[] =>
-    data?.map((val) => ({
-      label: `${val.bank_name} - ${val.owner}`,
-      value: val.bank_name
-    }))
 
   const Transaksi: DataTransaksi[] = listTransaksi?.data
 
@@ -139,9 +135,35 @@ const Transaksi = () => {
     }
   ]
 
+  const handleFinish = async (values: Bank) => {
+    if (loading) return
+
+    try {
+      setLoading(true)
+      const { error } = await bankRepository.api.CreateBanks(values)
+      if (!error) {
+        toast.success('Berhasil menambahkan data bank!')
+        mutate()
+        setOpenModalAdd(false)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error('Gagal menambahkan data bank!')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className='flex flex-col gap-8'>
       <Title>Transaksi</Title>
+      <CustomBankSelect
+        datas={listBank?.data}
+        handleFinish={handleFinish}
+        loading={loading}
+        open={openModalAdd}
+        setOpen={setOpenModalAdd}
+      />
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
         <div className='grid h-fit grid-cols-10 gap-4 lg:gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
           <InputSearch className={'order-1 !col-span-8'} />
@@ -152,10 +174,6 @@ const Transaksi = () => {
             <HiOutlineDownload className='text-xl' strokeWidth={1.9} />
             <p className='hidden sm:inline'>Ekspor</p>
           </Button>
-          <CustomBankSelect
-            options={convertDataBank(listBank?.data)}
-            className={'order-3 col-span-5 xl:order-2'}
-          />
           <CustomMonthPicker className={'order-4 col-span-5 xl:order-3'} />
         </div>
         <DataTable
