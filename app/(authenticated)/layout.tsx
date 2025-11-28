@@ -79,6 +79,10 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
 
     const fetchUser = async () => {
       try {
+        if (!TokenUtil.accessToken) {
+          return
+        }
+
         if (pathname !== '/dashboard' || history) {
           const result = await fetch(`${config.baseUrl}/auth/validate-token`, {
             method: 'GET',

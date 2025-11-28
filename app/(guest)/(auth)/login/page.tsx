@@ -59,7 +59,7 @@ const Login = () => {
           default:
             break
         }
-      }, 1000)
+      }, 500)
     } catch (error: any) {
       setLoading(false)
       const statusCode = error?.response?.status

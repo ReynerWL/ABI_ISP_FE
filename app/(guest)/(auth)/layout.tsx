@@ -1,6 +1,7 @@
 'use client'
 
 import { config } from '#/config/app'
+import { useUser } from '#/context/UserContext'
 import { UserPayload } from '#/repository/auth'
 import { TokenUtil } from '#/utils/token'
 import '@ant-design/v5-patch-for-react-19'
@@ -14,6 +15,7 @@ interface GuestLayoutProps {
 
 const GuestLayout: React.FC<GuestLayoutProps> = ({ children }) => {
   const router = useRouter()
+  const { user, setUser } = useUser()
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
@@ -35,7 +37,17 @@ const GuestLayout: React.FC<GuestLayoutProps> = ({ children }) => {
         })
 
         const response = await result.json()
+
+        if (result.status === 401) {
+          TokenUtil.clearTokens()
+          TokenUtil.persistToken()
+          setUser(null)
+          setIsChecking(false)
+          return
+        }
+
         const user: UserPayload = response.data
+        setUser(user)
 
         if (
           user?.role.toLowerCase() === 'admin' ||
