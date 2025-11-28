@@ -98,6 +98,37 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }
 
+  const handleActive = async () => {
+    if (isLoading) return
+
+    const paymentId = user?.payments?.[0].id
+
+    if (!paymentId) {
+      toast.error('ID pembayaran tidak ditemukan!')
+      return
+    }
+
+    if (!user?.buktiPemasangan) {
+      setIsLoading(false)
+      setOpen(false)
+      toast.error('Harap unggah bukti pemasangan terlebih dahulu!')
+      return
+    }
+
+    try {
+      await userRepository.api.updateUser(id, { status: 'Aktif' })
+      // await transakasiRepository.api.confirmTransaksi(paymentId)
+      toast.success('Berhasil konfirmasi data pelanggan!')
+      mutate()
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat konfirmasi pelanggan!')
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+      setOpen(false)
+    }
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReason(e.target.value)
   }
@@ -133,29 +164,6 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
         </Link>
       </div>
     )
-  }
-
-  const handleActive = async () => {
-    if (isLoading) return
-
-    if (!user?.buktiPemasangan) {
-      setIsLoading(false)
-      setOpen(false)
-      toast.error('Harap unggah bukti pemasangan terlebih dahulu!')
-      return
-    }
-
-    try {
-      await userRepository.api.updateUser(id, { status: 'Aktif' })
-      toast.success('Berhasil konfirmasi data pelanggan!')
-      mutate()
-    } catch (error) {
-      toast.error('Terjadi kesalahan saat konfirmasi pelanggan!')
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-      setOpen(false)
-    }
   }
 
   const handleUpload = async (file: File) => {
@@ -233,8 +241,8 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
         <InfoPaketCard
           paket={user?.paket}
-          dueDate={dayjs(user?.payments?.[0].due_date).format('DD MMMM YYYY')}
-          payDate={dayjs(user?.payments?.[0].updatedAt).format('DD MMMM YYYY')}
+          dueDate={dayjs(user?.payments?.[0]?.due_date).format('DD MMMM YYYY')}
+          payDate={dayjs(user?.payments?.[0]?.updatedAt).format('DD MMMM YYYY')}
           isLoading={isLoading}
         />
       </div>
@@ -322,7 +330,7 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
                   ? `Apakah Anda yakin ingin ${mode === 'setujui' ? 'setujui' : 'menolak'} pembayaran ini?`
                   : `Apakah Anda yakin ingin aktifkan pelanggan ini?`}
                 <br />
-                <span className={'font-bold'}>{`"{user?.customerId}".`}</span>
+                <span className={'font-bold'}>{`"${user?.customerId}".`}</span>
               </p>
             </div>
             <div className={mode === 'tolak' ? 'pt-5' : 'hidden'}>

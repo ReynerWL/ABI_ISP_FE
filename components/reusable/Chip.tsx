@@ -9,9 +9,9 @@ interface ChipProps {
 }
 
 const Chip = ({ text, isLoading }: ChipProps) => {
-  const lowerText = text.toLowerCase().replace('-', '_')
+  const lowerText = text?.toLowerCase().replace('-', '_')
   const displayText = text
-    .split('-')
+    ?.split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join('-')
 
