@@ -5,7 +5,9 @@ import { formatSpeed } from '#/utils/formatter'
 import { Form, Radio, Skeleton } from 'antd'
 
 const StepPaket = () => {
-  const { data, isLoading } = paketRepository.hooks.useGetPaket({})
+  const { data, isLoading } = paketRepository.hooks.useGetPaket({
+    status: true
+  })
 
   const pakets: Paket[] = data?.data
 

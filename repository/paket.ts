@@ -22,6 +22,8 @@ export interface CreatePaketPayload {
 
 export interface GetPaketParams {
   query?: string | null
+  order?: string
+  status?: boolean
   page?: number
   limit?: number
 }
@@ -46,7 +48,9 @@ const api = {
   createPaket: (data: CreatePaketPayload) =>
     http.post(url.getPaket()).send(data),
   updatePaket: (id: string, data: CreatePaketPayload) =>
-    http.put(url.getPaketById(id)).send(data)
+    http.put(url.getPaketById(id)).send(data),
+  paketActive: (id: string) => http.put(`/paket/active/${id}`).send(),
+  paketInactive: (id: string) => http.put(`/paket/inactive/${id}`).send()
 }
 
 export const paketRepository = { url, hooks, api }
