@@ -47,7 +47,8 @@ const Detail = () => {
 
   const { data, mutate, isLoading } = userRepository.hooks.useGetDetailUser()
 
-  const transaksiUser = data?.payments?.data?.[0]
+  const listTransaksiUser = data?.data?.payments?.data
+  const transaksiUser = data?.data?.payments?.data?.[0]
 
   useEffect(() => {
     if (transaksiUser?.buktiPembayaran) {
@@ -311,7 +312,7 @@ const Detail = () => {
           <Heading val={'History Transaksi'} />
           <DataTable
             id='History_Transaksi'
-            dataSource={transaksiUser}
+            dataSource={listTransaksiUser}
             columns={columns}
             limit={10}
             isLoading={isLoading}
