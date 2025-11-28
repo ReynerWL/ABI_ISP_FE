@@ -4,5 +4,6 @@ export const config = {
       ? (window as any).serverEnv?.DYNAMIC_ENV_BASE_URL
       : '') ||
     process.env.NEXT_PUBLIC_BASE_URL ||
-    'https://api.mbinet.click'
+    // 'https://api.mbinet.click'
+    'http://172.17.0.186:3222'
 }

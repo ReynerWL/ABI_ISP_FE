@@ -36,6 +36,7 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
     setIsLoading(true)
 
     const paymentId = user?.payments?.[0].id
+    console.log(paymentId)
 
     if (!paymentId) {
       toast.error('ID pembayaran tidak ditemukan!')
@@ -116,8 +117,8 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
     }
 
     try {
-      await userRepository.api.updateUser(id, { status: 'Aktif' })
-      // await transakasiRepository.api.confirmTransaksi(paymentId)
+      // await userRepository.api.updateUser(id, { status: 'Aktif' })
+      await transakasiRepository.api.confirmTransaksi(paymentId)
       toast.success('Berhasil konfirmasi data pelanggan!')
       mutate()
     } catch (error) {
