@@ -19,6 +19,7 @@ import {
   HiInboxArrowDown,
   HiUserGroup
 } from 'react-icons/hi2'
+import { IoImages } from 'react-icons/io5'
 import { TbGaugeFilled, TbLayoutDashboardFilled } from 'react-icons/tb'
 import { toast } from 'sonner'
 
@@ -131,6 +132,13 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               <Link href={'/dashboard/manajemen-admin'}>Manajemen Admin</Link>
             ),
             icon: <HiUserGroup className='!text-xl' />
+          },
+          {
+            key: 'manajemen-file',
+            label: (
+              <Link href={'/dashboard/manajemen-file'}>Manajemen File</Link>
+            ),
+            icon: <IoImages className='!text-xl' />
           }
         ]
       : [])
