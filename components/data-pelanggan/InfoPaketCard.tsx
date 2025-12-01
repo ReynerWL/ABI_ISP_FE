@@ -9,13 +9,15 @@ interface InfoPaketCardProps {
   dueDate: string
   payDate: string
   isLoading: boolean
+  buktiPembayaran?: string
 }
 
 const InfoPaketCard = ({
   paket,
   dueDate,
   payDate,
-  isLoading
+  isLoading,
+  buktiPembayaran
 }: InfoPaketCardProps) => {
   return (
     <div className='flex h-fit flex-col gap-6 rounded-2xl bg-white p-6 2xl:min-w-[400px]'>
@@ -77,7 +79,7 @@ const InfoPaketCard = ({
         <Skeleton.Image className='!h-[68px] !w-full !min-w-[310px] !rounded-xl' />
       ) : (
         // TODO: replace with actual image
-        <BuktiPembayaran imageUrl='/dummy/bukti_pembayaran.png' />
+        <BuktiPembayaran imageUrl={buktiPembayaran} />
       )}
     </div>
   )

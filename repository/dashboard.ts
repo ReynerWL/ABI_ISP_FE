@@ -18,6 +18,7 @@ export interface PackageInformation {
 }
 
 export interface NeedConfirmation {
+  id: string
   customerId: string
   status: string
   updatedAt: string

@@ -33,14 +33,20 @@ const BuktiPembayaran = ({ imageUrl }: BuktiPembayaranProps) => {
     <div className='space-y-4'>
       <h2 className='text-base font-semibold text-primary'>Bukti Pembayaran</h2>
       <Button
-        className='!shadow-[0_0_0_4px_rgba(207, 207, 207, 0.1)] !h-fit !w-full !justify-start !gap-3 !rounded-xl !border-slate-200 !p-4 hover:!bg-slate-50'
+        className='!shadow-[0_0_0_4px_rgba(207, 207, 207, 0.1)] !h-fit !w-full !justify-start !gap-3 !rounded-xl !border-slate-200 !p-4 hover:!bg-slate-50 md:!max-w-[380px]'
         onClick={() => setOpen(true)}
+        disabled={!imageUrl}
       >
-        <div className='rounded border border-slate-200 p-1'>
-          <PiImageFill className='text-2xl text-secondary' />
-        </div>
-        <span className='font-semibold text-primary'>
-          Bukti Pembayaran_121846234310
+        {imageUrl && (
+          <div className='rounded border border-slate-200 p-1'>
+            <PiImageFill className='text-2xl text-secondary' />
+          </div>
+        )}
+        <span
+          className='line-clamp-1 font-semibold text-primary'
+          title={imageUrl || 'Bukti pembayaran belum diunggah'}
+        >
+          {imageUrl || 'Bukti pembayaran belum diunggah'}
         </span>
       </Button>
 
@@ -76,7 +82,12 @@ const BuktiPembayaran = ({ imageUrl }: BuktiPembayaranProps) => {
               </Button>
             </>
           ) : (
-            <></>
+            <div className='flex flex-col items-center justify-center gap-3 py-8'>
+              <div className='rounded-full border-2 border-slate-200 p-4'></div>
+              <p className='text-center text-slate-500'>
+                Bukti pembayaran belum diunggah
+              </p>
+            </div>
           )}
         </div>
       </BaseModal>

@@ -45,7 +45,7 @@ const InfoPelanggan = ({
           <Chip text={status} isLoading={isLoading} />
         </div>
       </div>
-      <div className='grid grid-cols-2 gap-y-6'>
+      <div className='grid grid-cols-1 gap-y-6 lg:grid-cols-2'>
         <div className='flex flex-col gap-1'>
           <p className='font-medium leading-[14px] text-slate-500'>
             Tanggal Berlangganan

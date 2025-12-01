@@ -29,7 +29,8 @@ const ConfirmList = ({
       >
         {list?.map((item: NeedConfirmation) => (
           <ConfirmListItem
-            key={item.customerId}
+            key={item.id}
+            id={item.id}
             customerId={item.customerId}
             status={item.status}
             updatedAt={item.updatedAt}
@@ -60,6 +61,7 @@ interface ConfirmListItemProps extends NeedConfirmation {
 }
 
 const ConfirmListItem = ({
+  id,
   customerId,
   status,
   updatedAt,
@@ -67,7 +69,7 @@ const ConfirmListItem = ({
 }: ConfirmListItemProps) => {
   return (
     <Link
-      href={`/dashboard/data-pelanggan/${customerId}`}
+      href={`/dashboard/data-pelanggan/${id}`}
       className='flex cursor-pointer items-center justify-between rounded-[14px] p-3 hover:bg-slate-50 2xl:p-4'
     >
       <div className='flex items-center gap-4'>

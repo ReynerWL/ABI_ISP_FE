@@ -245,10 +245,10 @@ const DetailPelanggan = ({ params }: { params: Promise<{ id: string }> }) => {
           dueDate={dayjs(user?.payments?.[0]?.due_date).format('DD MMMM YYYY')}
           payDate={dayjs(user?.payments?.[0]?.updatedAt).format('DD MMMM YYYY')}
           isLoading={isLoading}
+          buktiPembayaran={user?.payments?.[0]?.buktiPembayaran}
         />
       </div>
       {!isLoading && (
-        // TODO: Apply the button based on the user status
         <div className='flex w-full justify-end gap-4'>
           {(() => {
             const status = user?.status?.toLowerCase()
