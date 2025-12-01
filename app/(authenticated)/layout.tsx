@@ -208,7 +208,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
           }}
           className={'!px-0 !text-xs sm:!text-sm'}
         >
-          ©{new Date().getFullYear()} PT Amarta Buana Informati. All rights
+          ©{new Date().getFullYear()} PT Media Buana Informatika. All rights
           reserved.
         </Footer>
       </Layout>

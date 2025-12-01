@@ -1,12 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import {
   HiEnvelope,
   HiExclamationCircle,
   HiMapPin,
-  HiPhone,
-  HiShoppingCart
+  HiPhone
 } from 'react-icons/hi2'
 
 interface props {
@@ -36,8 +34,8 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
           />
           <div className={'flex flex-col gap-y-3'}>
             <p className={'text-sm font-normal text-slate-50 2xl:text-base'}>
-              PT Amarta Buana Informatika perusahaan teknologi yang berfokus
-              pada pengembangan solusi digital inovatif untuk membantu bisnis
+              PT Media Buana Informatika perusahaan teknologi yang berfokus pada
+              pengembangan solusi digital inovatif untuk membantu bisnis
               berkembang di era digital.
             </p>
             <div className={'flex flex-row gap-x-6'}>
@@ -89,14 +87,6 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               <HiExclamationCircle className={'text-lg 2xl:text-xl'} />
               <p>Tentang Kami</p>
             </div>
-            <div
-              className={
-                'flex flex-row gap-x-3 text-sm font-normal text-slate-50 2xl:text-base'
-              }
-            >
-              <HiShoppingCart className={'text-lg 2xl:text-xl'} />
-              <p>Produk</p>
-            </div>
           </div>
         </div>
         <div className={'flex w-full flex-col gap-y-6'}>
@@ -127,7 +117,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               </p>
             </Link>
             <Link
-              href={'https://wa.me/+6285939335865'}
+              href={'https://wa.me/+6281908706698'}
               target='_blank'
               rel='noopener noreferrer'
               className={
@@ -135,10 +125,10 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               }
             >
               <HiPhone className={'text-base xl:text-lg 2xl:text-xl'} />
-              <p>+62 859 3933 5865</p>
+              <p>+62 819-0870-6698</p>
             </Link>
             <Link
-              href={'mailto:no-reply@amartanet.id'}
+              href={'mailto:mbinet5758@gmail.com'}
               target='_blank'
               rel='noopener noreferrer'
               className={
@@ -146,7 +136,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               }
             >
               <HiEnvelope className={'text-base xl:text-lg 2xl:text-xl'} />
-              <p>no-reply@amartanet.id</p>
+              <p>mbinet5758@gmail.com</p>
             </Link>
           </div>
         </div>

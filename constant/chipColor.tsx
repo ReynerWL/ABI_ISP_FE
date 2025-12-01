@@ -7,7 +7,8 @@ export const chipColor: Record<string, { bgColor: string; textColor: string }> =
     pra_aktif: { bgColor: '#FFF7ED', textColor: '#F97316' },
     nonaktif: { bgColor: '#fef2f2', textColor: '#EF4444' },
     ditolak: { bgColor: '#F8FAFC', textColor: '#64748B' },
-    reject: { bgColor: '#F8FAFC', textColor: '#64748B' }
+    reject: { bgColor: '#F8FAFC', textColor: '#64748B' },
+    rejected: { bgColor: '#fef2f2', textColor: '#EF4444' }
   }
 
 export const chipColorMethod: Record<

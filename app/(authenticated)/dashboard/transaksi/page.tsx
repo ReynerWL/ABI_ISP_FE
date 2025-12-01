@@ -1,6 +1,7 @@
 'use client'
 
 import BaseModal from '#/components/reusable/BaseModal'
+import Chip from '#/components/reusable/Chip'
 import DataTable from '#/components/reusable/DataTable'
 import { EmptyImg } from '#/components/reusable/EmptyImg'
 import InputSearch from '#/components/reusable/InputSearch'
@@ -111,6 +112,12 @@ const Transaksi = () => {
           <span className={'text-slate-500'}>-</span>
         ),
       sorter: (a, b) => dayjs(a?.createdAt).unix() - dayjs(b?.createdAt).unix()
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (value) => <Chip text={value} />
     },
     {
       title: 'Bukti Pembayaran',
