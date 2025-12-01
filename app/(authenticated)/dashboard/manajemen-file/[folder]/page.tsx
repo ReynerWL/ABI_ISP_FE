@@ -1,27 +1,39 @@
 'use client'
 
-import FolderCard from '#/components/manajemen-file/Folder'
 import ImagePreview from '#/components/manajemen-file/ImagePreview'
 import Title from '#/components/reusable/Title'
 import { config } from '#/config/app'
 import { fileRepository } from '#/repository/file'
 import { Skeleton } from 'antd'
+import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { IoImageOutline } from 'react-icons/io5'
-import { LuFolder } from 'react-icons/lu'
 import { useInView } from 'react-intersection-observer'
 import { toast } from 'sonner'
 
-// Main Page Component
-const ManajemenFilePage = () => {
+interface File {
+  id: string
+  name: string
+  path: string
+  size: number
+  type: string
+  lastModified: string
+}
+
+const ManajemenFileDetailPage = () => {
+  const params = useParams()
+  const folder = params?.folder as string | null
+
   const {
-    data: images,
+    data: response,
     isLoading,
     setSize,
     isReachedEnd,
     mutate,
     isValidating
-  } = fileRepository.hooks.useGetFileListInfinite({ folder: '.' })
+  } = fileRepository.hooks.useGetFileListInfinite({ folder: folder })
+
+  const images: string[] = response
 
   const { ref, inView } = useInView({ threshold: 0 })
 
@@ -33,7 +45,7 @@ const ManajemenFilePage = () => {
 
   const handleDelete = async (filename: string) => {
     try {
-      await fileRepository.api.deleteFile({ filename })
+      await fileRepository.api.deleteFile({ folder, filename })
       toast.success('File berhasil dihapus!')
       mutate()
     } catch (error) {
@@ -46,24 +58,7 @@ const ManajemenFilePage = () => {
       <div className='w-full'>
         {/* Header */}
         <div className='mb-8'>
-          <Title>Manajemen File</Title>
-        </div>
-
-        {/* Folders Section */}
-        <div className='mb-12'>
-          <h2 className='mb-4 flex items-center gap-2 text-xl font-semibold text-gray-800'>
-            <LuFolder className='h-5 w-5 text-secondary' />
-            Folder
-          </h2>
-          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-            <FolderCard title='KTP' href='/dashboard/manajemen-file/KTP' />
-            <FolderCard
-              title='Bukti Pembayaran'
-              href='/dashboard/manajemen-file/Bukti_Pembayaran'
-            />
-            <FolderCard title='Paket' href='/dashboard/manajemen-file/Paket' />
-            <FolderCard title='Misc' href='/dashboard/manajemen-file/misc' />
-          </div>
+          <Title>Manajemen File - {folder}</Title>
         </div>
 
         {/* Images Section */}
@@ -97,14 +92,13 @@ const ManajemenFilePage = () => {
                 </div>
               ))}
           </div>
-
           <div ref={ref} />
-          {isReachedEnd && images.length > 0 && (
+          {isReachedEnd && response.length > 0 && (
             <div className='py-12 text-center text-gray-400'>
               <p>Tidak ada gambar lagi</p>
             </div>
           )}
-          {isReachedEnd && images.length === 0 && (
+          {isReachedEnd && response.length === 0 && (
             <div className='py-12 text-center text-gray-400'>
               <p>Tidak ada gambar</p>
             </div>
@@ -115,4 +109,4 @@ const ManajemenFilePage = () => {
   )
 }
 
-export default ManajemenFilePage
+export default ManajemenFileDetailPage

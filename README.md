@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img src="public/logo.png" alt="Project Logo" width="200"/>
+</p>
 
-## Getting Started
+<h1 align="center">MBI ISP FRONTEND</h1>
 
-First, run the development server:
+<p align="center">
+  This is the official frontend for the MBI Internet Service Provider application, built with Next.js and Ant Design.
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Browse and Purchase Packages:** Users can browse through a variety of internet packages and sign up for the one that best suits their needs.
+- **Customer Dashboard:** Authenticated users have access to a dashboard where they can manage their account, view their current package, and see their transaction history.
+- **Admin Management:** The application includes an admin section for managing customers, packages, and other application-related data.
+- **Responsive Design:** The application is designed to be fully responsive and accessible on all devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To get the development environment running, follow these simple steps.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Prerequisites
 
-## Learn More
+- Node.js (v18 or later)
+- Yarn
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1.  Clone the repository:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    ```bash
+    git clone https://github.com/username/project-name.git
+    ```
 
-## Deploy on Vercel
+2.  Install the dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    yarn
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3.  Run the development server:
+
+    ```bash
+    yarn dev
+    ```
+
+The application will be available at `http://localhost:3000`.
+
+## 🛠️ Technologies Used
+
+- **Framework:** [Next.js](https://nextjs.org/)
+- **UI Library:** [Ant Design](https://ant.design/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **State Management:** [React Context](https://reactjs.org/docs/context.html)
+- **Data Fetching:** [SWR](https://swr.vercel.app/)
+- **Linting:** [ESLint](https://eslint.org/)
+- **Formatting:** [Prettier](https://prettier.io/)
+
+## 📝 Other Commands
+
+- `yarn build`: Builds the application for production.
+- `yarn start`: Starts a production server.
+- `yarn lint`: Lints the codebase for errors.
+- `yarn format`: Formats the code using Prettier.

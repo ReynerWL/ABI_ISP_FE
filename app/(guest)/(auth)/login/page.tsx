@@ -45,21 +45,19 @@ const Login = () => {
         `Login berhasil! Mengarahkan ke ${userRole === 'admin' || userRole === 'superadmin' ? 'dashboard' : 'beranda'}...`
       )
 
-      setTimeout(() => {
-        switch (userRole) {
-          case 'admin':
-            router.push('/dashboard')
-            break
-          case 'superadmin':
-            router.push('/dashboard')
-            break
-          case 'user':
-            router.push('/beranda')
-            break
-          default:
-            break
-        }
-      }, 500)
+      switch (userRole) {
+        case 'admin':
+          router.push('/dashboard')
+          break
+        case 'superadmin':
+          router.push('/dashboard')
+          break
+        case 'user':
+          router.push('/beranda')
+          break
+        default:
+          break
+      }
     } catch (error: any) {
       setLoading(false)
       const statusCode = error?.response?.status

@@ -33,7 +33,12 @@ const BaseModal = ({
         <div
           className={`flex justify-between border-slate-200 ${titleBorder ? 'border-b pb-4' : ''}`}
         >
-          <h1 className='text-xl font-bold text-slate-700'>{title}</h1>
+          <h1
+            className='line-clamp-1 text-xl font-bold text-slate-700'
+            title={title}
+          >
+            {title}
+          </h1>
           <Button
             type='text'
             onClick={onClose}
