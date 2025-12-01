@@ -5,4 +5,5 @@ export const config = {
       : '') ||
     process.env.NEXT_PUBLIC_BASE_URL ||
     'https://api.mbinet.click'
+  // 'http://localhost:3222'
 }
