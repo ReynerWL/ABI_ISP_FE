@@ -18,6 +18,7 @@ interface DataTableProps {
   totalData?: number
   isLoading?: boolean
   setSort?: (value: string | null) => void
+  expandedRowRender?: (record: any) => React.ReactNode
 }
 
 const DataTable = ({
@@ -30,7 +31,8 @@ const DataTable = ({
   totalPage = 1,
   totalData = 0,
   isLoading = false,
-  setSort
+  setSort,
+  expandedRowRender
 }: DataTableProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -71,6 +73,21 @@ const DataTable = ({
       rowHoverable={false}
       scroll={{ x: 'max-content' }}
       rowKey={'id'}
+      // expandable={{
+      //   expandedRowRender: expandedRowRender,
+      //   expandIcon: ({ expanded, onExpand, record }) => (
+      //     <button
+      //       onClick={(e) => onExpand(record, e)}
+      //       className='flex items-center justify-center'
+      //     >
+      //       <LuCircleChevronDown
+      //         className={`text-xl transition-transform duration-200 ${
+      //           expanded ? 'rotate-180' : ''
+      //         }`}
+      //       />
+      //     </button>
+      //   )
+      // }}
       locale={{
         emptyText: !isLoading && (
           <div className='flex w-full flex-col items-center justify-center py-10'>

@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import {
+  HiClipboardDocumentList,
   HiDocumentMagnifyingGlass,
   HiInboxArrowDown,
   HiUserGroup
@@ -139,6 +140,11 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
               <Link href={'/dashboard/manajemen-file'}>Manajemen File</Link>
             ),
             icon: <IoImages className='!text-xl' />
+          },
+          {
+            key: 'log',
+            label: <Link href={'/dashboard/log'}>Log</Link>,
+            icon: <HiClipboardDocumentList className='!text-xl' />
           }
         ]
       : [])

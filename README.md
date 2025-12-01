@@ -1,23 +1,99 @@
 <p align="center">
-  <img src="public/logo.png" alt="Project Logo" width="200"/>
+  <img src="public/logo.png" alt="MBI ISP Logo" width="200"/>
 </p>
 
-<h1 align="center">MBI ISP FRONTEND</h1>
+<h1 align="center">🚀 MBI ISP — Frontend Application</h1>
 
 <p align="center">
-  This is the official frontend for the MBI Internet Service Provider application, built with Next.js and Ant Design.
+  <b>Modern, fast, and scalable frontend for MBI Internet Service Provider.</b><br/>
+  Built with <b>Next.js</b>, <b>Ant Design</b>, and <b>Tailwind CSS</b>.
 </p>
 
-## ✨ Features
+---
 
-- **Browse and Purchase Packages:** Users can browse through a variety of internet packages and sign up for the one that best suits their needs.
-- **Customer Dashboard:** Authenticated users have access to a dashboard where they can manage their account, view their current package, and see their transaction history.
-- **Admin Management:** The application includes an admin section for managing customers, packages, and other application-related data.
-- **Responsive Design:** The application is designed to be fully responsive and accessible on all devices.
+## 📌 Overview
+
+**MBI ISP Frontend** is a web application built to support the internal and customer-facing workflows of **MBI Internet Service Provider**.
+
+This project is part of a full ISP management ecosystem designed to handle:
+
+- Customer subscriptions
+- Package browsing & purchasing
+- User dashboards
+- Admin management
+- Payment integrations (future)
+- Automatic disconnection logic when customers miss payment (connected to backend Mikrotik automation)
+
+The goal of this repository is to be **clean, maintainable, and scalable**, ensuring future developers can easily continue the project.
+
+---
+
+## ✨ Core Features
+
+### 🛒 Customer Features
+
+- Browse available internet packages
+- Register & purchase subscriptions
+- Manage account and profile
+- View active package and status
+- Track transaction history
+- Receive payment reminders and notifications
+
+### 🛠️ Admin Features
+
+- Manage customers
+- Manage internet packages
+- View connection status & package history
+- Dashboard overview
+- Support tools for automation (Mikrotik, billing, reminders)
+
+### 💻 Technical Features
+
+- Fully responsive UI
+- Reusable React components
+- Centralized API integration
+- Smooth UI/UX with Ant Design + Tailwind
+- Automatic caching using SWR
+
+---
+
+## 🏗️ Project Structure (Simplified)
+
+```
+src/
+│── app/               # Next.js routes & pages
+│── components/        # Reusable UI components
+│── contexts/          # Global state providers
+│── hooks/             # Custom hooks
+│── services/          # API services
+│── utils/             # Helper utilities
+│── styles/            # Global styles
+public/
+```
+
+This allows:
+
+- Clear separation of concerns
+- Easy onboarding for new developers
+- Stable long-term maintenance
+
+---
+
+## 🛠️ Technologies Used
+
+| Category             | Technology    |
+| -------------------- | ------------- |
+| **Framework**        | Next.js 14    |
+| **UI Library**       | Ant Design    |
+| **Styling**          | Tailwind CSS  |
+| **Data Fetching**    | SWR           |
+| **State Management** | React Context |
+| **Linting**          | ESLint        |
+| **Formatting**       | Prettier      |
+
+---
 
 ## 🚀 Getting Started
-
-To get the development environment running, follow these simple steps.
 
 ### Prerequisites
 
@@ -26,39 +102,109 @@ To get the development environment running, follow these simple steps.
 
 ### Installation
 
-1.  Clone the repository:
+1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/username/project-name.git
-    ```
+   ```bash
+   git clone https://github.com/username/project-name.git
+   ```
 
-2.  Install the dependencies:
+2. Install dependencies:
 
-    ```bash
-    yarn
-    ```
+   ```bash
+   yarn
+   ```
 
-3.  Run the development server:
+3. Run development server:
 
-    ```bash
-    yarn dev
-    ```
+   ```bash
+   yarn dev
+   ```
 
-The application will be available at `http://localhost:3000`.
+Visit:  
+👉 `http://localhost:3000`
 
-## 🛠️ Technologies Used
+---
 
-- **Framework:** [Next.js](https://nextjs.org/)
-- **UI Library:** [Ant Design](https://ant.design/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-- **State Management:** [React Context](https://reactjs.org/docs/context.html)
-- **Data Fetching:** [SWR](https://swr.vercel.app/)
-- **Linting:** [ESLint](https://eslint.org/)
-- **Formatting:** [Prettier](https://prettier.io/)
+## 📝 Scripts
 
-## 📝 Other Commands
+- `yarn dev` — Start development mode
+- `yarn build` — Build for production
+- `yarn start` — Start production server
+- `yarn lint` — Run ESLint
+- `yarn format` — Format code with Prettier
 
-- `yarn build`: Builds the application for production.
-- `yarn start`: Starts a production server.
-- `yarn lint`: Lints the codebase for errors.
-- `yarn format`: Formats the code using Prettier.
+---
+
+## 📚 Developer Guide
+
+### 🔐 Authentication
+
+- Token-based auth
+- Tokens stored in cookies
+- Auth context handles global login state
+
+### 🌐 API Setup
+
+All API calls are organized under `/services`.  
+Set the environment variables:
+
+```
+NEXT_PUBLIC_API_URL=https://api.example.com
+```
+
+### 🎨 UI Guidelines
+
+- Always use Ant Design components
+- Combine Tailwind for spacing/layout
+- Use reusable components from `/components`
+
+### 🧩 Component Rules
+
+- Keep components small and modular
+- Avoid business logic in pages
+- Use custom hooks for reusable logic
+
+### 🛡️ Code Quality
+
+- Follow ESLint rules
+- Use Prettier before committing
+- TypeScript is enforced for safety
+
+---
+
+## 📦 Deployment
+
+### Recommended Options
+
+- Docker (for self-hosting)
+- Nginx (manual hosting)
+
+### Build Production
+
+```bash
+yarn build
+yarn start
+```
+
+---
+
+## 🤝 Contributing
+
+- Use feature branches (`feature/...`)
+- Use clear commit prefixes (`feat:`, `fix:`, `refactor:`)
+- Document new utilities or components
+- Keep the project structure clean
+
+---
+
+## 👨‍💻 Author & Maintainers
+
+This project is developed internally for **MBI ISP**  
+Maintained by the engineering team & future developers in the company.
+
+Welcome aboard! 🚀  
+Please read the project structure and follow the guidelines for consistency.
+
+---
+
+&copy; Copyright 2025 MBI ISP. All rights reserved.

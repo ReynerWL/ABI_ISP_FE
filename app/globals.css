@@ -185,6 +185,10 @@ html {
       @apply border-slate-200 px-2 font-semibold text-slate-500 !important;
     }
   }
+
+  & .ant-table-expanded-row .ant-table-cell {
+    @apply bg-white !important;
+  }
 }
 
 .data-table .ant-table-footer {

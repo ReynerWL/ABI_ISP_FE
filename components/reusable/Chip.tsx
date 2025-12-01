@@ -1,5 +1,5 @@
 'use client'
-import chipColor from '#/constant/chipColor'
+import { chipColor } from '#/constant/chipColor'
 import { Skeleton } from 'antd'
 import { GiPlainCircle } from 'react-icons/gi'
 
