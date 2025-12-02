@@ -1,13 +1,13 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react' // Import useState
-import { HiPlus } from 'react-icons/hi2'
-import { CardBank } from './CardBank'
 import { Bank } from '#/repository/bank'
 import { Button, Form, Input } from 'antd'
 import { useForm } from 'antd/es/form/Form'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React, { useEffect, useState } from 'react' // Import useState
+import { HiPlus } from 'react-icons/hi2'
 import BaseModal from '../reusable/BaseModal'
+import { CardBank } from './CardBank'
 
 export type BankOption = { label: string; value: string }
 
@@ -17,6 +17,7 @@ type Props = {
   loading: boolean
   open: boolean
   setOpen: (val: boolean) => void
+  mutate: () => void
 }
 
 const CustomBankSelect: React.FC<Props> = ({
@@ -24,7 +25,8 @@ const CustomBankSelect: React.FC<Props> = ({
   handleFinish,
   loading,
   open,
-  setOpen
+  setOpen,
+  mutate
 }) => {
   const [form] = useForm()
   const router = useRouter()
@@ -40,6 +42,13 @@ const CustomBankSelect: React.FC<Props> = ({
   }, [bank])
 
   const handleBankChange = (val?: string) => {
+    if (selectedBank === val) {
+      const queryParams = new URLSearchParams(searchParams?.toString() || '')
+      queryParams.delete('bank')
+      router.replace(`?${queryParams.toString()}`)
+      return
+    }
+
     setSelectedBank(val)
     const queryParams = new URLSearchParams(searchParams?.toString() || '')
     if (val) queryParams.set('bank', val)
@@ -48,20 +57,22 @@ const CustomBankSelect: React.FC<Props> = ({
   }
 
   return (
-    <div className={'grid grid-cols-4 gap-6'}>
+    <div className={'no-scrollbar flex gap-6 overflow-auto'}>
       {datas?.map((value, index) => (
         <CardBank
+          id={value?.id}
           key={index}
           bankName={value?.bank_name}
           owner={value?.owner}
           noRekening={value?.no_rekening}
-          active={selectedBank === bank}
+          active={bank === value?.id}
           onClick={(val) => handleBankChange(val ?? '')}
+          mutate={mutate}
         />
       ))}
       <div
         className={
-          'ktp-upload col-span-1 flex w-full cursor-pointer items-center justify-center gap-4 rounded-lg border border-dashed border-slate-300 bg-slate-100 p-6 text-slate-500'
+          'ktp-upload col-span-1 flex w-full min-w-[325px] cursor-pointer items-center justify-center gap-4 rounded-lg border border-dashed border-slate-300 bg-slate-100 p-6 text-slate-500 transition-colors duration-300 hover:bg-slate-50'
         }
         onClick={() => setOpen(true)}
       >

@@ -8,7 +8,10 @@ export interface Bank {
   owner: string
 }
 
-const url = { getBanks: () => '/bank' }
+const url = {
+  getBanks: () => '/bank',
+  getBankById: (id: string) => `/bank/${id}`
+}
 
 const hooks = {
   useGetBanks: () =>
@@ -16,7 +19,8 @@ const hooks = {
 }
 
 const api = {
-  CreateBanks: (data: Bank) => http.post(url.getBanks()).send(data)
+  createBank: (data: Bank) => http.post(url.getBanks()).send(data),
+  deleteBank: (id: string) => http.del(url.getBankById(id)).send()
 }
 
 export const bankRepository = { url, hooks, api }

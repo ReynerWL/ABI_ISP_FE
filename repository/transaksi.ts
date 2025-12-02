@@ -21,7 +21,7 @@ export interface ListTransaksiResponse {
 
 export interface GetTransakasiParams {
   search?: string | null
-  bank?: string | null
+  bank_id?: string | null
   month?: string | null
   page?: number
   limit?: number

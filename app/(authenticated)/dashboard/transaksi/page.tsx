@@ -8,6 +8,7 @@ import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import CustomBankSelect from '#/components/transaksi/BankSelect'
 import CustomMonthPicker from '#/components/transaksi/DateMonth'
+import ExportModal from '#/components/transaksi/ExportModal'
 import usePageTitle from '#/hooks/usePageTitle'
 import { Bank, bankRepository } from '#/repository/bank'
 import { DataTransaksi, transakasiRepository } from '#/repository/transaksi'
@@ -30,12 +31,17 @@ const Transaksi = () => {
   const [loading, setLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [openModalAdd, setOpenModalAdd] = useState(false)
+  const [openExportModal, setOpenExportModal] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const { data: listBank, mutate } = bankRepository.hooks.useGetBanks()
 
   const { data: listTransaksi, isLoading: loadingTransaksi } =
-    transakasiRepository.hooks.useGetAllTransaksi({ search, bank, month })
+    transakasiRepository.hooks.useGetAllTransaksi({
+      search,
+      bank_id: bank,
+      month
+    })
 
   const Transaksi: DataTransaksi[] = listTransaksi?.data
 
@@ -147,7 +153,7 @@ const Transaksi = () => {
 
     try {
       setLoading(true)
-      const { error } = await bankRepository.api.CreateBanks(values)
+      const { error } = await bankRepository.api.createBank(values)
       if (!error) {
         toast.success('Berhasil menambahkan data bank!')
         mutate()
@@ -170,6 +176,7 @@ const Transaksi = () => {
         loading={loading}
         open={openModalAdd}
         setOpen={setOpenModalAdd}
+        mutate={mutate}
       />
       <div className='flex flex-col gap-6 text-nowrap rounded-2xl bg-white p-4 md:p-6'>
         <div className='grid h-fit grid-cols-10 gap-4 lg:gap-6 xl:flex xl:h-11 xl:grid-cols-1 xl:flex-row'>
@@ -177,6 +184,7 @@ const Transaksi = () => {
           <Button
             className='order-2 !col-span-2 !h-full !w-full !rounded-lg !bg-blue-50 !p-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 lg:!px-3 xl:order-4 xl:!w-fit xl:!px-5'
             type='primary'
+            onClick={() => setOpenExportModal(true)}
           >
             <HiOutlineDownload className='text-xl' strokeWidth={1.9} />
             <p className='hidden sm:inline'>Ekspor</p>
@@ -212,6 +220,10 @@ const Transaksi = () => {
             )}
           </div>
         </BaseModal>
+        <ExportModal
+          open={openExportModal}
+          onClose={() => setOpenExportModal(false)}
+        />
       </div>
     </div>
   )
