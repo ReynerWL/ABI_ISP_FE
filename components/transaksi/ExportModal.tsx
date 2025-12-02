@@ -179,20 +179,28 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
         <Form.Item name='status' label='Status' className='w-full'>
           <Select
             placeholder='Pilih status'
+            allowClear={{
+              clearIcon: (
+                <HiXMark
+                  className='size-5 bg-white text-slate-400 transition duration-200 hover:text-slate-500'
+                  strokeWidth={0.5}
+                />
+              )
+            }}
             options={[
               {
                 label: <p className='font-semibold text-slate-500'>Pending</p>,
-                value: 'pending'
+                value: 'PENDING'
               },
               {
                 label: (
                   <p className='font-semibold text-slate-500'>Confirmed</p>
                 ),
-                value: 'confirmed'
+                value: 'CONFIRMED'
               },
               {
                 label: <p className='font-semibold text-slate-500'>Rejected</p>,
-                value: 'rejected'
+                value: 'REJECTED'
               }
             ]}
             suffixIcon={
