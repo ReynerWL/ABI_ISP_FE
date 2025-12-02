@@ -117,7 +117,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               </p>
             </Link>
             <Link
-              href={'https://wa.me/+6281908706698'}
+              href={'https://wa.me/+628138005669'}
               target='_blank'
               rel='noopener noreferrer'
               className={
@@ -125,7 +125,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               }
             >
               <HiPhone className={'text-base xl:text-lg 2xl:text-xl'} />
-              <p>+62 819-0870-6698</p>
+              <p>+62 813-8005-669</p>
             </Link>
             <Link
               href={'mailto:mbinet5758@gmail.com'}
