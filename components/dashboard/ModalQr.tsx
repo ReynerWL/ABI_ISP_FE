@@ -22,21 +22,6 @@ const ModalQr = ({ access }: props) => {
     qrRepository.hooks.useGetQrStatus()
 
   useEffect(() => {
-    if (!QrStatus?.qrCode && QrStatus?.connected === false) {
-      const handleLogout = async () => {
-        try {
-          await qrRepository.api.useLogoutQr()
-        } catch (error) {
-          console.log(`Gagal Logout ...`)
-          console.log(error)
-        }
-      }
-
-      handleLogout()
-    }
-  }, [QrStatus])
-
-  useEffect(() => {
     if (open) {
       refetchQrStatus()
       refetchQr()
