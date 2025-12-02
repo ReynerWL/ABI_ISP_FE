@@ -33,6 +33,15 @@ export interface RejectedTransaksi {
   reason: string | null
 }
 
+export interface ExportTransaksi {
+  startDate?: string
+  endDate?: string
+  bankId?: string
+  status?: string
+  paketId?: string
+  customerId?: string
+}
+
 const url = {
   getAllTransaksi: (params: GetTransakasiParams) => {
     const query = buildQueryParams(params)
@@ -50,6 +59,10 @@ const url = {
   },
   rejectedTransaksi: (id: string) => {
     return `/payment/rejected/${id}`
+  },
+  exportTransaksi: (params: ExportTransaksi) => {
+    const query = buildQueryParams(params)
+    return `/payment/export?${query}`
   }
 }
 
@@ -59,6 +72,9 @@ const hooks = {
   },
   useGetAllTransaksiByUser: (params: GetTransakasiParams) => {
     return useSWR(url.getAllTransaksiByUser(params), http.fetcher)
+  },
+  useExportTransaksi: (params: ExportTransaksi) => {
+    return http.get(url.exportTransaksi(params)).send()
   }
 }
 

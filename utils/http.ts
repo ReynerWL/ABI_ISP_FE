@@ -27,6 +27,7 @@ export const http = {
     const { skipAuthIntercept = false } = opts
     let req = superagent
       .get(config.baseUrl + url)
+      .responseType('arraybuffer')
       .use(createAuthIntercept(skipAuthIntercept))
       .use(attachSuperagentLogger)
 

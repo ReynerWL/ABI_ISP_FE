@@ -1,10 +1,14 @@
 'use client'
 
+import { Bank, bankRepository } from '#/repository/bank'
 import { Paket, paketRepository } from '#/repository/paket'
+import { ExportTransaksi, transakasiRepository } from '#/repository/transaksi'
+import { User, userRepository } from '#/repository/user'
 import { Button, DatePicker, Form, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useState } from 'react'
 import { HiChevronDown, HiOutlineCalendar, HiXMark } from 'react-icons/hi2'
+import { toast } from 'sonner'
 import BaseModal from '../reusable/BaseModal'
 
 interface ExportModalProps {
@@ -15,23 +19,77 @@ interface ExportModalProps {
 const ExportModal = ({ open, onClose }: ExportModalProps) => {
   const [form] = useForm()
   const [loading, setLoading] = useState(false)
+  const [userSearch, setUserSearch] = useState<string>('')
+
+  // Bank Options
+  const { data: bankResponse, mutate } = bankRepository.hooks.useGetBanks()
+  const banks: Bank[] = bankResponse?.data
+  const bankOptions = banks?.map((bank) => ({
+    label: (
+      <p className='font-semibold text-slate-500'>
+        {bank.owner} - {bank.bank_name}
+      </p>
+    ),
+    value: bank.id
+  }))
 
   // Paket Options
-  const { data, isLoading: paketLoading } = paketRepository.hooks.useGetPaket(
-    {}
-  )
-  const pakets: Paket[] = data?.data
+  const { data: paketResponse, isLoading: paketLoading } =
+    paketRepository.hooks.useGetPaket({})
+  const pakets: Paket[] = paketResponse?.data
   const paketOptions = pakets?.map((paket) => ({
     label: <p className='font-semibold text-slate-500'>{paket.name}</p>,
     value: paket.id
   }))
+
+  // User Options
+  const { data: userResponse, isLoading: userLoading } =
+    userRepository.hooks.useGetUser({
+      search: userSearch,
+      role: 'User',
+      page: 1,
+      limit: 10
+    })
+
+  // generate option
+  const userOptions =
+    userResponse?.data?.map((u: User) => ({
+      label: (
+        <p className='font-semibold text-slate-500'>
+          {u.name} — {u.customerId}
+        </p>
+      ),
+      value: u.customerId
+    })) || []
 
   const handleClose = () => {
     form.resetFields()
     onClose()
   }
 
-  const handleExport = () => {}
+  const handleExport = async (values: ExportTransaksi) => {
+    try {
+      const response =
+        await transakasiRepository.hooks.useExportTransaksi(values)
+
+      const arrayBuffer = response.body
+
+      const blob = new Blob([arrayBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      })
+
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `Export-Transaksi-${Date.now()}.xlsx`
+      link.click()
+
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error(error)
+      toast.error('Gagal export data transaksi!')
+    }
+  }
 
   return (
     <BaseModal
@@ -52,7 +110,7 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
         <div className='grid grid-cols-1 gap-x-4 gap-y-0 md:grid-cols-2'>
           {/* Tanggal awal */}
           <Form.Item
-            name={'start_date'}
+            name={'startDate'}
             label='Dari Tanggal'
             validateDebounce={1000}
             preserve={true}
@@ -78,7 +136,7 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             />
           </Form.Item>
           <Form.Item
-            name={'end_date'}
+            name={'endDate'}
             label='Sampai Tanggal'
             validateDebounce={1000}
             preserve={true}
@@ -104,6 +162,20 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             />
           </Form.Item>
         </div>
+        <Form.Item name='bankId' label='Bank' className='w-full'>
+          <Select
+            placeholder='Pilih bank'
+            showSearch
+            options={bankOptions}
+            suffixIcon={
+              <HiChevronDown
+                className='text-slate-300'
+                size={20}
+                strokeWidth={1}
+              />
+            }
+          />
+        </Form.Item>
         <Form.Item name='status' label='Status' className='w-full'>
           <Select
             placeholder='Pilih status'
@@ -132,25 +204,19 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             }
           />
         </Form.Item>
-        <Form.Item name='userId' label='Pengguna' className='w-full'>
+        <Form.Item name='customerId' label='Pengguna' className='w-full'>
           <Select
-            placeholder='Pilih pengguna'
+            placeholder='Cari pengguna…'
             showSearch
-            options={[]}
-            suffixIcon={
-              <HiChevronDown
-                className='text-slate-300'
-                size={20}
-                strokeWidth={1}
-              />
+            filterOption={false}
+            onSearch={(value) => setUserSearch(value)}
+            options={userOptions}
+            loading={userLoading}
+            notFoundContent={
+              userSearch
+                ? 'Tidak ada pengguna ditemukan'
+                : 'Ketik untuk mencari...'
             }
-          />
-        </Form.Item>
-        <Form.Item name='bankId' label='Bank' className='w-full'>
-          <Select
-            placeholder='Pilih bank'
-            showSearch
-            options={[]}
             suffixIcon={
               <HiChevronDown
                 className='text-slate-300'
