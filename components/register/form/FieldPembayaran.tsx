@@ -134,6 +134,7 @@ const FieldPembayaran = ({
               noRekening={bank?.no_rekening}
               showDelete={false}
               showCopy={true}
+              mutate={mutate}
             />
           </div>
         ))}
