@@ -1,6 +1,7 @@
 'use client'
 
 import ModalPaket from '#/components/paket/ModalPaket'
+import AlertDialog from '#/components/reusable/AlertDialog'
 import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
@@ -13,7 +14,11 @@ import { Button, Switch, TableProps } from 'antd'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { HiPlus } from 'react-icons/hi'
-import { HiMiniPencilSquare } from 'react-icons/hi2'
+import {
+  HiMiniPencilSquare,
+  HiOutlineExclamationCircle,
+  HiOutlineTrash
+} from 'react-icons/hi2'
 import { toast } from 'sonner'
 
 const SpeedPage = () => {
@@ -28,6 +33,7 @@ const SpeedPage = () => {
   const [openModal, setOpenModal] = useState(false)
   const [selectedPaket, setSelectedPaket] = useState<Paket | null>(null)
   const [loadingStatusId, setLoadingStatusId] = useState<string | null>(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const { data, isLoading, mutate } = paketRepository.hooks.useGetPaket({
     query: search,
@@ -108,23 +114,53 @@ const SpeedPage = () => {
       title: 'Aksi',
       key: 'aksi',
       render: (_, record) => (
-        <Button
-          className={
-            user?.role.toLowerCase() === 'superadmin'
-              ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
-              : '!hidden'
-          }
-          onClick={() => {
-            setOpenModal(true)
-            setSelectedPaket(record as Paket)
-          }}
-        >
-          <HiMiniPencilSquare className='text-lg' />
-          Edit
-        </Button>
+        <div className='flex gap-2'>
+          <Button
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
+                : '!hidden'
+            }
+            onClick={() => {
+              setOpenModal(true)
+              setSelectedPaket(record as Paket)
+            }}
+          >
+            <HiMiniPencilSquare className='text-lg' />
+            Edit
+          </Button>
+          <Button
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-red-600 !shadow-none hover:!bg-red-50'
+                : '!hidden'
+            }
+            onClick={() => {
+              setShowDeleteConfirm(true)
+              setSelectedPaket(record as Paket)
+            }}
+          >
+            <HiOutlineTrash className='text-lg' />
+            Hapus
+          </Button>
+        </div>
       )
     }
   ]
+
+  const handleDelete = async () => {
+    try {
+      if (selectedPaket) {
+        await paketRepository.api.deletePaket(selectedPaket.id)
+        toast.success('Paket berhasil dihapus!')
+        setSelectedPaket(null)
+        setShowDeleteConfirm(false)
+        mutate()
+      }
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat menghapus paket!')
+    }
+  }
 
   return (
     <div className='flex flex-col gap-8'>
@@ -163,12 +199,25 @@ const SpeedPage = () => {
           open={openModal}
           initialValues={selectedPaket}
           onClose={() => {
-            setOpenModal(false)
             setSelectedPaket(null)
+            setOpenModal(false)
           }}
           mutate={mutate}
         />
       </div>
+      <AlertDialog
+        icon={HiOutlineExclamationCircle}
+        open={showDeleteConfirm}
+        title='Hapus Paket'
+        description={`Apakah Anda yakin ingin menghapus paket ${selectedPaket?.name}?`}
+        danger
+        confirmText='Hapus'
+        onConfirm={handleDelete}
+        onCancel={() => {
+          setShowDeleteConfirm(false)
+          setSelectedPaket(null)
+        }}
+      />
     </div>
   )
 }

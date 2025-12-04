@@ -56,8 +56,8 @@ const ModalPaket = ({
         toast.success('Berhasil menambahkan paket!')
       }
 
-      mutate()
       handleClose()
+      mutate()
     } catch (error: any) {
       toast.error(error?.response?.body?.message || 'Terjadi kesalahan')
     } finally {

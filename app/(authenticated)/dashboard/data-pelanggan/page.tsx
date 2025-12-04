@@ -1,6 +1,7 @@
 'use client'
 
 import ModalPelanggan from '#/components/data-pelanggan/ModalPelanggan'
+import AlertDialog from '#/components/reusable/AlertDialog'
 import Chip from '#/components/reusable/Chip'
 import CustomDateRangePicker from '#/components/reusable/CustomDateRangePicker'
 import DataTable from '#/components/reusable/DataTable'
@@ -18,7 +19,13 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { HiOutlineDownload, HiPlus } from 'react-icons/hi'
-import { HiEye, HiMiniPencilSquare } from 'react-icons/hi2'
+import {
+  HiEye,
+  HiMiniPencilSquare,
+  HiOutlineExclamationCircle,
+  HiOutlineTrash
+} from 'react-icons/hi2'
+import { toast } from 'sonner'
 
 const DataPelanggan = () => {
   usePageTitle('Data Pelanggan')
@@ -34,6 +41,8 @@ const DataPelanggan = () => {
   const paketParam = searchParams?.get('paket')
   const paketSpeedParam = searchParams?.get('paket_speed')
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [initialValues, setInitialValues] = useState<User | null>(null)
   const [openModal, setOpenModal] = useState(false)
 
@@ -104,6 +113,14 @@ const DataPelanggan = () => {
       key: 'aksi',
       render: (_, record) => (
         <div className='flex gap-2'>
+          <Link
+            scroll={false}
+            href={`/dashboard/data-pelanggan/${record?.id}`}
+            className={`flex items-center gap-2 !rounded-lg border !border-slate-100 ${user?.role.toLowerCase() === 'superadmin' ? 'px-2' : 'px-2 py-1'} !font-semibold !text-primary !shadow-none hover:!bg-slate-50`}
+          >
+            <HiEye className='text-lg' />
+            Detail
+          </Link>
           <Button
             className={
               user?.role.toLowerCase() === 'superadmin'
@@ -118,14 +135,20 @@ const DataPelanggan = () => {
             <HiMiniPencilSquare className='text-lg' />
             Edit
           </Button>
-          <Link
-            scroll={false}
-            href={`/dashboard/data-pelanggan/${record?.id}`}
-            className={`flex items-center gap-2 !rounded-lg border !border-slate-100 ${user?.role.toLowerCase() === 'superadmin' ? 'px-2' : 'px-2 py-1'} !font-semibold !text-primary !shadow-none hover:!bg-slate-50`}
+          <Button
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-red-600 !shadow-none hover:!bg-red-50'
+                : '!hidden'
+            }
+            onClick={() => {
+              setShowDeleteConfirm(true)
+              setSelectedUser(record as User)
+            }}
           >
-            <HiEye className='text-lg' />
-            Detail
-          </Link>
+            <HiOutlineTrash className='text-lg' />
+            Hapus
+          </Button>
         </div>
       )
     }
@@ -135,6 +158,25 @@ const DataPelanggan = () => {
     const params = new URLSearchParams(searchParams?.toString())
     params.set('status', value)
     router.push(`?${params.toString()}`)
+  }
+
+  const handleDelete = async () => {
+    try {
+      if (selectedUser) {
+        if (selectedUser.status.toLowerCase() !== 'nonaktif') {
+          toast.warning('Hanya pengguna nonaktif yang bisa dihapus!')
+          return
+        }
+
+        await userRepository.api.deleteUser(selectedUser.id)
+        toast.success('Pengguna berhasil dihapus!')
+        setSelectedUser(null)
+        setShowDeleteConfirm(false)
+        mutate()
+      }
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat menghapus pengguna!')
+    }
   }
 
   return (
@@ -200,6 +242,19 @@ const DataPelanggan = () => {
           mutate={mutate}
         />
       </div>
+      <AlertDialog
+        icon={HiOutlineExclamationCircle}
+        open={showDeleteConfirm}
+        title='Hapus Pengguna'
+        description={`Apakah Anda yakin ingin menghapus pengguna ${selectedUser?.name}?`}
+        danger
+        confirmText='Hapus'
+        onConfirm={handleDelete}
+        onCancel={() => {
+          setShowDeleteConfirm(false)
+          setSelectedUser(null)
+        }}
+      />
     </div>
   )
 }

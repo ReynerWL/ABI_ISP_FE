@@ -140,7 +140,8 @@ const api = {
   updateStatus(id: string) {
     return http.put(url.getUserByIdAdmin(id))
   },
-  createAdmin: (data: CreatePayload) => http.post(url.create()).send(data)
+  createAdmin: (data: CreatePayload) => http.post(url.create()).send(data),
+  deleteUser: (id: string) => http.del(url.getUserById(id)).send()
 }
 
 export const userRepository = { url, hooks, api }

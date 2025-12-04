@@ -69,6 +69,7 @@ const ImagePreview = ({ src, alt, onDelete }: ImagePreviewProps) => {
         open={showDeleteConfirm}
         title='Hapus Gambar'
         description={`Apakah Anda yakin ingin menghapus gambar ${alt}?`}
+        confirmText='Hapus'
         danger
         onConfirm={handleDelete}
         onCancel={() => setShowDeleteConfirm(false)}

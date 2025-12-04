@@ -50,7 +50,8 @@ const api = {
   updatePaket: (id: string, data: CreatePaketPayload) =>
     http.put(url.getPaketById(id)).send(data),
   paketActive: (id: string) => http.put(`/paket/active/${id}`).send(),
-  paketInactive: (id: string) => http.put(`/paket/inactive/${id}`).send()
+  paketInactive: (id: string) => http.put(`/paket/inactive/${id}`).send(),
+  deletePaket: (id: string) => http.del(url.getPaketById(id)).send()
 }
 
 export const paketRepository = { url, hooks, api }
