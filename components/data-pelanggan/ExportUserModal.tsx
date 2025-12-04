@@ -1,9 +1,7 @@
 'use client'
 
-import { Bank, bankRepository } from '#/repository/bank'
 import { Paket, paketRepository } from '#/repository/paket'
-import { ExportTransaksi, transakasiRepository } from '#/repository/transaksi'
-import { User, userRepository } from '#/repository/user'
+import { ExportUser, userRepository } from '#/repository/user'
 import { Button, DatePicker, Form, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import { useState } from 'react'
@@ -16,22 +14,9 @@ interface ExportModalProps {
   onClose: () => void
 }
 
-const ExportModal = ({ open, onClose }: ExportModalProps) => {
+const ExportUserModal = ({ open, onClose }: ExportModalProps) => {
   const [form] = useForm()
   const [loading, setLoading] = useState(false)
-  const [userSearch, setUserSearch] = useState<string>('')
-
-  // Bank Options
-  const { data: bankResponse, mutate } = bankRepository.hooks.useGetBanks()
-  const banks: Bank[] = bankResponse?.data
-  const bankOptions = banks?.map((bank) => ({
-    label: (
-      <p className='font-semibold text-slate-500'>
-        {bank.owner} - {bank.bank_name}
-      </p>
-    ),
-    value: bank.id
-  }))
 
   // Paket Options
   const { data: paketResponse, isLoading: paketLoading } =
@@ -42,36 +27,15 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
     value: paket.id
   }))
 
-  // User Options
-  const { data: userResponse, isLoading: userLoading } =
-    userRepository.hooks.useGetUser({
-      search: userSearch,
-      role: 'User',
-      page: 1,
-      limit: 10
-    })
-
-  // generate option
-  const userOptions =
-    userResponse?.data?.map((u: User) => ({
-      label: (
-        <p className='font-semibold text-slate-500'>
-          {u.name} — {u.customerId}
-        </p>
-      ),
-      value: u.customerId
-    })) || []
-
   const handleClose = () => {
     form.resetFields()
     onClose()
   }
 
-  const handleExport = async (values: ExportTransaksi) => {
+  const handleExport = async (values: ExportUser) => {
     try {
       setLoading(true)
-      const response =
-        await transakasiRepository.hooks.useExportTransaksi(values)
+      const response = await userRepository.hooks.useExportUser(values)
 
       const arrayBuffer = response.body
 
@@ -82,13 +46,13 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `Export-Transaksi-${Date.now()}.xlsx`
+      link.download = `Export-Data-Pelanggan-${Date.now()}.xlsx`
       link.click()
 
       window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error(error)
-      toast.error('Gagal export data transaksi!')
+      toast.error('Gagal export data data pelanggan!')
     } finally {
       setLoading(false)
     }
@@ -96,7 +60,7 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
 
   return (
     <BaseModal
-      title='Export Transaksi'
+      title='Export Data Pelanggan'
       open={open}
       width={500}
       titleBorder={false}
@@ -117,7 +81,6 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             label='Dari Tanggal'
             validateDebounce={1000}
             preserve={true}
-            rules={[{ required: true, message: 'Tanggal mulai wajib diisi' }]}
           >
             <DatePicker
               placeholder='Masukkan Tanggal Mulai'
@@ -143,7 +106,6 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             label='Sampai Tanggal'
             validateDebounce={1000}
             preserve={true}
-            rules={[{ required: true, message: 'Tanggal selesai wajib diisi' }]}
           >
             <DatePicker
               placeholder='Masukkan Tanggal Selesai'
@@ -165,20 +127,6 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item name='bankId' label='Bank' className='w-full'>
-          <Select
-            placeholder='Pilih bank'
-            showSearch
-            options={bankOptions}
-            suffixIcon={
-              <HiChevronDown
-                className='text-slate-300'
-                size={20}
-                strokeWidth={1}
-              />
-            }
-          />
-        </Form.Item>
         <Form.Item name='status' label='Status' className='w-full'>
           <Select
             placeholder='Pilih status'
@@ -192,18 +140,26 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             }}
             options={[
               {
-                label: <p className='font-semibold text-slate-500'>Pending</p>,
-                value: 'PENDING'
+                label: <p className='font-semibold text-slate-500'>Baru</p>,
+                value: 'Baru'
+              },
+              {
+                label: <p className='font-semibold text-slate-500'>Aktif</p>,
+                value: 'Aktif'
               },
               {
                 label: (
-                  <p className='font-semibold text-slate-500'>Confirmed</p>
+                  <p className='font-semibold text-slate-500'>Pra-Aktif</p>
                 ),
-                value: 'CONFIRMED'
+                value: 'Pra-Aktif'
               },
               {
-                label: <p className='font-semibold text-slate-500'>Rejected</p>,
-                value: 'REJECTED'
+                label: <p className='font-semibold text-slate-500'>Nonaktif</p>,
+                value: 'Nonaktif'
+              },
+              {
+                label: <p className='font-semibold text-slate-500'>Ditolak</p>,
+                value: 'Ditolak'
               }
             ]}
             suffixIcon={
@@ -215,29 +171,7 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             }
           />
         </Form.Item>
-        <Form.Item name='customerId' label='Pengguna' className='w-full'>
-          <Select
-            placeholder='Cari pengguna…'
-            showSearch
-            filterOption={false}
-            onSearch={(value) => setUserSearch(value)}
-            options={userOptions}
-            loading={userLoading}
-            notFoundContent={
-              userSearch
-                ? 'Tidak ada pengguna ditemukan'
-                : 'Ketik untuk mencari...'
-            }
-            suffixIcon={
-              <HiChevronDown
-                className='text-slate-300'
-                size={20}
-                strokeWidth={1}
-              />
-            }
-          />
-        </Form.Item>
-        <Form.Item name='paketId' label='Paket' className='w-full'>
+        <Form.Item name='paket_id' label='Paket' className='w-full'>
           <Select
             placeholder='Pilih paket'
             allowClear={{
@@ -281,4 +215,4 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
   )
 }
 
-export default ExportModal
+export default ExportUserModal

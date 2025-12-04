@@ -1,5 +1,6 @@
 'use client'
 
+import ExportUserModal from '#/components/data-pelanggan/ExportUserModal'
 import ModalPelanggan from '#/components/data-pelanggan/ModalPelanggan'
 import AlertDialog from '#/components/reusable/AlertDialog'
 import Chip from '#/components/reusable/Chip'
@@ -45,6 +46,7 @@ const DataPelanggan = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [initialValues, setInitialValues] = useState<User | null>(null)
   const [openModal, setOpenModal] = useState(false)
+  const [openExportModal, setOpenExportModal] = useState(false)
 
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
     search,
@@ -209,6 +211,7 @@ const DataPelanggan = () => {
             <Button
               className='!h-full !w-full !rounded-lg !bg-blue-50 !px-5 !py-2 !text-base !font-semibold !text-primary !shadow-none hover:!bg-blue-100 md:!w-fit'
               type='primary'
+              onClick={() => setOpenExportModal(true)}
             >
               <HiOutlineDownload className='text-[23px]' strokeWidth={1.9} />
               Ekspor
@@ -254,6 +257,10 @@ const DataPelanggan = () => {
           setShowDeleteConfirm(false)
           setSelectedUser(null)
         }}
+      />
+      <ExportUserModal
+        open={openExportModal}
+        onClose={() => setOpenExportModal(false)}
       />
     </div>
   )

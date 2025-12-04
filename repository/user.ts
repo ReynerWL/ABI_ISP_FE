@@ -101,6 +101,13 @@ export interface CreatePayload {
   status: string
 }
 
+export interface ExportUser {
+  startDate?: string
+  endDate?: string
+  status?: string
+  paket_id?: string
+}
+
 const url = {
   getUser: (params: GetUserParams) => {
     const query = buildQueryParams(params)
@@ -118,6 +125,11 @@ const url = {
   },
   getUserByIdAdmin(id: string) {
     return `/user/${id}/status`
+  },
+  exportUser(params: ExportUser) {
+    const query = buildQueryParams(params)
+
+    return `/user/export?${query}`
   }
 }
 
@@ -130,6 +142,9 @@ const hooks = {
   },
   useGetUserById(id: string) {
     return useSWR(url.getUserById(id), http.fetcher, { errorRetryCount: 1 })
+  },
+  useExportUser(params: ExportUser) {
+    return http.get(url.exportUser(params)).send()
   }
 }
 
