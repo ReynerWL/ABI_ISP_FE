@@ -68,7 +68,8 @@ const Home = () => {
   usePageTitle('Beranda')
   const { isXL, isMD, isLG, isMobile } = useUIState()
   const { data, isLoading } = paketRepository.hooks.useGetPaket({
-    status: true
+    status: true,
+    order: 'asc'
   })
 
   return (
