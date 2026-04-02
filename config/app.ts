@@ -6,5 +6,5 @@ export const config = {
     process.env.NEXT_PUBLIC_BASE_URL ||
     // 'http://172.17.0.186:3222' ||
     'https://api.mbinet.click',
-  fileUrl: 'https://file.bangun-kreatif.com:443/abiisp'
+  fileUrl: 'https://minio-api.empatnusabangsa.com/mbinet'
 }

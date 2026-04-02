@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mbinet-service
+  name: mbinet
   namespace: mbinet-prod
   labels:
     run: mbinet

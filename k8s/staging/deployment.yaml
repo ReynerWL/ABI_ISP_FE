@@ -15,8 +15,11 @@ spec:
     spec:
       containers:
         - name: mbinet
-          image: registry.empatnusabangsa.com/empatnusabangsa/mbinet-fe:1
+          image: registry.empatnusabangsa.com/mbinet/mbinet-fe:1
           ports:
             - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: mbinet-fe-env
       imagePullSecrets:
         - name: regcred
