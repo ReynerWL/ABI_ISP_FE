@@ -69,7 +69,7 @@ const Home = () => {
   const { isXL, isMD, isLG, isMobile } = useUIState()
   const { data, isLoading } = paketRepository.hooks.useGetPaket({
     status: true,
-    order: 'asc'
+    order: 'ASC'
   })
 
   return (
