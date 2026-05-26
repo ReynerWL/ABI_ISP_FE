@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mbinet
+  namespace: mbinet-prod
+spec:
+  selector:
+    matchLabels:
+      app: mbinet
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mbinet
+    spec:
+      containers:
+        - name: mbinet
+          image: ${IMAGE}
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: mbinet-fe-env
+      imagePullSecrets:
+        - name: regcred

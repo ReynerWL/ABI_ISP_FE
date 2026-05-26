@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mbinet-ingress
+  namespace: mbinet-prod
+  annotations:
+    kubernetes.io/ingress.class: 'traefik'
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: mbinet-redirect-https@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: 'mbinet.click'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: mbinet
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - 'mbinet.click'
+      secretName: mbinet-click-tls
