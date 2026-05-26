@@ -35,7 +35,8 @@ const Register = () => {
   const [buktiPembayaran, setBuktiPembayaran] = useState<string | null>(null)
 
   const { data, isLoading } = paketRepository.hooks.useGetPaket({
-    status: true
+    status: true,
+    order: 'ASC'
   })
   const pakets: Paket[] = data?.data
 

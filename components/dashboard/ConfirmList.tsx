@@ -32,6 +32,7 @@ const ConfirmList = ({
             key={item.id}
             id={item.id}
             customerId={item.customerId}
+            name={item.name}
             status={item.status}
             updatedAt={item.updatedAt}
             loading={loading}
@@ -63,6 +64,7 @@ interface ConfirmListItemProps extends NeedConfirmation {
 const ConfirmListItem = ({
   id,
   customerId,
+  name,
   status,
   updatedAt,
   loading
@@ -84,7 +86,10 @@ const ConfirmListItem = ({
             </>
           ) : (
             <>
-              <h1 className='font-semibold text-slate-700'>{customerId}</h1>
+              <h1 className='font-semibold text-slate-700'>
+                {name}{' '}
+                <span className='text-xs text-slate-400'>({customerId})</span>
+              </h1>
               <p className='text-xs font-semibold text-slate-400'>
                 {updatedAt}
               </p>
