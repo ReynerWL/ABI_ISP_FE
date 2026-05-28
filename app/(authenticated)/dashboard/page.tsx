@@ -3,6 +3,7 @@
 import ConfirmList from '#/components/dashboard/ConfirmList'
 import InfoCard from '#/components/dashboard/InfoCard'
 import ModalQr from '#/components/dashboard/ModalQr'
+import WaStatusBanner from '#/components/dashboard/WaStatusBanner'
 import PaketChart from '#/components/dashboard/PaketChart'
 import TotalPelangganCard from '#/components/dashboard/TotalPelangganCard'
 import TransactionChart from '#/components/dashboard/TransactionChart'
@@ -25,6 +26,7 @@ const Dashboard = () => {
         <Title>Dashboard</Title>
         <ModalQr access={user?.role.toLowerCase() === 'superadmin'} />
       </div>
+      <WaStatusBanner access={user?.role.toLowerCase() === 'superadmin'} />
       <div className='mt-6 flex w-full flex-col gap-4 md:gap-6'>
         <div className='flex w-full flex-col gap-4 md:gap-6 xl:h-[320px] xl:flex-row'>
           <div className='flex w-full flex-col gap-4 sm:flex-row md:gap-6'>

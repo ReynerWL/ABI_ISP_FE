@@ -1,4 +1,5 @@
 import { qrRepository } from '#/repository/qr'
+import { useWaStatus } from '#/hooks/useWaStatus'
 import { Button, Spin } from 'antd'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -12,51 +13,51 @@ interface props {
 
 const ModalQr = ({ access }: props) => {
   const [open, setOpen] = useState(false)
-  const [refresh, setRefresh] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
+
+  // SSE-driven real-time status
+  const { connected, qrAvailable } = useWaStatus()
+
+  // QR image fetch (only when modal is open)
   const {
     data: Qr,
     isLoading,
     mutate: refetchQr
   } = qrRepository.hooks.useGetQr()
-  const { data: QrStatus, mutate: refetchQrStatus } =
-    qrRepository.hooks.useGetQrStatus()
 
+  // Auto-refetch QR when modal opens or qrAvailable changes
   useEffect(() => {
-    if (open) {
-      refetchQrStatus()
+    if (open && qrAvailable) {
       refetchQr()
     }
-  }, [open, refetchQrStatus, refetchQr])
+  }, [open, qrAvailable, refetchQr])
 
   const handleLogout = async () => {
     try {
+      setLoggingOut(true)
       await qrRepository.api.useLogoutQr()
-      toast.success(`Berhasil Logout ...`)
-      setOpen(!open)
+      toast.success('Berhasil Logout ...')
     } catch (error) {
-      toast.success(`Gagal Logout ...`)
+      toast.error('Gagal Logout ...')
       console.log(error)
+    } finally {
+      setLoggingOut(false)
     }
   }
 
   const handleRefresh = async () => {
     try {
-      setRefresh(true)
-      await refetchQrStatus()
       await refetchQr()
-      toast.success(`Berhasil Refresh QR ...`)
+      toast.success('Berhasil Refresh QR ...')
     } catch (error) {
-      toast.success(`Gagal Refresh QR ...`)
+      toast.error('Gagal Refresh QR ...')
       console.log(error)
-    } finally {
-      setRefresh(false)
     }
   }
 
-  const QrVisible =
-    Qr?.qrCodeDataUrl && QrStatus?.connected === false
-      ? Qr?.qrCodeDataUrl
-      : '/emptyQr.png'
+  // Determine QR image source
+  const qrSrc =
+    !connected && Qr?.qrCodeDataUrl ? Qr.qrCodeDataUrl : '/emptyQr.png'
 
   return (
     <>
@@ -71,103 +72,95 @@ const ModalQr = ({ access }: props) => {
       >
         <HiQrCode className='text-2xl' />
         <span className={'hidden sm:flex'}>QR WhatsApp</span>
+
+        {/* Status indicator dot */}
+        <span
+          className={`ml-1 inline-block h-2.5 w-2.5 rounded-full ${
+            connected ? 'bg-green-500' : 'animate-pulse bg-red-400'
+          }`}
+        />
       </Button>
 
       <BaseModal
         open={open}
         title='QR WhatsApp'
-        onClose={() => setOpen(!open)}
+        onClose={() => setOpen(false)}
         titleBorder={false}
         width={520}
       >
         <div className={'flex flex-col items-center justify-center gap-6 p-6'}>
           <div className={'flex flex-col gap-2 text-center'}>
-            <h1 className={'text-lg font-bold text-slate-600'}>Scan QR Code</h1>
+            <h1 className={'text-lg font-bold text-slate-600'}>
+              {connected ? 'WhatsApp Terhubung' : 'Scan QR Code'}
+            </h1>
             <p className={'text-xs font-medium text-slate-500'}>
-              Scan QR Code ini untuk melakukan verifikasi whatsApp Bot.
+              {connected
+                ? 'Bot WhatsApp sedang aktif dan terhubung.'
+                : 'Scan QR Code ini untuk melakukan verifikasi WhatsApp Bot.'}
             </p>
           </div>
 
           <div
             className={
-              'flex items-center justify-center rounded-lg border border-slate-200 p-6'
+              'relative flex items-center justify-center rounded-lg border border-slate-200 p-6'
             }
           >
-            {(isLoading || refresh) && (
-              <div className='absolute inset-x-20 inset-y-28 z-10 flex items-center justify-center bg-white/75'>
+            {/* Loading overlay */}
+            {isLoading && !connected && (
+              <div className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/75'>
                 <Spin size='large' />
               </div>
             )}
-            <div
-              className={
-                QrStatus?.connected === true
-                  ? 'absolute inset-x-24 inset-y-32 top-[182px] z-10 flex items-center justify-center bg-white/70'
-                  : isLoading || refresh
-                    ? 'hidden'
-                    : 'hidden'
-              }
-            >
-              <div
-                className={
-                  'flex flex-col items-center gap-2 text-center text-xl font-semibold text-slate-800'
-                }
-              >
-                <HiCheck
-                  className={
-                    'rounded-full border-2 border-green-500 p-1 text-2xl text-green-500'
-                  }
-                  strokeWidth={3}
-                />
-                Terhubung
+
+            {/* Connected overlay */}
+            {connected && (
+              <div className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/80'>
+                <div className='flex flex-col items-center gap-2 text-center text-xl font-semibold text-slate-800'>
+                  <HiCheck
+                    className='rounded-full border-2 border-green-500 p-1 text-2xl text-green-500'
+                    strokeWidth={3}
+                  />
+                  Terhubung
+                </div>
               </div>
-            </div>
-            <div
-              className={
-                !Qr?.qrCodeDataUrl && QrStatus?.connected === false
-                  ? 'absolute inset-x-24 inset-y-32 top-[182px] z-10 flex items-center justify-center bg-white/70'
-                  : 'hidden'
-              }
-            >
-              <div
-                className={
-                  'flex flex-col items-center text-center text-base font-semibold text-slate-800'
-                }
-              >
-                <HiInformationCircle
-                  className={'rounded-full p-1 text-4xl text-secondary'}
-                />
-                QR Tidak Valid
-                <br />
-                Silahkan Refresh
+            )}
+
+            {/* QR not available + not connected overlay */}
+            {!connected && !qrAvailable && !isLoading && (
+              <div className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-white/80'>
+                <div className='flex flex-col items-center text-center text-base font-semibold text-slate-800'>
+                  <HiInformationCircle className='rounded-full p-1 text-4xl text-secondary' />
+                  QR Tidak Valid
+                  <br />
+                  Silahkan Refresh
+                </div>
               </div>
-            </div>
-            <Image
-              src={QrVisible}
-              alt={'QR WhatsApp'}
-              width={300}
-              height={300}
-            />
+            )}
+
+            <Image src={qrSrc} alt={'QR WhatsApp'} width={300} height={300} />
           </div>
-          <Button
-            className={
-              QrStatus?.connected === false
-                ? '!h-fit !w-60 !rounded-full !border-none !bg-blue-50 !p-3 !font-semibold !text-primary !shadow-none'
-                : '!hidden'
-            }
-            onClick={handleRefresh}
-          >
-            Refresh QR
-          </Button>
-          <Button
-            className={
-              QrStatus?.connected === true
-                ? '!h-fit !w-60 !rounded-full !border-none !bg-red-50 !p-3 !font-semibold !text-red-500 !shadow-none'
-                : '!hidden'
-            }
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
+
+          {/* Refresh QR button — only show when not connected */}
+          {!connected && (
+            <Button
+              className='!h-fit !w-60 !rounded-full !border-none !bg-blue-50 !p-3 !font-semibold !text-primary !shadow-none'
+              onClick={handleRefresh}
+              loading={isLoading}
+            >
+              Refresh QR
+            </Button>
+          )}
+
+          {/* Logout button — only show when connected */}
+          {connected && (
+            <Button
+              className='!h-fit !w-60 !rounded-full !border-none !bg-red-50 !p-3 !font-semibold !text-red-500 !shadow-none'
+              onClick={handleLogout}
+              loading={loggingOut}
+            >
+              Logout
+            </Button>
+          )}
         </div>
       </BaseModal>
     </>
