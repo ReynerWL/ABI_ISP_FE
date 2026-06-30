@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: '%s - MBINet'
   },
   description:
-    'MBINet dari PT Media Buana Informatika menyediakan layanan internet cepat, stabil, dan terjangkau untuk kebutuhan rumah, UMKM, dan perusahaan. Pilih paket internet terbaik sesuai kebutuhan Anda.',
+    'MBINet dari PT Media Buana Inti menyediakan layanan internet cepat, stabil, dan terjangkau untuk kebutuhan rumah, UMKM, dan perusahaan. Pilih paket internet terbaik sesuai kebutuhan Anda.',
   keywords: [
     'MBINet',
     'internet cepat',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'MBINet - Internet Cepat & Stabil',
     description:
-      'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Informatika.',
+      'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Inti.',
     url: 'https://mbinet.click',
     siteName: 'MBINet',
     images: [{ url: '/media-buana-inti-logo.png', width: 1184, height: 656 }],

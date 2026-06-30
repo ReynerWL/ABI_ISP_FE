@@ -26,7 +26,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
       >
         <div className={'flex w-full flex-col gap-y-5 lg:gap-y-6'}>
           <Image
-            src={'/media-buana-inti-white.png'}
+            src={'/media-buana-inti-logo-white.png'}
             alt={'logo'}
             width={widthLogo}
             height={widthLogo}
@@ -34,9 +34,9 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
           />
           <div className={'flex flex-col gap-y-3'}>
             <p className={'text-sm font-normal text-slate-50 2xl:text-base'}>
-              PT Media Buana Informatika perusahaan teknologi yang berfokus pada
-              pengembangan solusi digital inovatif untuk membantu bisnis
-              berkembang di era digital.
+              PT Media Buana Inti adalah perusahaan yang bergerak dalam
+              penyediaan layanan internet cepat, stabil, dan terjangkau untuk
+              kebutuhan rumah, UMKM, dan perusahaan.
             </p>
             <div className={'flex flex-row gap-x-6'}>
               <Image
@@ -128,7 +128,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               <p>+62 813-8005-669</p>
             </Link>
             <Link
-              href={'mailto:mbinet5758@gmail.com'}
+              href={'mailto:mediabuanainti@gmail.com'}
               target='_blank'
               rel='noopener noreferrer'
               className={
@@ -136,7 +136,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
               }
             >
               <HiEnvelope className={'text-base xl:text-lg 2xl:text-xl'} />
-              <p>mbinet5758@gmail.com</p>
+              <p>mediabuanainti@gmail.com</p>
             </Link>
           </div>
         </div>

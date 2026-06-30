@@ -25,10 +25,10 @@ export default function Head() {
             url: 'https://mbinet.click',
             logo: 'https://mbinet.click/media-buana-inti-logo.png',
             description:
-              'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Informatika.',
+              'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Inti.',
             parentOrganization: {
               '@type': 'Organization',
-              name: 'PT Media Buana Informatika'
+              name: 'PT Media Buana Inti'
             }
           })
         }}
