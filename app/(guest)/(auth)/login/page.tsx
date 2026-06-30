@@ -99,7 +99,7 @@ const Login = () => {
           <div className='space-y-3'>
             <Link href={'/'} className='flex w-fit'>
               <Image
-                src={'/logo.png'}
+                src={'/media-buana-inti-logo.png'}
                 alt={'logo'}
                 width={126}
                 height={64}

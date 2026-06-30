@@ -172,7 +172,7 @@ const DashboardHeader = ({
           <div className='flex w-full items-center justify-between'>
             <Link href={'/'}>
               <Image
-                src={'/logo.png'}
+                src={'/media-buana-inti-logo.png'}
                 alt={'logo'}
                 priority
                 width={92}

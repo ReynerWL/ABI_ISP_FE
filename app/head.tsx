@@ -23,7 +23,7 @@ export default function Head() {
             '@type': 'InternetServiceProvider',
             name: 'MBINet',
             url: 'https://mbinet.click',
-            logo: 'https://mbinet.click/logo.png',
+            logo: 'https://mbinet.click/media-buana-inti-logo.png',
             description:
               'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Informatika.',
             parentOrganization: {

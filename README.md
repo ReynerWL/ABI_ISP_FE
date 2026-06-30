@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.png" alt="MBI ISP Logo" width="200"/>
+  <img src="public/media-buana-inti-logo.png" alt="MBI ISP Logo" width="200"/>
 </p>
 
 <h1 align="center">🚀 MBI ISP — Frontend Application</h1>

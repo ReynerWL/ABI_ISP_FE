@@ -26,7 +26,7 @@ export const SectionFooter = ({ widthIcon, widthLogo }: props) => {
       >
         <div className={'flex w-full flex-col gap-y-5 lg:gap-y-6'}>
           <Image
-            src={'/logo_light.png'}
+            src={'/media-buana-inti-white.png'}
             alt={'logo'}
             width={widthLogo}
             height={widthLogo}

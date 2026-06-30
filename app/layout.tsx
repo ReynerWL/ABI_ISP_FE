@@ -37,7 +37,7 @@ export const metadata: Metadata = {
       'Layanan internet fiber optic cepat dan stabil dari PT Media Buana Informatika.',
     url: 'https://mbinet.click',
     siteName: 'MBINet',
-    images: [{ url: '/logo.png', width: 1184, height: 656 }],
+    images: [{ url: '/media-buana-inti-logo.png', width: 1184, height: 656 }],
     locale: 'id_ID',
     type: 'website'
   },

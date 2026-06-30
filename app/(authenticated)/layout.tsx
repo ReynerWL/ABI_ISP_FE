@@ -167,7 +167,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <Link href={'/'}>
           <Image
-            src={'/logo.png'}
+            src={'/media-buana-inti-logo.png'}
             alt={'logo'}
             width={110}
             height={56}

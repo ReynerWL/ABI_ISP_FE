@@ -60,7 +60,7 @@ const LupaPasswordPage = () => {
         <div className='flex flex-col gap-6 py-10 md:w-full md:px-20 2xl:py-0'>
           <Link href={'/'} className='flex w-fit'>
             <Image
-              src={'/logo.png'}
+              src={'/media-buana-inti-logo.png'}
               alt={'logo'}
               width={126}
               height={64}

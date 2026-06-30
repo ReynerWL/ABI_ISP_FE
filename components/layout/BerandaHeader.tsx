@@ -100,7 +100,7 @@ const BerandaHeader = ({ activeSection, isLoading }: BerandaHeaderProps) => {
       <div className='flex w-full flex-row items-center justify-between'>
         <Link href={'/'}>
           <Image
-            src={'/logo.png'}
+            src={'/media-buana-inti-logo.png'}
             alt={'logo'}
             priority
             width={92}
