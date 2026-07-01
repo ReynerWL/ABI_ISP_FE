@@ -1,6 +1,5 @@
 'use client'
 
-import { Bank, bankRepository } from '#/repository/bank'
 import { Paket, paketRepository } from '#/repository/paket'
 import { ExportTransaksi, transakasiRepository } from '#/repository/transaksi'
 import { User, userRepository } from '#/repository/user'
@@ -20,18 +19,6 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
   const [form] = useForm()
   const [loading, setLoading] = useState(false)
   const [userSearch, setUserSearch] = useState<string>('')
-
-  // Bank Options
-  const { data: bankResponse, mutate } = bankRepository.hooks.useGetBanks()
-  const banks: Bank[] = bankResponse?.data
-  const bankOptions = banks?.map((bank) => ({
-    label: (
-      <p className='font-semibold text-slate-500'>
-        {bank.owner} - {bank.bank_name}
-      </p>
-    ),
-    value: bank.id
-  }))
 
   // Paket Options
   const { data: paketResponse, isLoading: paketLoading } =
@@ -165,20 +152,7 @@ const ExportModal = ({ open, onClose }: ExportModalProps) => {
             />
           </Form.Item>
         </div>
-        <Form.Item name='bankId' label='Bank' className='w-full'>
-          <Select
-            placeholder='Pilih bank'
-            showSearch
-            options={bankOptions}
-            suffixIcon={
-              <HiChevronDown
-                className='text-slate-300'
-                size={20}
-                strokeWidth={1}
-              />
-            }
-          />
-        </Form.Item>
+
         <Form.Item name='status' label='Status' className='w-full'>
           <Select
             placeholder='Pilih status'
