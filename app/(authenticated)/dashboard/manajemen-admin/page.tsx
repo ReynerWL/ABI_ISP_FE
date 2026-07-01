@@ -1,31 +1,43 @@
 'use client'
 
+import AlertDialog from '#/components/reusable/AlertDialog'
 import BaseModal from '#/components/reusable/BaseModal'
 import DataTable from '#/components/reusable/DataTable'
 import InputSearch from '#/components/reusable/InputSearch'
 import Title from '#/components/reusable/Title'
 import WAButton from '#/components/reusable/WAButton'
 import colorPallete from '#/constant/enums/colorPallete'
+import { useUser } from '#/context/UserContext'
 import usePageTitle from '#/hooks/usePageTitle'
 import { User, userRepository } from '#/repository/user'
 import { Button, Form, Input, Switch, TableProps } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import dayjs from 'dayjs'
 import { useSearchParams } from 'next/navigation'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { HiOutlineEyeOff } from 'react-icons/hi'
-import { HiOutlineEye, HiPlus } from 'react-icons/hi2'
+import {
+  HiOutlineEye,
+  HiPlus,
+  HiMiniPencilSquare,
+  HiOutlineExclamationCircle,
+  HiOutlineTrash
+} from 'react-icons/hi2'
 import { toast } from 'sonner'
 
 const ManajemenAdmin = () => {
   usePageTitle('Manajemen Admin')
   const searchParams = useSearchParams()
+  const { user } = useUser()
   const search = searchParams?.get('search') || null
   const page = searchParams?.get('page') || 1
   const limit = searchParams?.get('limit') || 10
   const [form] = useForm()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
   const { data, isLoading, mutate } = userRepository.hooks.useGetUser({
     search,
@@ -43,21 +55,39 @@ const ManajemenAdmin = () => {
     try {
       setLoading(true)
 
-      const data = {
-        email: values.email,
-        name: values.name,
-        phone_number: values.phone_number,
-        password: values.password,
-        status: 'Aktif'
-      }
+      if (editId) {
+        const data: any = {
+          email: values.email,
+          name: values.name,
+          phone_number: values.phone_number
+        }
+        if (values.password) {
+          data.password = values.password
+        }
 
-      const { error } = await userRepository.api.createAdmin(data)
+        const { error } = await userRepository.api.updateUser(editId, data)
 
-      if (!error) {
-        toast.success('Berhasil menambahkan data admin!')
+        if (!error) {
+          toast.success('Berhasil mengubah data admin!')
+          handleClose()
+          mutate()
+        }
+      } else {
+        const data = {
+          email: values.email,
+          name: values.name,
+          phone_number: values.phone_number,
+          password: values.password,
+          status: 'Aktif'
+        }
 
-        setOpen(false)
-        mutate()
+        const { error } = await userRepository.api.createAdmin(data)
+
+        if (!error) {
+          toast.success('Berhasil menambahkan data admin!')
+          handleClose()
+          mutate()
+        }
       }
     } catch (error: any) {
       const message = error?.response?.body?.message
@@ -88,10 +118,41 @@ const ManajemenAdmin = () => {
 
   const handleClose = () => {
     form.resetFields()
-    setOpen(!open)
+    setEditId(null)
+    setOpen(false)
   }
 
-  const columns: TableProps['columns'] = [
+  const handleEdit = (record: User) => {
+    setEditId(record.id)
+    form.setFieldsValue({
+      name: record.name,
+      email: record.email,
+      phone_number: record.phone_number?.replace(/^(\+62|62|0)/, ''),
+      password: ''
+    })
+    setOpen(true)
+  }
+
+  const handleDelete = async () => {
+    try {
+      if (selectedUser) {
+        if (selectedUser.status.toLowerCase() !== 'nonaktif') {
+          toast.warning('Hanya admin nonaktif yang bisa dihapus!')
+          return
+        }
+
+        await userRepository.api.deleteUser(selectedUser.id)
+        toast.success('Admin berhasil dihapus!')
+        setSelectedUser(null)
+        setShowDeleteConfirm(false)
+        mutate()
+      }
+    } catch (error) {
+      toast.error('Terjadi kesalahan saat menghapus admin!')
+    }
+  }
+
+  const columns: TableProps<User>['columns'] = [
     { title: 'Nama', dataIndex: 'name', key: 'name' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
     {
@@ -132,6 +193,39 @@ const ManajemenAdmin = () => {
           </div>
         )
       }
+    },
+    {
+      title: 'Aksi',
+      key: 'aksi',
+      render: (_, record) => (
+        <div className='flex gap-2'>
+          <Button
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-secondary !shadow-none hover:!bg-slate-50'
+                : '!hidden'
+            }
+            onClick={() => handleEdit(record)}
+          >
+            <HiMiniPencilSquare className='text-lg' />
+            Edit
+          </Button>
+          <Button
+            className={
+              user?.role.toLowerCase() === 'superadmin'
+                ? '!rounded-lg !border-slate-100 !p-2 !font-semibold !text-red-600 !shadow-none hover:!bg-red-50'
+                : '!hidden'
+            }
+            onClick={() => {
+              setShowDeleteConfirm(true)
+              setSelectedUser(record)
+            }}
+          >
+            <HiOutlineTrash className='text-lg' />
+            Hapus
+          </Button>
+        </div>
+      )
     }
   ]
 
@@ -161,7 +255,7 @@ const ManajemenAdmin = () => {
         />
         <BaseModal
           open={open}
-          title='Tambah Data'
+          title={editId ? 'Edit Data' : 'Tambah Data'}
           onClose={handleClose}
           titleBorder={false}
         >
@@ -229,32 +323,39 @@ const ManajemenAdmin = () => {
               label='Password'
               name='password'
               validateDebounce={1000}
-              rules={[{ required: true, message: 'Password wajib diisi' }]}
+              rules={[{ required: !editId, message: 'Password wajib diisi' }]}
             >
-              <Input.Password
-                placeholder='Masukkan password'
-                iconRender={(visible) =>
-                  visible ? (
-                    <HiOutlineEye
-                      style={{
-                        fontSize: '18px',
-                        color: '#94A3B8',
-                        strokeWidth: 2.2,
-                        cursor: 'pointer'
-                      }}
-                    />
-                  ) : (
-                    <HiOutlineEyeOff
-                      style={{
-                        fontSize: '18px',
-                        color: '#94A3B8',
-                        strokeWidth: 2.2,
-                        cursor: 'pointer'
-                      }}
-                    />
-                  )
-                }
-              />
+              <div className='flex flex-col gap-2'>
+                <Input.Password
+                  placeholder='Masukkan password'
+                  iconRender={(visible) =>
+                    visible ? (
+                      <HiOutlineEye
+                        style={{
+                          fontSize: '18px',
+                          color: '#94A3B8',
+                          strokeWidth: 2.2,
+                          cursor: 'pointer'
+                        }}
+                      />
+                    ) : (
+                      <HiOutlineEyeOff
+                        style={{
+                          fontSize: '18px',
+                          color: '#94A3B8',
+                          strokeWidth: 2.2,
+                          cursor: 'pointer'
+                        }}
+                      />
+                    )
+                  }
+                />
+                {editId && (
+                  <p className='m-0 text-[10px] font-medium italic text-slate-400'>
+                    *Kosongkan jika tidak ingin mengubah password.
+                  </p>
+                )}
+              </div>
             </Form.Item>
             <div className='flex w-full gap-4 pt-2'>
               <Button
@@ -274,6 +375,19 @@ const ManajemenAdmin = () => {
             </div>
           </Form>
         </BaseModal>
+        <AlertDialog
+          icon={HiOutlineExclamationCircle}
+          open={showDeleteConfirm}
+          title='Hapus Admin'
+          description={`Apakah Anda yakin ingin menghapus admin ${selectedUser?.name}?`}
+          danger
+          confirmText='Hapus'
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setShowDeleteConfirm(false)
+            setSelectedUser(null)
+          }}
+        />
       </div>
     </div>
   )

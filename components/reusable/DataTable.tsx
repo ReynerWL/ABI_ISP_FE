@@ -7,9 +7,9 @@ import {
   HiOutlineChevronRight
 } from 'react-icons/hi2'
 
-interface DataTableProps {
-  dataSource: TableProps['dataSource']
-  columns: TableProps['columns']
+interface DataTableProps<RecordType extends object = any> {
+  dataSource: TableProps<RecordType>['dataSource']
+  columns: TableProps<RecordType>['columns']
   id?: string
   className?: string
   page?: number
@@ -18,10 +18,10 @@ interface DataTableProps {
   totalData?: number
   isLoading?: boolean
   setSort?: (value: string | null) => void
-  expandedRowRender?: (record: any) => React.ReactNode
+  expandedRowRender?: (record: RecordType) => React.ReactNode
 }
 
-const DataTable = ({
+const DataTable = <RecordType extends object = any>({
   dataSource,
   columns,
   id,
@@ -33,7 +33,7 @@ const DataTable = ({
   isLoading = false,
   setSort,
   expandedRowRender
-}: DataTableProps) => {
+}: DataTableProps<RecordType>) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -63,7 +63,7 @@ const DataTable = ({
   }
 
   return (
-    <Table
+    <Table<RecordType>
       id={id}
       dataSource={dataSource}
       loading={{ spinning: isLoading, size: 'large' }}
