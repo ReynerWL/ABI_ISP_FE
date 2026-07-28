@@ -3,7 +3,7 @@ const nextConfig = {
   output: 'standalone',
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'minio-api.empatnusabangsa.com' }
+      { protocol: 'https', hostname: 'minio-api.bangun-kreatif.com' }
     ]
   }
 }

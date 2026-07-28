@@ -6,5 +6,5 @@ export const config = {
     process.env.NEXT_PUBLIC_BASE_URL ||
     // 'http://localhost:3222' ||
     'https://api.mbinet.click',
-  fileUrl: 'https://minio-api.empatnusabangsa.com/mbinet'
+  fileUrl: 'https://minio-api.bangun-kreatif.com/mbinet'
 }
